@@ -1,413 +1,832 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Área do Cliente</title>
+<title>Área Exclusiva</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+<style>
 
-        body {
-            background:
-                radial-gradient(circle at top, #202030 0%, #0b0b10 45%, #050507 100%);
-            color: #fff;
-            min-height: 100vh;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-        header {
-            text-align: center;
-            padding: 55px 20px 35px;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        .badge {
-            display: inline-block;
-            padding: 7px 14px;
-            border-radius: 30px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            color: #ccc;
-            font-size: 13px;
-            margin-bottom: 18px;
-        }
+body {
+    background: #050509;
+    color: #fff;
+    overflow-x: hidden;
+}
 
-        header h1 {
-            font-size: 36px;
-            margin-bottom: 12px;
-        }
+/* FUNDO */
 
-        header h1 span {
-            color: #8f7cff;
-        }
+body::before {
+    content: "";
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    background: #6c35ff;
+    filter: blur(180px);
+    opacity: 0.18;
+    top: -250px;
+    left: -200px;
+    z-index: -2;
+}
 
-        header p {
-            color: #aaa;
-            font-size: 16px;
-            line-height: 1.5;
-        }
+body::after {
+    content: "";
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    background: #00b7ff;
+    filter: blur(180px);
+    opacity: 0.10;
+    bottom: -250px;
+    right: -200px;
+    z-index: -2;
+}
 
-        .container {
-            width: 92%;
-            max-width: 900px;
-            margin: auto;
-        }
+/* TOPO */
 
-        .card {
-            background: rgba(20,20,29,0.88);
-            border: 1px solid #292936;
-            border-radius: 18px;
-            padding: 25px;
-            margin-bottom: 20px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.30);
-        }
+.hero {
+    min-height: 620px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 70px 20px;
+    position: relative;
+}
 
-        .card h2 {
-            font-size: 21px;
-            margin-bottom: 9px;
-        }
+.hero-content {
+    max-width: 850px;
+}
 
-        .card p {
-            color: #aaa;
-            line-height: 1.55;
-            margin-bottom: 20px;
-        }
+.badge {
+    display: inline-block;
+    padding: 9px 18px;
+    border: 1px solid rgba(139,92,246,.5);
+    border-radius: 50px;
+    background: rgba(139,92,246,.10);
+    color: #bda9ff;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 25px;
+}
 
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #ffffff, #dcdcdc);
-            color: #080808;
-            text-decoration: none;
-            text-align: center;
-            font-weight: bold;
-            transition: 0.2s;
-        }
+.hero h1 {
+    font-size: clamp(42px, 8vw, 78px);
+    line-height: .95;
+    font-weight: 900;
+    margin-bottom: 25px;
+    background: linear-gradient(90deg,#fff,#a78bfa,#60a5fa,#fff);
+    background-size: 250%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 5s linear infinite;
+}
 
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255,255,255,0.12);
-        }
+@keyframes shine {
+    0% { background-position: 0%; }
+    100% { background-position: 250%; }
+}
 
-        .btn-purple {
-            background: linear-gradient(135deg, #9b8cff, #6d5ce7);
-            color: white;
-        }
+.hero p {
+    color: #a7a7b2;
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 650px;
+    margin: auto;
+}
 
-        .btn-green {
-            background: linear-gradient(135deg, #25d366, #16a34a);
-            color: white;
-        }
+.scroll {
+    margin-top: 40px;
+    color: #777;
+    font-size: 13px;
+}
 
-        .tutorial {
-            margin-top: 25px;
-        }
+/* CONTAINER */
 
-        .tutorial h3 {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
+.container {
+    width: 92%;
+    max-width: 1050px;
+    margin: auto;
+}
 
-        .video {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            border-radius: 14px;
-            overflow: hidden;
-            background: #000;
-            border: 1px solid #292936;
-        }
+/* TITULOS */
 
-        .video iframe {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 0;
-            left: 0;
-            top: 0;
-        }
+.section-title {
+    text-align: center;
+    margin: 80px 0 35px;
+}
 
-        .steps {
-            display: grid;
-            gap: 10px;
-            margin-top: 15px;
-        }
+.section-title h2 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
 
-        .step {
-            padding: 14px;
-            background: rgba(255,255,255,0.04);
-            border-radius: 10px;
-            color: #ccc;
-            font-size: 14px;
-        }
+.section-title p {
+    color: #858592;
+}
 
-        .notice {
-            text-align: center;
-            color: #888;
-            font-size: 13px;
-            line-height: 1.5;
-            padding: 10px 20px 35px;
-        }
+/* CARDS */
 
-        footer {
-            text-align: center;
-            color: #555;
-            font-size: 12px;
-            padding: 25px;
-        }
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 20px;
+}
 
-        @media (max-width: 600px) {
-            header {
-                padding-top: 40px;
-            }
+.card {
+    position: relative;
+    background: linear-gradient(
+        145deg,
+        rgba(24,24,35,.96),
+        rgba(10,10,16,.96)
+    );
+    border: 1px solid #292936;
+    border-radius: 24px;
+    padding: 30px;
+    overflow: hidden;
+    transition: .3s;
+}
 
-            header h1 {
-                font-size: 29px;
-            }
+.card::before {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    background: #7448ff;
+    filter: blur(90px);
+    opacity: .08;
+    top: -80px;
+    right: -80px;
+}
 
-            .card {
-                padding: 20px;
-            }
-        }
-    </style>
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #6848d9;
+    box-shadow: 0 20px 60px rgba(82,49,190,.18);
+}
+
+.icon {
+    width: 58px;
+    height: 58px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    background: linear-gradient(135deg,#7046ff,#38218e);
+    font-size: 27px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(103,70,255,.25);
+}
+
+.card h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #9696a2;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+/* BOTÕES */
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 55px;
+    border-radius: 13px;
+    text-decoration: none;
+    font-weight: 800;
+    color: white;
+    background: linear-gradient(135deg,#7650ff,#5430c9);
+    transition: .25s;
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(112,70,255,.35);
+}
+
+.download {
+    background: linear-gradient(135deg,#ffffff,#cfcfcf);
+    color: #080808;
+}
+
+.download:hover {
+    box-shadow: 0 12px 35px rgba(255,255,255,.15);
+}
+
+.green {
+    background: linear-gradient(135deg,#25d366,#128c4c);
+}
+
+.blue {
+    background: linear-gradient(135deg,#238cff,#2456db);
+}
+
+/* DESTAQUE DOWNLOAD */
+
+.download-card {
+    grid-column: 1 / -1;
+    padding: 38px;
+    border-color: rgba(118,80,255,.4);
+    background:
+        radial-gradient(circle at 90% 10%,rgba(117,80,255,.18),transparent 35%),
+        linear-gradient(145deg,#181622,#0b0b10);
+}
+
+.download-card .icon {
+    background: linear-gradient(135deg,#ffffff,#aaa);
+}
+
+.download-card h3 {
+    font-size: 30px;
+}
+
+/* PASSOS */
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 15px;
+}
+
+.step {
+    background: #111118;
+    border: 1px solid #24242e;
+    border-radius: 18px;
+    padding: 25px;
+}
+
+.number {
+    font-size: 13px;
+    color: #9275ff;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.step h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.step p {
+    color: #858592;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* VIDEOS */
+
+.video-card {
+    margin-bottom: 22px;
+}
+
+.video-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.video-number {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: #6845e9;
+    font-weight: bold;
+}
+
+.video-title h3 {
+    font-size: 18px;
+}
+
+.video {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #000;
+    border: 1px solid #292936;
+}
+
+.video iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* SUPORTE */
+
+.support {
+    margin-top: 80px;
+    padding: 55px 30px;
+    text-align: center;
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at center,rgba(37,211,102,.12),transparent 55%),
+        #101016;
+    border: 1px solid #25252e;
+}
+
+.support h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.support p {
+    color: #92929d;
+    margin-bottom: 25px;
+}
+
+.support .btn {
+    max-width: 500px;
+    margin: auto;
+}
+
+/* AVISO */
+
+.notice {
+    text-align: center;
+    color: #777;
+    font-size: 13px;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 35px auto;
+}
+
+/* FOOTER */
+
+footer {
+    border-top: 1px solid #18181f;
+    margin-top: 70px;
+    padding: 30px;
+    text-align: center;
+    color: #50505b;
+    font-size: 12px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px) {
+
+    .hero {
+        min-height: 540px;
+        padding: 50px 20px;
+    }
+
+    .hero h1 {
+        font-size: 45px;
+    }
+
+    .hero p {
+        font-size: 16px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .download-card {
+        grid-column: auto;
+    }
+
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .section-title {
+        margin-top: 60px;
+    }
+
+    .card {
+        padding: 25px;
+    }
+
+}
+
+</style>
 </head>
 
 <body>
 
-<header>
 
-    <div class="badge">
-        ÁREA DO CLIENTE
+<!-- HERO -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="badge">
+            🔐 ÁREA EXCLUSIVA DO CLIENTE
+        </div>
+
+        <h1>
+            Seu acesso<br>
+            está aqui.
+        </h1>
+
+        <p>
+            Obrigado por adquirir o arquivo que te fará feliz kkkkk ❤️
+            <br>
+            Abaixo está tudo que você precisa para começar.
+        </p>
+
+        <div class="scroll">
+            ↓ Role para acessar todos os recursos
+        </div>
+
     </div>
 
-    <h1>
-        Obrigado por adquirir! <span>❤️</span>
-    </h1>
-
-    <p>
-        O arquivo que te fará feliz kkkkk
-        <br>
-        Abaixo você encontra tudo que precisa para começar.
-    </p>
-
-</header>
+</section>
 
 
 <main class="container">
 
 
-    <!-- ARQUIVO -->
+<!-- RECURSOS -->
 
-    <section class="card">
+<div class="section-title">
 
-        <h2>📦 Arquivo principal</h2>
+    <h2>🚀 Seus recursos</h2>
+
+    <p>
+        Tudo separado e organizado para facilitar sua vida.
+    </p>
+
+</div>
+
+
+<div class="grid">
+
+
+<!-- DOWNLOAD -->
+
+<div class="card download-card">
+
+    <div class="icon">
+        📦
+    </div>
+
+    <h3>
+        Arquivo principal
+    </h3>
+
+    <p>
+        Faça o download do arquivo principal abaixo.
+        Após baixar, extraia os arquivos antes de utilizar.
+    </p>
+
+    <a
+        class="btn download"
+        href="https://drive.google.com/file/d/1iwF0Nv8BhnYUEXbhLc18OzEtzvxP0r46/view?usp=drive_link"
+        target="_blank">
+
+        ⬇️ &nbsp; BAIXAR ARQUIVO
+
+    </a>
+
+</div>
+
+
+<!-- LICENÇA -->
+
+<div class="card">
+
+    <div class="icon">
+        🔑
+    </div>
+
+    <h3>
+        Sua licença
+    </h3>
+
+    <p>
+        Acesse o gerador para obter sua licença
+        e continuar o processo.
+    </p>
+
+    <a
+        class="btn"
+        href="https://keys-server-9zq2.onrender.com/"
+        target="_blank">
+
+        🔑 &nbsp; GERAR LICENÇA
+
+    </a>
+
+</div>
+
+
+<!-- FIXES -->
+
+<div class="card">
+
+    <div class="icon">
+        🛠️
+    </div>
+
+    <h3>
+        Central de Fixes
+    </h3>
+
+    <p>
+        Problemas ou correções? Aqui você encontra
+        a central com os fixes disponíveis.
+    </p>
+
+    <a
+        class="btn blue"
+        href="https://generator.ryuu.lol/fixes"
+        target="_blank">
+
+        🛠️ &nbsp; ACESSAR FIXES
+
+    </a>
+
+</div>
+
+</div>
+
+
+<!-- COMO COMEÇAR -->
+
+<div class="section-title">
+
+    <h2>⚡ Como começar</h2>
+
+    <p>
+        Siga essa ordem para facilitar o processo.
+    </p>
+
+</div>
+
+
+<div class="steps">
+
+    <div class="step">
+
+        <div class="number">
+            PASSO 01
+        </div>
+
+        <h4>
+            Baixe o arquivo
+        </h4>
 
         <p>
-            Baixe o arquivo abaixo e, após o download,
-            extraia os arquivos antes de utilizar.
+            Faça o download do arquivo principal
+            e extraia seu conteúdo.
         </p>
-
-        <a
-            class="btn"
-            href="https://drive.google.com/file/d/1iwF0Nv8BhnYUEXbhLc18OzEtzvxP0r46/view?usp=drive_link"
-            target="_blank">
-            ⬇️ BAIXAR ARQUIVO
-        </a>
-
-    </section>
-
-
-    <!-- LICENÇA -->
-
-    <section class="card">
-
-        <h2>🔑 Licença</h2>
-
-        <p>
-            Utilize o gerador abaixo para obter sua licença.
-        </p>
-
-        <a
-            class="btn btn-purple"
-            href="https://keys-server-9zq2.onrender.com/"
-            target="_blank">
-            🔑 GERAR LICENÇA
-        </a>
-
-    </section>
-
-
-    <!-- FIXES -->
-
-    <section class="card">
-
-        <h2>🛠️ Central de Fixes</h2>
-
-        <p>
-            Encontrou algum problema? Acesse a central
-            para consultar as correções disponíveis.
-        </p>
-
-        <a
-            class="btn"
-            href="https://generator.ryuu.lol/fixes"
-            target="_blank">
-            🛠️ ACESSAR CENTRAL DE FIXES
-        </a>
-
-    </section>
-
-
-    <!-- TUTORIAIS -->
-
-    <section class="card">
-
-        <h2>🎥 Tutoriais</h2>
-
-        <p>
-            Assista aos vídeos abaixo seguindo a ordem indicada.
-            Eles mostram o processo passo a passo.
-        </p>
-
-
-        <div class="tutorial">
-
-            <h3>▶️ Tutorial 1</h3>
-
-            <div class="video">
-                <iframe
-                    src="https://www.youtube.com/embed/3HFa1-V0N1Y"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-        </div>
-
-
-        <div class="tutorial">
-
-            <h3>▶️ Tutorial 2</h3>
-
-            <div class="video">
-                <iframe
-                    src="https://www.youtube.com/embed/gU1uX0aLz8k"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-        </div>
-
-
-        <div class="tutorial">
-
-            <h3>▶️ Tutorial 3</h3>
-
-            <div class="video">
-                <iframe
-                    src="https://www.youtube.com/embed/jHgjXplBUps"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-        </div>
-
-
-        <div class="tutorial">
-
-            <h3>▶️ Tutorial 4</h3>
-
-            <div class="video">
-                <iframe
-                    src="https://www.youtube.com/embed/jZz9s1oEXKQ"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-        </div>
-
-
-        <div class="tutorial">
-
-            <h3>▶️ Tutorial 5</h3>
-
-            <div class="video">
-                <iframe
-                    src="https://www.youtube.com/embed/9gk9032x_ko"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- PASSOS -->
-
-    <section class="card">
-
-        <h2>📋 Antes de começar</h2>
-
-        <div class="steps">
-
-            <div class="step">
-                <strong>1.</strong> Baixe o arquivo principal.
-            </div>
-
-            <div class="step">
-                <strong>2.</strong> Extraia os arquivos.
-            </div>
-
-            <div class="step">
-                <strong>3.</strong> Gere sua licença.
-            </div>
-
-            <div class="step">
-                <strong>4.</strong> Siga os tutoriais na ordem.
-            </div>
-
-            <div class="step">
-                <strong>5.</strong> Se encontrar algum problema, consulte a Central de Fixes.
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- WHATSAPP -->
-
-    <section class="card">
-
-        <h2>📱 Precisa de ajuda?</h2>
-
-        <p>
-            Se tiver qualquer dúvida ou problema,
-            entre em contato pelo WhatsApp.
-        </p>
-
-        <a
-            class="btn btn-green"
-            href="https://wa.me/message/R4DSTU3V2E4IC1"
-            target="_blank">
-            💬 FALAR NO WHATSAPP
-        </a>
-
-    </section>
-
-
-    <div class="notice">
-
-        ⚠️ Recomendamos assistir aos tutoriais antes de utilizar o arquivo.
 
     </div>
+
+
+    <div class="step">
+
+        <div class="number">
+            PASSO 02
+        </div>
+
+        <h4>
+            Gere sua licença
+        </h4>
+
+        <p>
+            Utilize o gerador de licença
+            disponibilizado acima.
+        </p>
+
+    </div>
+
+
+    <div class="step">
+
+        <div class="number">
+            PASSO 03
+        </div>
+
+        <h4>
+            Assista aos tutoriais
+        </h4>
+
+        <p>
+            Siga os vídeos abaixo na ordem
+            para realizar o procedimento.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- TUTORIAIS -->
+
+<div class="section-title">
+
+    <h2>🎬 Tutoriais</h2>
+
+    <p>
+        Assista aos vídeos passo a passo.
+    </p>
+
+</div>
+
+
+<!-- VIDEO 1 -->
+
+<div class="card video-card">
+
+    <div class="video-title">
+
+        <div class="video-number">
+            1
+        </div>
+
+        <h3>
+            Tutorial 1
+        </h3>
+
+    </div>
+
+    <div class="video">
+
+        <iframe
+            src="https://www.youtube.com/embed/3HFa1-V0N1Y"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+</div>
+
+
+<!-- VIDEO 2 -->
+
+<div class="card video-card">
+
+    <div class="video-title">
+
+        <div class="video-number">
+            2
+        </div>
+
+        <h3>
+            Tutorial 2
+        </h3>
+
+    </div>
+
+    <div class="video">
+
+        <iframe
+            src="https://www.youtube.com/embed/gU1uX0aLz8k"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+</div>
+
+
+<!-- VIDEO 3 -->
+
+<div class="card video-card">
+
+    <div class="video-title">
+
+        <div class="video-number">
+            3
+        </div>
+
+        <h3>
+            Tutorial 3
+        </h3>
+
+    </div>
+
+    <div class="video">
+
+        <iframe
+            src="https://www.youtube.com/embed/jHgjXplBUps"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+</div>
+
+
+<!-- VIDEO 4 -->
+
+<div class="card video-card">
+
+    <div class="video-title">
+
+        <div class="video-number">
+            4
+        </div>
+
+        <h3>
+            Tutorial 4
+        </h3>
+
+    </div>
+
+    <div class="video">
+
+        <iframe
+            src="https://www.youtube.com/embed/jZz9s1oEXKQ"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+</div>
+
+
+<!-- VIDEO 5 -->
+
+<div class="card video-card">
+
+    <div class="video-title">
+
+        <div class="video-number">
+            5
+        </div>
+
+        <h3>
+            Tutorial 5
+        </h3>
+
+    </div>
+
+    <div class="video">
+
+        <iframe
+            src="https://www.youtube.com/embed/9gk9032x_ko"
+            allowfullscreen>
+        </iframe>
+
+    </div>
+
+</div>
+
+
+<!-- SUPORTE -->
+
+<section class="support">
+
+    <h2>
+        💬 Precisando de ajuda?
+    </h2>
+
+    <p>
+        Se tiver qualquer dúvida ou encontrar algum problema,
+        fale diretamente com o suporte.
+    </p>
+
+    <a
+        class="btn green"
+        href="https://wa.me/message/R4DSTU3V2E4IC1"
+        target="_blank">
+
+        💬 &nbsp; FALAR NO WHATSAPP
+
+    </a>
+
+</section>
+
+
+<div class="notice">
+
+    ⚠️ Recomendamos assistir aos tutoriais antes de utilizar o arquivo.
+    <br>
+    Em caso de problemas, consulte primeiro a Central de Fixes.
+
+</div>
+
 
 </main>
 
@@ -417,6 +836,7 @@
     © 2026 — Todos os direitos reservados.
 
 </footer>
+
 
 </body>
 </html>
