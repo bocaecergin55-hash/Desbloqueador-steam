@@ -25,33 +25,231 @@ body {
     overflow-x: hidden;
 }
 
-/* FUNDO */
+/* =========================================
+   FUNDO GAMER — ARTES DE JOGOS
+   ========================================= */
 
 body::before {
     content: "";
     position: fixed;
-    width: 600px;
-    height: 600px;
-    background: #6c35ff;
-    filter: blur(180px);
-    opacity: 0.18;
-    top: -250px;
-    left: -200px;
-    z-index: -2;
+    inset: -3%;
+    z-index: -3;
+    pointer-events: none;
+
+    background-image:
+
+        /* GTA V */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/271590/header.jpg"),
+
+        /* Red Dead Redemption 2 */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1174180/header.jpg"),
+
+        /* Forza Horizon 5 */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1551360/header.jpg"),
+
+        /* Cyberpunk 2077 */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1091500/header.jpg"),
+
+        /* Elden Ring */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1245620/header.jpg"),
+
+        /* Resident Evil 4 */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/2050650/header.jpg"),
+
+        /* Horizon Forbidden West */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/2420110/header.jpg"),
+
+        /* Assassin's Creed Odyssey */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/812140/header.jpg"),
+
+        /* The Last of Us Part I */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1888930/header.jpg"),
+
+        /* Hogwarts Legacy */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/990080/header.jpg"),
+
+        /* Baldur's Gate 3 */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1086940/header.jpg"),
+
+        /* Black Myth: Wukong */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/2358720/header.jpg"),
+
+        /* Counter-Strike 2 */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg"),
+
+        /* PUBG */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/578080/header.jpg"),
+
+        /* Apex Legends */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1172470/header.jpg"),
+
+        /* Rust */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/252490/header.jpg"),
+
+        /* Helldivers 2 */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/553850/header.jpg"),
+
+        /* Monster Hunter Wilds */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/2246340/header.jpg"),
+
+        /* Silent Hill 2 */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/2124490/header.jpg"),
+
+        /* DOOM The Dark Ages */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/3013850/header.jpg"),
+
+        /* Warframe */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/230410/header.jpg"),
+
+        /* Dota 2 */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/570/header.jpg"),
+
+        /* Dead by Daylight */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/381210/header.jpg"),
+
+        /* Palworld */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1623730/header.jpg"),
+
+        /* Valheim */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg"),
+
+        /* Terraria */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg"),
+
+        /* Lethal Company */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1966720/header.jpg"),
+
+        /* Stardew Valley */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/413150/header.jpg"),
+
+        /* Resident Evil Village */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1196590/header.jpg"),
+
+        /* Forza Horizon 4 */
+        url("https://cdn.cloudflare.steamstatic.com/steam/apps/1293830/header.jpg");
+
+
+    background-repeat: no-repeat;
+
+    background-size:
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px,
+        360px 170px;
+
+    background-position:
+        0% 0%,
+        50% 0%,
+        100% 0%,
+
+        25% 15%,
+        75% 15%,
+
+        0% 30%,
+        50% 30%,
+        100% 30%,
+
+        25% 45%,
+        75% 45%,
+
+        0% 60%,
+        50% 60%,
+        100% 60%,
+
+        25% 75%,
+        75% 75%,
+
+        0% 90%,
+        50% 90%,
+        100% 90%,
+
+        25% 105%,
+        75% 105%,
+
+        0% 120%,
+        50% 120%,
+        100% 120%,
+
+        25% 135%,
+        75% 135%,
+
+        0% 150%,
+        50% 150%,
+        100% 150%,
+
+        25% 165%,
+        75% 165%;
+
+    filter:
+        brightness(0.38)
+        saturate(0.72)
+        contrast(1.08)
+        blur(1px);
+
+    transform: scale(1.08);
 }
+
+
+/* CAMADA ESCURA + BRILHO ROXO/AZUL */
 
 body::after {
     content: "";
     position: fixed;
-    width: 500px;
-    height: 500px;
-    background: #00b7ff;
-    filter: blur(180px);
-    opacity: 0.10;
-    bottom: -250px;
-    right: -200px;
+    inset: 0;
     z-index: -2;
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            circle at 10% 15%,
+            rgba(108,53,255,.30),
+            transparent 32%
+        ),
+
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(0,183,255,.20),
+            transparent 32%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(108,53,255,.24),
+            transparent 40%
+        ),
+
+        linear-gradient(
+            rgba(3,3,8,.52),
+            rgba(3,3,8,.78)
+        );
 }
+
 
 /* TOPO */
 
