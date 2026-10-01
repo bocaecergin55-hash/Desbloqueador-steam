@@ -4,35 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Seu Arquivo</title>
+    <title>Área do Cliente</title>
 
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         body {
-            background: #0b0b0f;
-            color: white;
+            background:
+                radial-gradient(circle at top, #202030 0%, #0b0b10 45%, #050507 100%);
+            color: #fff;
             min-height: 100vh;
         }
 
         header {
             text-align: center;
-            padding: 45px 20px 30px;
+            padding: 55px 20px 35px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: #ccc;
+            font-size: 13px;
+            margin-bottom: 18px;
         }
 
         header h1 {
-            font-size: 32px;
+            font-size: 36px;
             margin-bottom: 12px;
         }
 
+        header h1 span {
+            color: #8f7cff;
+        }
+
         header p {
-            color: #bdbdbd;
+            color: #aaa;
             font-size: 16px;
+            line-height: 1.5;
         }
 
         .container {
@@ -42,32 +59,32 @@
         }
 
         .card {
-            background: #15151c;
+            background: rgba(20,20,29,0.88);
             border: 1px solid #292936;
-            border-radius: 16px;
+            border-radius: 18px;
             padding: 25px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.30);
         }
 
         .card h2 {
-            margin-bottom: 10px;
             font-size: 21px;
+            margin-bottom: 9px;
         }
 
         .card p {
-            color: #bdbdbd;
-            margin-bottom: 18px;
-            line-height: 1.5;
+            color: #aaa;
+            line-height: 1.55;
+            margin-bottom: 20px;
         }
 
         .btn {
             display: block;
             width: 100%;
-            padding: 15px;
-            border-radius: 10px;
-            background: #ffffff;
-            color: #000000;
+            padding: 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ffffff, #dcdcdc);
+            color: #080808;
             text-decoration: none;
             text-align: center;
             font-weight: bold;
@@ -75,17 +92,37 @@
         }
 
         .btn:hover {
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.12);
+        }
+
+        .btn-purple {
+            background: linear-gradient(135deg, #9b8cff, #6d5ce7);
+            color: white;
+        }
+
+        .btn-green {
+            background: linear-gradient(135deg, #25d366, #16a34a);
+            color: white;
+        }
+
+        .tutorial {
+            margin-top: 25px;
+        }
+
+        .tutorial h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
         }
 
         .video {
             position: relative;
             width: 100%;
             padding-bottom: 56.25%;
-            margin-top: 15px;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
             background: #000;
+            border: 1px solid #292936;
         }
 
         .video iframe {
@@ -97,202 +134,289 @@
             top: 0;
         }
 
-        .aviso {
-            text-align: center;
-            color: #999;
+        .steps {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .step {
+            padding: 14px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 10px;
+            color: #ccc;
             font-size: 14px;
-            padding: 10px 20px 40px;
+        }
+
+        .notice {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            line-height: 1.5;
+            padding: 10px 20px 35px;
         }
 
         footer {
             text-align: center;
-            color: #666;
-            font-size: 13px;
-            padding: 20px;
+            color: #555;
+            font-size: 12px;
+            padding: 25px;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding-top: 40px;
+            }
+
+            header h1 {
+                font-size: 29px;
+            }
+
+            .card {
+                padding: 20px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <h1>Obrigado por adquirir! ❤️</h1>
+<header>
+
+    <div class="badge">
+        ÁREA DO CLIENTE
+    </div>
+
+    <h1>
+        Obrigado por adquirir! <span>❤️</span>
+    </h1>
+
+    <p>
+        O arquivo que te fará feliz kkkkk
+        <br>
+        Abaixo você encontra tudo que precisa para começar.
+    </p>
+
+</header>
+
+
+<main class="container">
+
+
+    <!-- ARQUIVO -->
+
+    <section class="card">
+
+        <h2>📦 Arquivo principal</h2>
 
         <p>
-            O arquivo que te fará feliz kkkkk
+            Baixe o arquivo abaixo e, após o download,
+            extraia os arquivos antes de utilizar.
         </p>
-    </header>
+
+        <a
+            class="btn"
+            href="https://drive.google.com/file/d/1iwF0Nv8BhnYUEXbhLc18OzEtzvxP0r46/view?usp=drive_link"
+            target="_blank">
+            ⬇️ BAIXAR ARQUIVO
+        </a>
+
+    </section>
 
 
-    <main class="container">
+    <!-- LICENÇA -->
 
-        <!-- ARQUIVO PRINCIPAL -->
+    <section class="card">
 
-        <section class="card">
+        <h2>🔑 Licença</h2>
 
-            <h2>📦 Arquivo principal</h2>
+        <p>
+            Utilize o gerador abaixo para obter sua licença.
+        </p>
 
-            <p>
-                Clique abaixo para baixar o arquivo.
-                Depois de baixar, extraia os arquivos antes de utilizar.
-            </p>
+        <a
+            class="btn btn-purple"
+            href="https://keys-server-9zq2.onrender.com/"
+            target="_blank">
+            🔑 GERAR LICENÇA
+        </a>
 
-            <a
-                class="btn"
-                href="COLOQUE_AQUI_O_LINK_DO_ARQUIVO"
-                target="_blank">
-                ⬇️ BAIXAR ARQUIVO
-            </a>
-
-        </section>
+    </section>
 
 
-        <!-- GERADOR DE KEY -->
+    <!-- FIXES -->
 
-        <section class="card">
+    <section class="card">
 
-            <h2>🔑 Gerador de Key</h2>
+        <h2>🛠️ Central de Fixes</h2>
 
-            <p>
-                Gere sua chave utilizando o link abaixo.
-            </p>
+        <p>
+            Encontrou algum problema? Acesse a central
+            para consultar as correções disponíveis.
+        </p>
 
-            <a
-                class="btn"
-                href="COLOQUE_AQUI_O_LINK_DA_KEY"
-                target="_blank">
-                🔑 GERAR KEY
-            </a>
+        <a
+            class="btn"
+            href="https://generator.ryuu.lol/fixes"
+            target="_blank">
+            🛠️ ACESSAR CENTRAL DE FIXES
+        </a>
 
-        </section>
-
-
-        <!-- FIXES -->
-
-        <section class="card">
-
-            <h2>🛠️ Central de Fixes</h2>
-
-            <p>
-                Caso tenha algum problema, acesse a central
-                onde estão reunidas as correções disponíveis.
-            </p>
-
-            <a
-                class="btn"
-                href="COLOQUE_AQUI_O_LINK_DAS_FIXES"
-                target="_blank">
-                🛠️ ACESSAR FIXES
-            </a>
-
-        </section>
+    </section>
 
 
-        <!-- TUTORIAL -->
+    <!-- TUTORIAIS -->
 
-        <section class="card">
+    <section class="card">
 
-            <h2>🎥 Tutoriais</h2>
+        <h2>🎥 Tutoriais</h2>
 
-            <p>
-                Assista aos vídeos abaixo para aprender
-                passo a passo como utilizar.
-            </p>
+        <p>
+            Assista aos vídeos abaixo seguindo a ordem indicada.
+            Eles mostram o processo passo a passo.
+        </p>
 
 
-            <h3 style="margin-top:20px;">
-                Tutorial 1
-            </h3>
+        <div class="tutorial">
+
+            <h3>▶️ Tutorial 1</h3>
 
             <div class="video">
                 <iframe
-                    src="https://www.youtube.com/embed/ID_VIDEO_1"
+                    src="https://www.youtube.com/embed/3HFa1-V0N1Y"
                     allowfullscreen>
                 </iframe>
             </div>
 
-
-            <h3 style="margin-top:25px;">
-                Tutorial 2
-            </h3>
-
-            <div class="video">
-                <iframe
-                    src="https://www.youtube.com/embed/ID_VIDEO_2"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-
-            <h3 style="margin-top:25px;">
-                Tutorial 3
-            </h3>
-
-            <div class="video">
-                <iframe
-                    src="https://www.youtube.com/embed/ID_VIDEO_3"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-
-            <h3 style="margin-top:25px;">
-                Tutorial 4
-            </h3>
-
-            <div class="video">
-                <iframe
-                    src="https://www.youtube.com/embed/ID_VIDEO_4"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-
-            <h3 style="margin-top:25px;">
-                Tutorial 5
-            </h3>
-
-            <div class="video">
-                <iframe
-                    src="https://www.youtube.com/embed/ID_VIDEO_5"
-                    allowfullscreen>
-                </iframe>
-            </div>
-
-        </section>
-
-
-        <!-- SUPORTE -->
-
-        <section class="card">
-
-            <h2>📱 Precisa de ajuda?</h2>
-
-            <p>
-                Se tiver qualquer problema ou dúvida,
-                entre em contato pelo WhatsApp.
-            </p>
-
-            <a
-                class="btn"
-                href="COLOQUE_AQUI_SEU_LINK_DO_WHATSAPP"
-                target="_blank">
-                💬 FALAR NO WHATSAPP
-            </a>
-
-        </section>
-
-
-        <div class="aviso">
-            ⚠️ Leia os tutoriais antes de utilizar o arquivo.
         </div>
 
-    </main>
+
+        <div class="tutorial">
+
+            <h3>▶️ Tutorial 2</h3>
+
+            <div class="video">
+                <iframe
+                    src="https://www.youtube.com/embed/gU1uX0aLz8k"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+        </div>
 
 
-    <footer>
-        © 2026 — Todos os direitos reservados.
-    </footer>
+        <div class="tutorial">
+
+            <h3>▶️ Tutorial 3</h3>
+
+            <div class="video">
+                <iframe
+                    src="https://www.youtube.com/embed/jHgjXplBUps"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+        </div>
+
+
+        <div class="tutorial">
+
+            <h3>▶️ Tutorial 4</h3>
+
+            <div class="video">
+                <iframe
+                    src="https://www.youtube.com/embed/jZz9s1oEXKQ"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+        </div>
+
+
+        <div class="tutorial">
+
+            <h3>▶️ Tutorial 5</h3>
+
+            <div class="video">
+                <iframe
+                    src="https://www.youtube.com/embed/9gk9032x_ko"
+                    allowfullscreen>
+                </iframe>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PASSOS -->
+
+    <section class="card">
+
+        <h2>📋 Antes de começar</h2>
+
+        <div class="steps">
+
+            <div class="step">
+                <strong>1.</strong> Baixe o arquivo principal.
+            </div>
+
+            <div class="step">
+                <strong>2.</strong> Extraia os arquivos.
+            </div>
+
+            <div class="step">
+                <strong>3.</strong> Gere sua licença.
+            </div>
+
+            <div class="step">
+                <strong>4.</strong> Siga os tutoriais na ordem.
+            </div>
+
+            <div class="step">
+                <strong>5.</strong> Se encontrar algum problema, consulte a Central de Fixes.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- WHATSAPP -->
+
+    <section class="card">
+
+        <h2>📱 Precisa de ajuda?</h2>
+
+        <p>
+            Se tiver qualquer dúvida ou problema,
+            entre em contato pelo WhatsApp.
+        </p>
+
+        <a
+            class="btn btn-green"
+            href="https://wa.me/message/R4DSTU3V2E4IC1"
+            target="_blank">
+            💬 FALAR NO WHATSAPP
+        </a>
+
+    </section>
+
+
+    <div class="notice">
+
+        ⚠️ Recomendamos assistir aos tutoriais antes de utilizar o arquivo.
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    © 2026 — Todos os direitos reservados.
+
+</footer>
 
 </body>
 </html>
