@@ -5,1019 +5,180 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#08090d">
 <title>RBX Império • Área do Cliente</title>
-
 <style>
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:#08090d;color:#f7f7fb;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-
-:root{
-  --panel:#111319;
-  --panel2:#161922;
-  --line:#262a35;
-  --muted:#9ca3b3;
-  --green:#a855f7;
-  --blue:#5aa7ff
-}
-
-a{color:inherit;text-decoration:none}
-.wrap{width:min(1180px,calc(100% - 34px));margin:auto}
-
-.topbar{
-  position:sticky;
-  top:0;
-  z-index:50;
-  background:rgba(8,9,13,.88);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid #1e212a
-}
-
-.nav{
-  height:70px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-weight:950;
-  letter-spacing:.6px
-}
-
-.logo{
-  width:39px;
-  height:39px;
-  border:1px solid #3a414f;
-  border-radius:10px;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(145deg,#1b202a,#0d0f14);
-  box-shadow:inset 0 0 22px rgba(168,85,247,.10)
-}
-
-.logo b{color:var(--green)}
-
-.navlinks{display:flex;gap:8px}
-
-.navlinks a{
-  padding:10px 13px;
-  border:1px solid #262b36;
-  border-radius:8px;
-  color:#c6cad4;
-  font-size:13px;
-  font-weight:800
-}
-
-.hero{
-  position:relative;
-  overflow:hidden;
-  border-bottom:1px solid #20232b;
-  background:
-  radial-gradient(circle at 78% 20%,rgba(168,85,247,.16),transparent 30%),
-  radial-gradient(circle at 20% 20%,rgba(90,167,255,.10),transparent 25%),
-  #0b0d12
-}
-
-.hero:before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-  linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
-  linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
-  background-size:42px 42px;
-  mask-image:linear-gradient(to bottom,#000,transparent)
-}
-
-.hero-inner{
-  position:relative;
-  min-height:500px;
-  display:grid;
-  grid-template-columns:1.18fr .82fr;
-  align-items:center;
-  gap:45px;
-  padding:76px 0
-}
-
-.eyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 11px;
-  border:1px solid #2d3540;
-  border-radius:7px;
-  background:#11151c;
-  color:#bfc6d1;
-  font-size:12px;
-  font-weight:900;
-  letter-spacing:.9px
-}
-
-.dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 15px var(--green)
-}
-
-h1{
-  font-size:clamp(45px,6vw,78px);
-  line-height:.95;
-  letter-spacing:-3px;
-  margin:20px 0 18px;
-  max-width:780px
-}
-
-h1 em{
-  font-style:normal;
-  color:var(--green)
-}
-
-.hero p{
-  color:#adb3bf;
-  line-height:1.7;
-  font-size:17px;
-  max-width:660px
-}
-
-.btn{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-  min-height:48px;
-  padding:0 17px;
-  border:1px solid #343a46;
-  border-radius:8px;
-  background:#151922;
-  font-weight:900;
-  font-size:13px;
-  transition:.18s
-}
-
-.btn:hover{
-  transform:translateY(-2px);
-  border-color:#596171
-}
-
-.btn.primary{
-  background:linear-gradient(135deg,#9333ea,#c084fc);
-  color:#fff;
-  border-color:#b66cff;
-  box-shadow:0 8px 28px rgba(168,85,247,.20)
-}
-
-.btn.blue{
-  background:#14243a;
-  border-color:#294f7d;
-  color:#d9ebff
-}
-
-.status-panel{
-  border:1px solid #2a2f39;
-  background:linear-gradient(160deg,#151821,#0e1015);
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 25px 80px rgba(0,0,0,.35)
-}
-
-.status-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding-bottom:15px;
-  border-bottom:1px solid #292e38
-}
-
-.status-head strong{font-size:14px}
-
-.online{
-  font-size:11px;
-  color:var(--green);
-  font-weight:900
-}
-
-.mini-step{
-  display:grid;
-  grid-template-columns:38px 1fr;
-  gap:12px;
-  align-items:center;
-  padding:15px 0;
-  border-bottom:1px solid #242832
-}
-
-.mini-step:last-child{border:0}
-
-.mini-step b{
-  width:38px;
-  height:38px;
-  border:1px solid #303641;
-  border-radius:8px;
-  display:grid;
-  place-items:center;
-  color:var(--green)
-}
-
-.mini-step strong{
-  display:block;
-  font-size:13px
-}
-
-.mini-step small{color:#848b99}
-
-section{padding:72px 0}
-
-.section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  gap:25px;
-  margin-bottom:25px
-}
-
-.kicker{
-  color:var(--green);
-  font-size:11px;
-  font-weight:950;
-  letter-spacing:1.4px
-}
-
-h2{
-  font-size:clamp(29px,4vw,44px);
-  letter-spacing:-1.5px;
-  margin:7px 0
-}
-
-.section-head p{
-  max-width:510px;
-  color:var(--muted);
-  line-height:1.6;
-  margin:0
-}
-
-/* JOGOS */
-
-.games{
-  display:grid;
-  grid-template-columns:repeat(12,1fr);
-  gap:13px
-}
-
-.game-card{
-  grid-column:span 4;
-  border:1px solid var(--line);
-  background:var(--panel);
-  border-radius:10px;
-  overflow:hidden;
-  transition:.2s
-}
-
-.game-card:nth-child(1),
-.game-card:nth-child(2){
-  grid-column:span 6
-}
-
-.game-card:hover{
-  transform:translateY(-4px);
-  border-color:#3b4350
-}
-
-.game-art{
-  height:200px;
-  position:relative;
-  background:linear-gradient(135deg,#171b24,#0d0f14);
-  overflow:hidden
-}
-
-.game-card:nth-child(-n+2) .game-art{height:270px}
-
-.game-art img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block
-}
-
-.game-art:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top,rgba(8,9,13,.76),transparent 52%);
-  pointer-events:none
-}
-
-.game-badge{
-  position:absolute;
-  z-index:2;
-  top:12px;
-  left:12px;
-  background:linear-gradient(135deg,#9333ea,#c084fc);
-  color:#fff;
-  font-size:10px;
-  font-weight:1000;
-  padding:6px 8px;
-  border-radius:5px;
-  letter-spacing:.6px
-}
-
-.fallback-title{
-  display:none;
-  position:absolute;
-  inset:0;
-  padding:25px;
-  align-items:flex-end;
-  font-size:25px;
-  font-weight:950
-}
-
-.fallback .fallback-title{display:flex}
-
-.game-info{padding:15px 16px 17px}
-
-.game-info h3{
-  font-size:15px;
-  margin:0 0 5px
-}
-
-.game-info p{
-  font-size:12px;
-  color:#858c99;
-  margin:0
-}
-
-/* RECURSOS */
-
-.resource-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px
-}
-
-.resource{
-  min-height:235px;
-  padding:22px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:var(--panel);
-  display:flex;
-  flex-direction:column
-}
-
-.resource-icon{
-  width:45px;
-  height:45px;
-  border:1px solid #343b48;
-  border-radius:9px;
-  display:grid;
-  place-items:center;
-  font-size:21px;
-  background:#191d26
-}
-
-.resource h3{
-  font-size:20px;
-  margin:19px 0 8px
-}
-
-.resource p{
-  color:var(--muted);
-  line-height:1.55;
-  font-size:13px;
-  margin:0 0 20px
-}
-
-.resource .btn{margin-top:auto}
-
-/* SOCIAIS */
-
-.socials{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:13px
-}
-
-.social{
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:#111319;
-  padding:24px;
-  min-height:200px
-}
-
-.social-logo{
-  width:52px;
-  height:52px;
-  border:1px solid #363c48;
-  border-radius:12px;
-  display:grid;
-  place-items:center;
-  background:#191c24;
-  margin-bottom:24px
-}
-
-.social-logo svg{
-  width:29px;
-  height:29px;
-  fill:#fff
-}
-
-.social h3{
-  font-size:20px;
-  margin:0 0 5px
-}
-
-.social p{
-  color:#8e95a2;
-  margin:0 0 18px;
-  font-size:13px
-}
-
-.social a{
-  font-weight:900;
-  font-size:12px;
-  color:var(--green)
-}
-
-/* TUTORIAIS */
-
-.tutorial-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:14px
-}
-
-.video-card{
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:var(--panel);
-  overflow:hidden
-}
-
-.video-top{
-  height:47px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:0 14px;
-  border-bottom:1px solid var(--line);
-  font-size:12px
-}
-
-.video-top span{
-  color:var(--green);
-  font-weight:950
-}
-
-.video-wrap{
-  aspect-ratio:16/9;
-  background:#050607
-}
-
-iframe{
-  width:100%;
-  height:100%;
-  border:0
-}
-
-/* SUPORTE */
-
-.support{
-  display:grid;
-  grid-template-columns:1fr auto;
-  align-items:center;
-  gap:30px;
-  padding:28px;
-  border:1px solid #2e3540;
-  background:linear-gradient(120deg,#141821,#0e1116);
-  border-radius:11px
-}
-
-.support h3{
-  font-size:25px;
-  margin:0 0 8px
-}
-
-.support p{
-  margin:0;
-  color:var(--muted)
-}
-
-footer{
-  border-top:1px solid #20232b;
-  padding:34px 0 45px;
-  color:#717784;
-  font-size:12px
-}
-
-.foot{
-  display:flex;
-  justify-content:space-between;
-  gap:20px
-}
-
-@media(max-width:850px){
-  .navlinks{display:none}
-  .hero-inner{grid-template-columns:1fr;padding:54px 0;min-height:auto}
-  .status-panel{display:none}
-  h1{letter-spacing:-2px}
-  .games{grid-template-columns:repeat(2,1fr)}
-  .game-card,.game-card:nth-child(1),.game-card:nth-child(2){grid-column:auto}
-  .game-art,.game-card:nth-child(-n+2) .game-art{height:180px}
-  .resource-grid,.socials{grid-template-columns:1fr}
-  .tutorial-grid{grid-template-columns:1fr}
-  .section-head{align-items:start;flex-direction:column}
-  .support{grid-template-columns:1fr}
-}
-
-@media(max-width:520px){
-  .wrap{width:min(100% - 22px,1180px)}
-  .hero-inner{padding:42px 0}
-  h1{font-size:43px}
-  .hero p{font-size:15px}
-  section{padding:54px 0}
-  .games{grid-template-columns:1fr 1fr;gap:8px}
-  .game-art,.game-card:nth-child(-n+2) .game-art{height:128px}
-  .game-info{padding:11px}
-  .game-info h3{font-size:12px}
-  .game-info p{font-size:10px}
-  .game-badge{font-size:8px;top:7px;left:7px;padding:5px 6px}
-  .foot{flex-direction:column}
-}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:#08090d;color:#f7f7fb;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+:root{--panel:#111319;--panel2:#161922;--line:#262a35;--muted:#9ca3b3;--green:#a855f7;--blue:#5aa7ff}
+a{color:inherit;text-decoration:none} .wrap{width:min(1180px,calc(100% - 34px));margin:auto}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(8,9,13,.88);backdrop-filter:blur(16px);border-bottom:1px solid #1e212a}
+.nav{height:70px;display:flex;align-items:center;justify-content:space-between;gap:16px} .brand{display:flex;align-items:center;gap:12px;font-weight:950;letter-spacing:.6px}
+.logo{width:39px;height:39px;border:1px solid #3a414f;border-radius:10px;display:grid;place-items:center;background:linear-gradient(145deg,#1b202a,#0d0f14);box-shadow:inset 0 0 22px rgba(168,85,247,.10)} .logo b{color:var(--green)}
+.navlinks{display:flex;gap:8px} .navlinks a{padding:10px 13px;border:1px solid #262b36;border-radius:8px;color:#c6cad4;font-size:13px;font-weight:800}
+.hero{position:relative;overflow:hidden;border-bottom:1px solid #20232b;background:radial-gradient(circle at 78% 20%,rgba(168,85,247,.16),transparent 30%),radial-gradient(circle at 20% 20%,rgba(90,167,255,.10),transparent 25%),#0b0d12}
+.hero:before{content:"";position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,#000,transparent)}
+.hero-inner{position:relative;min-height:500px;display:grid;grid-template-columns:1.18fr .82fr;align-items:center;gap:45px;padding:76px 0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border:1px solid #2d3540;border-radius:7px;background:#11151c;color:#bfc6d1;font-size:12px;font-weight:900;letter-spacing:.9px} .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 15px var(--green)}
+h1{font-size:clamp(45px,6vw,78px);line-height:.95;letter-spacing:-3px;margin:20px 0 18px;max-width:780px} h1 em{font-style:normal;color:var(--green)}
+.hero p{color:#adb3bf;line-height:1.7;font-size:17px;max-width:660px} .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:0 17px;border:1px solid #343a46;border-radius:8px;background:#151922;font-weight:900;font-size:13px;transition:.18s} .btn:hover{transform:translateY(-2px);border-color:#596171} .btn.primary{background:linear-gradient(135deg,#9333ea,#c084fc);color:#fff;border-color:#b66cff;box-shadow:0 8px 28px rgba(168,85,247,.20)} .btn.blue{background:#14243a;border-color:#294f7d;color:#d9ebff}
+.status-panel{border:1px solid #2a2f39;background:linear-gradient(160deg,#151821,#0e1015);padding:20px;border-radius:12px;box-shadow:0 25px 80px rgba(0,0,0,.35)} .status-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:15px;border-bottom:1px solid #292e38} .status-head strong{font-size:14px} .online{font-size:11px;color:var(--green);font-weight:900}
+.mini-step{display:grid;grid-template-columns:38px 1fr;gap:12px;align-items:center;padding:15px 0;border-bottom:1px solid #242832} .mini-step:last-child{border:0} .mini-step b{width:38px;height:38px;border:1px solid #303641;border-radius:8px;display:grid;place-items:center;color:var(--green)} .mini-step strong{display:block;font-size:13px} .mini-step small{color:#848b99}
+section{padding:72px 0} .section-head{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:25px} .kicker{color:var(--green);font-size:11px;font-weight:950;letter-spacing:1.4px} h2{font-size:clamp(29px,4vw,44px);letter-spacing:-1.5px;margin:7px 0} .section-head p{max-width:510px;color:var(--muted);line-height:1.6;margin:0}
+.games{display:grid;grid-template-columns:repeat(12,1fr);gap:13px} .game-card{grid-column:span 4;border:1px solid var(--line);background:var(--panel);border-radius:10px;overflow:hidden;transition:.2s} .game-card:nth-child(1),.game-card:nth-child(2){grid-column:span 6} .game-card:hover{transform:translateY(-4px);border-color:#3b4350}
+.game-art{height:200px;position:relative;background:linear-gradient(135deg,#171b24,#0d0f14);overflow:hidden} .game-card:nth-child(-n+2) .game-art{height:270px} .game-art img{width:100%;height:100%;object-fit:cover;display:block} .game-art:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(8,9,13,.76),transparent 52%);pointer-events:none} .game-badge{position:absolute;z-index:2;top:12px;left:12px;background:linear-gradient(135deg,#9333ea,#c084fc);color:#fff;font-size:10px;font-weight:1000;padding:6px 8px;border-radius:5px;letter-spacing:.6px}
+.fallback-title{display:none;position:absolute;inset:0;padding:25px;align-items:flex-end;font-size:25px;font-weight:950;letter-spacing:-1px} .fallback .fallback-title{display:flex} .game-info{padding:15px 16px 17px} .game-info h3{font-size:15px;margin:0 0 5px} .game-info p{font-size:12px;color:#858c99;margin:0}
+.resource-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px} .resource{min-height:235px;padding:22px;border:1px solid var(--line);border-radius:10px;background:var(--panel);display:flex;flex-direction:column} .resource-icon{width:45px;height:45px;border:1px solid #343b48;border-radius:9px;display:grid;place-items:center;font-size:21px;background:#191d26} .resource h3{font-size:20px;margin:19px 0 8px} .resource p{color:var(--muted);line-height:1.55;font-size:13px;margin:0 0 20px} .resource .btn{margin-top:auto}
+.socials{display:grid;grid-template-columns:repeat(3,1fr);gap:13px} .social{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:10px;background:#111319;padding:24px;min-height:200px} .social-logo{width:52px;height:52px;border:1px solid #363c48;border-radius:12px;display:grid;place-items:center;background:#191c24;margin-bottom:24px} .social-logo svg{width:29px;height:29px;fill:#fff} .social h3{font-size:20px;margin:0 0 5px} .social p{color:#8e95a2;margin:0 0 18px;font-size:13px} .social a{font-weight:900;font-size:12px;color:var(--green)}
+.tutorial-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px} .video-card{border:1px solid var(--line);border-radius:10px;background:var(--panel);overflow:hidden} .video-top{height:47px;display:flex;align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid var(--line);font-size:12px} .video-top span{color:var(--green);font-weight:950} .video-wrap{aspect-ratio:16/9;background:#050607} iframe{width:100%;height:100%;border:0}
+.support{display:grid;grid-template-columns:1fr auto;align-items:center;gap:30px;padding:28px;border:1px solid #2e3540;background:linear-gradient(120deg,#141821,#0e1116);border-radius:11px} .support h3{font-size:25px;margin:0 0 8px} .support p{margin:0;color:var(--muted)}
+footer{border-top:1px solid #20232b;padding:34px 0 45px;color:#717784;font-size:12px} .foot{display:flex;justify-content:space-between;gap:20px}
+@media(max-width:850px){.navlinks{display:none} .hero-inner{grid-template-columns:1fr;padding:54px 0;min-height:auto} .status-panel{display:none} h1{letter-spacing:-2px} .games{grid-template-columns:repeat(2,1fr)} .game-card,.game-card:nth-child(1),.game-card:nth-child(2){grid-column:auto} .game-art,.game-card:nth-child(-n+2) .game-art{height:180px} .resource-grid,.socials{grid-template-columns:1fr} .tutorial-grid{grid-template-columns:1fr} .section-head{align-items:start;flex-direction:column} .support{grid-template-columns:1fr}}
+@media(max-width:520px){.wrap{width:min(100% - 22px,1180px)} .hero-inner{padding:42px 0} h1{font-size:43px} .hero p{font-size:15px} .hero-actions .btn{width:100%} section{padding:54px 0} .games{grid-template-columns:1fr 1fr;gap:8px} .game-art,.game-card:nth-child(-n+2) .game-art{height:128px} .game-info{padding:11px} .game-info h3{font-size:12px} .game-info p{font-size:10px} .game-badge{font-size:8px;top:7px;left:7px;padding:5px 6px} .foot{flex-direction:column}}
 </style>
 </head>
-
 <body>
 
-<header class="topbar">
-  <div class="wrap nav">
-    <a class="brand" href="#">
-      <span class="logo"><b>R</b></span>
-      <span>RBX IMPÉRIO</span>
-    </a>
+<header class="topbar"><div class="wrap nav"><a class="brand" href="#"><span class="logo"><b>R</b></span><span>RBX IMPÉRIO</span></a><nav class="navlinks"><a href="#jogos">JOGOS</a><a href="#recursos">RECURSOS</a><a href="#tutoriais">TUTORIAIS</a><a href="#suporte">SUPORTE</a></nav></div></header>
 
-    <nav class="navlinks">
-      <a href="#jogos">JOGOS</a>
-      <a href="#recursos">RECURSOS</a>
-      <a href="#tutoriais">TUTORIAIS</a>
-      <a href="#suporte">SUPORTE</a>
-    </nav>
-  </div>
-</header>
-
-
-<!-- INÍCIO -->
-
-<section class="hero">
-  <div class="wrap hero-inner">
-
-    <div>
-      <span class="eyebrow">
-        <i class="dot"></i>
-        ÁREA EXCLUSIVA DO CLIENTE
-      </span>
-
-      <h1>
-        Tudo do RBX.<br>
-        <em>Em um só lugar.</em>
-      </h1>
-
-      <p>
-        Bem-vindo à sua central RBX Império.
-        Aqui você encontra os recursos, novidades,
-        tutoriais e suporte organizados em um só lugar.
-      </p>
-    </div>
-
-    <aside class="status-panel">
-
-      <div class="status-head">
-        <strong>COMECE POR AQUI</strong>
-        <span class="online">● CENTRAL ONLINE</span>
-      </div>
-
-      <div class="mini-step">
-        <b>01</b>
-        <div>
-          <strong>Baixe o launcher</strong>
-          <small>Arquivo principal atualizado</small>
-        </div>
-      </div>
-
-      <div class="mini-step">
-        <b>02</b>
-        <div>
-          <strong>Gere sua licença</strong>
-          <small>Use o gerador oficial RBX</small>
-        </div>
-      </div>
-
-      <div class="mini-step">
-        <b>03</b>
-        <div>
-          <strong>Veja os tutoriais</strong>
-          <small>Siga o passo a passo abaixo</small>
-        </div>
-      </div>
-
-    </aside>
-  </div>
-</section>
-
+<section class="hero"><div class="wrap hero-inner">
+<div><span class="eyebrow"><i class="dot"></i> ÁREA EXCLUSIVA DO CLIENTE</span><h1>Tudo do RBX.<br><em>Em um só lugar.</em></h1><p>Bem-vindo à sua central RBX Império. Aqui você encontra os recursos, novidades, tutoriais e suporte organizados em um só lugar.</p></div>
+<aside class="status-panel"><div class="status-head"><strong>COMECE POR AQUI</strong><span class="online">● CENTRAL ONLINE</span></div><div class="mini-step"><b>01</b><div><strong>Baixe o launcher</strong><small>Arquivo principal atualizado</small></div></div><div class="mini-step"><b>02</b><div><strong>Gere sua licença</strong><small>Use o gerador oficial RBX</small></div></div><div class="mini-step"><b>03</b><div><strong>Veja os tutoriais</strong><small>Siga o passo a passo abaixo</small></div></div></aside>
+</div></section>
 
 <main>
 
-<!-- JOGOS -->
+<section id="jogos"><div class="wrap"><div class="section-head"><div><div class="kicker">DESTAQUES DO CATÁLOGO</div><h2>Jogos no RBX Launcher</h2></div><p>Conheça alguns dos títulos em destaque no catálogo do RBX Launcher. Novidades e atualizações aparecem por aqui.</p></div><div class="games">
 
-<section id="jogos">
-<div class="wrap">
-
-  <div class="section-head">
-    <div>
-      <div class="kicker">DESTAQUES DO CATÁLOGO</div>
-      <h2>Jogos no RBX Launcher</h2>
-    </div>
-
-    <p>
-      Conheça alguns dos títulos em destaque no catálogo do RBX Launcher.
-      Novidades e atualizações aparecem por aqui.
-    </p>
+<article class="game-card">
+  <div class="game-art">
+    <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2483190/header.jpg" alt="Capa de FORZA HORIZON 6" loading="lazy"
+      onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+    <span class="game-badge">NO LAUNCHER</span>
+    <div class="fallback-title">FORZA HORIZON 6</div>
   </div>
+  <div class="game-info"><h3>FORZA HORIZON 6</h3><p>Corrida • Mundo aberto</p></div>
+</article>
 
-  <div class="games">
-
-    <article class="game-card">
-      <div class="game-art">
-        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2483190/header.jpg"
-        alt="FORZA HORIZON 6" loading="lazy">
-        <span class="game-badge">NO LAUNCHER</span>
-        <div class="fallback-title">FORZA HORIZON 6</div>
-      </div>
-      <div class="game-info">
-        <h3>FORZA HORIZON 6</h3>
-        <p>Corrida • Mundo aberto</p>
-      </div>
-    </article>
-
-    <article class="game-card">
-      <div class="game-art">
-        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3764200/header.jpg"
-        alt="RESIDENT EVIL REQUIEM" loading="lazy">
-        <span class="game-badge">NO LAUNCHER</span>
-        <div class="fallback-title">RESIDENT EVIL REQUIEM</div>
-      </div>
-      <div class="game-info">
-        <h3>RESIDENT EVIL REQUIEM</h3>
-        <p>Survival horror • Ação</p>
-      </div>
-    </article>
-
-    <article class="game-card">
-      <div class="game-art">
-        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3357650/header.jpg"
-        alt="PRAGMATA" loading="lazy">
-        <span class="game-badge">NO LAUNCHER</span>
-        <div class="fallback-title">PRAGMATA</div>
-      </div>
-      <div class="game-info">
-        <h3>PRAGMATA</h3>
-        <p>Ação • Ficção científica</p>
-      </div>
-    </article>
-
-    <article class="game-card">
-      <div class="game-art">
-        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3010850/header.jpg"
-        alt="GEARS OF WAR E-DAY" loading="lazy">
-        <span class="game-badge">NO LAUNCHER</span>
-        <div class="fallback-title">GEARS OF WAR: E-DAY</div>
-      </div>
-      <div class="game-info">
-        <h3>GEARS OF WAR: E-DAY</h3>
-        <p>Ação • Campanha</p>
-      </div>
-    </article>
-
-    <article class="game-card">
-      <div class="game-art">
-        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4080220/header.jpg"
-        alt="EA SPORTS FC 27" loading="lazy">
-        <span class="game-badge">NO LAUNCHER</span>
-        <div class="fallback-title">EA SPORTS FC 27</div>
-      </div>
-      <div class="game-info">
-        <h3>EA SPORTS FC 27</h3>
-        <p>Futebol • Esportes</p>
-      </div>
-    </article>
-
-    <article class="game-card">
-      <div class="game-art">
-        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3669870/header.jpg"
-        alt="CONTROL RESONANT" loading="lazy">
-        <span class="game-badge">NO LAUNCHER</span>
-        <div class="fallback-title">CONTROL RESONANT</div>
-      </div>
-      <div class="game-info">
-        <h3>CONTROL RESONANT</h3>
-        <p>Ação • Aventura</p>
-      </div>
-    </article>
-
-    <article class="game-card">
-      <div class="game-art">
-        <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1867240/header.jpg"
-        alt="WARDOGS" loading="lazy">
-        <span class="game-badge">NO LAUNCHER</span>
-        <div class="fallback-title">WARDOGS</div>
-      </div>
-      <div class="game-info">
-        <h3>WARDOGS</h3>
-        <p>Ação</p>
-      </div>
-    </article>
-
+<article class="game-card">
+  <div class="game-art">
+    <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3764200/header.jpg" alt="Capa de RESIDENT EVIL REQUIEM" loading="lazy"
+      onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+    <span class="game-badge">NO LAUNCHER</span>
+    <div class="fallback-title">RESIDENT EVIL REQUIEM</div>
   </div>
+  <div class="game-info"><h3>RESIDENT EVIL REQUIEM</h3><p>Survival horror • Ação</p></div>
+</article>
+
+<article class="game-card">
+  <div class="game-art">
+    <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3357650/header.jpg" alt="Capa de PRAGMATA" loading="lazy"
+      onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+    <span class="game-badge">NO LAUNCHER</span>
+    <div class="fallback-title">PRAGMATA</div>
+  </div>
+  <div class="game-info"><h3>PRAGMATA</h3><p>Ação • Ficção científica</p></div>
+</article>
+
+<article class="game-card">
+  <div class="game-art">
+    <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3010850/header.jpg" alt="Capa de GEARS OF WAR: E-DAY" loading="lazy"
+      onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+    <span class="game-badge">NO LAUNCHER</span>
+    <div class="fallback-title">GEARS OF WAR: E-DAY</div>
+  </div>
+  <div class="game-info"><h3>GEARS OF WAR: E-DAY</h3><p>Ação • Campanha</p></div>
+</article>
+
+<article class="game-card">
+  <div class="game-art">
+    <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4080220/header.jpg" alt="Capa de EA SPORTS FC 27" loading="lazy"
+      onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+    <span class="game-badge">NO LAUNCHER</span>
+    <div class="fallback-title">EA SPORTS FC 27</div>
+  </div>
+  <div class="game-info"><h3>EA SPORTS FC 27</h3><p>Futebol • Esportes</p></div>
+</article>
+
+<article class="game-card">
+  <div class="game-art">
+    <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3669870/header.jpg" alt="Capa de CONTROL RESONANT" loading="lazy"
+      onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+    <span class="game-badge">NO LAUNCHER</span>
+    <div class="fallback-title">CONTROL RESONANT</div>
+  </div>
+  <div class="game-info"><h3>CONTROL RESONANT</h3><p>Ação • Aventura</p></div>
+</article>
+
+<article class="game-card">
+  <div class="game-art">
+    <img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1867240/header.jpg" alt="Capa de WARDOGS" loading="lazy"
+      onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+    <span class="game-badge">NO LAUNCHER</span>
+    <div class="fallback-title">WARDOGS</div>
+  </div>
+  <div class="game-info"><h3>WARDOGS</h3><p>Ação</p></div>
+</article>
+
+</div></div></section>
+
+
+<section id="recursos" style="background:#0b0d12;border-block:1px solid #1d2028"><div class="wrap"><div class="section-head"><div><div class="kicker">CENTRAL DO CLIENTE</div><h2>Tudo que você precisa</h2></div><p>Os acessos importantes separados em blocos simples para você encontrar tudo rápido.</p></div>
+
+<div class="resource-grid">
+
+<article class="resource"><div class="resource-icon">⬇</div><h3>Launcher RBX</h3><p>Baixe a versão atual do launcher. Depois do download, extraia o arquivo antes de abrir.</p><a class="btn primary" href="https://www.mediafire.com/file/6yprimkan6odhsk/RBX_Imperio_ATUALIZADOS.zip/file" target="_blank">BAIXAR LAUNCHER</a></article>
+
+<article class="resource"><div class="resource-icon">🔑</div><h3>Gerar licença</h3><p>Acesse o gerador oficial para obter sua licença e continuar a configuração.</p><a class="btn" href="https://rbx-imperio-key-server.onrender.com/gerar-key.html" target="_blank">GERAR LICENÇA</a></article>
+
+<article class="resource"><div class="resource-icon">🛠</div><h3>Central de Fixes</h3><p>Encontrou algum problema? Acesse a central com correções e soluções disponíveis.</p><a class="btn blue" href="https://generator.ryuu.lol/fixes" target="_blank">ACESSAR FIXES</a></article>
+
+</div></div></section>
+
+
+<section><div class="wrap"><div class="section-head"><div><div class="kicker">COMUNIDADE RBX</div><h2>Fique conectado</h2></div><p>Novidades, avisos, vídeos e suporte nos canais da comunidade.</p></div>
+
+<div class="socials">
+
+<article class="social"><div class="social-logo"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.5-3.1a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/></svg></div><h3>Instagram</h3><p>@rbx_imperio</p><a href="https://www.instagram.com/rbx_imperio/" target="_blank">ABRIR INSTAGRAM →</a></article>
+
+<article class="social"><div class="social-logo"><svg viewBox="0 0 24 24"><path d="M16.6 2c.4 2.4 1.8 3.8 4.4 4v3.1c-1.5.1-2.9-.3-4.3-1.1v6.3c0 5.4-5.9 7.8-9.6 4.8-4.1-3.3-2.1-10.5 3.6-10.9.5 0 1 0 1.5.1v3.2c-.5-.2-.9-.2-1.4-.1-2.7.3-3.3 4-1 5.2 2.2 1.2 4-.4 4-2.5V2h2.8z"/></svg></div><h3>TikTok</h3><p>@rbx_imperio</p><a href="https://www.tiktok.com/@rbx_imperio" target="_blank">ABRIR TIKTOK →</a></article>
+
+<article class="social"><div class="social-logo"><svg viewBox="0 0 24 24"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.5 4.1 1.6 5.9L.2 24l6.5-1.7a11.7 11.7 0 0 0 5.4 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.5-8.4zm-8.4 18.2c-1.7 0-3.4-.5-4.9-1.3l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 1 1 8.3 4.6zm5.4-7.3c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.2-.2.3-.8.9-1 1.1-.2.2-.4.2-.7.1-1.8-.9-3-1.6-4.2-3.6-.3-.5.3-.5.9-1.6.1-.2.1-.4 0-.6-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.3 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3.1 1 4.2.8.7-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg></div><h3>WhatsApp</h3><p>Grupo da comunidade RBX</p><a href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t" target="_blank">ENTRAR NO GRUPO →</a></article>
+
+</div></div></section>
+
+
+<!-- TUTORIAIS - SOMENTE OS LINKS FORAM ATUALIZADOS -->
+
+<section id="tutoriais" style="background:#0b0d12;border-block:1px solid #1d2028"><div class="wrap"><div class="section-head"><div><div class="kicker">PASSO A PASSO</div><h2>Tutoriais em vídeo</h2></div><p>Assista na ordem indicada. Estes vídeos serão substituídos pelos novos tutoriais quando estiverem prontos.</p></div><div class="tutorial-grid">
+
+<div class="video-card">
+  <div class="video-top"><span>01</span><strong>TUTORIAL 1</strong></div>
+  <div class="video-wrap"><iframe src="https://www.youtube.com/embed/54yul52jb0Y" title="Tutorial 1" loading="lazy" allowfullscreen></iframe></div>
 </div>
-</section>
 
-
-<!-- RECURSOS -->
-
-<section id="recursos" style="background:#0b0d12;border-block:1px solid #1d2028">
-<div class="wrap">
-
-  <div class="section-head">
-    <div>
-      <div class="kicker">CENTRAL DO CLIENTE</div>
-      <h2>Tudo que você precisa</h2>
-    </div>
-
-    <p>
-      Os acessos importantes separados em blocos simples
-      para você encontrar tudo rápido.
-    </p>
-  </div>
-
-  <div class="resource-grid">
-
-    <article class="resource">
-      <div class="resource-icon">⬇</div>
-      <h3>Launcher RBX</h3>
-      <p>
-        Baixe a versão atual do launcher.
-        Depois do download, extraia o arquivo antes de abrir.
-      </p>
-
-      <a class="btn primary"
-      href="https://www.mediafire.com/file/6yprimkan6odhsk/RBX_Imperio_ATUALIZADOS.zip/file"
-      target="_blank">
-        BAIXAR LAUNCHER
-      </a>
-    </article>
-
-    <article class="resource">
-      <div class="resource-icon">🔑</div>
-      <h3>Gerar licença</h3>
-      <p>
-        Acesse o gerador oficial para obter sua licença
-        e continuar a configuração.
-      </p>
-
-      <a class="btn"
-      href="https://rbx-imperio-key-server.onrender.com/gerar-key.html"
-      target="_blank">
-        GERAR LICENÇA
-      </a>
-    </article>
-
-    <article class="resource">
-      <div class="resource-icon">🛠</div>
-      <h3>Central de Fixes</h3>
-      <p>
-        Encontrou algum problema?
-        Acesse a central com correções e soluções disponíveis.
-      </p>
-
-      <a class="btn blue"
-      href="https://generator.ryuu.lol/fixes"
-      target="_blank">
-        ACESSAR FIXES
-      </a>
-    </article>
-
-  </div>
+<div class="video-card">
+  <div class="video-top"><span>02</span><strong>TUTORIAL 2</strong></div>
+  <div class="video-wrap"><iframe src="https://www.youtube.com/embed/DgL_H_qHjFg" title="Tutorial 2" loading="lazy" allowfullscreen></iframe></div>
 </div>
-</section>
 
-
-<!-- COMUNIDADE -->
-
-<section>
-<div class="wrap">
-
-  <div class="section-head">
-    <div>
-      <div class="kicker">COMUNIDADE RBX</div>
-      <h2>Fique conectado</h2>
-    </div>
-
-    <p>
-      Novidades, avisos, vídeos e suporte
-      nos canais da comunidade.
-    </p>
-  </div>
-
-  <div class="socials">
-
-    <article class="social">
-      <div class="social-logo">
-        <svg viewBox="0 0 24 24">
-          <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/>
-        </svg>
-      </div>
-
-      <h3>Instagram</h3>
-      <p>@rbx_imperio</p>
-
-      <a href="https://www.instagram.com/rbx_imperio/" target="_blank">
-        ABRIR INSTAGRAM →
-      </a>
-    </article>
-
-    <article class="social">
-      <div class="social-logo">
-        <svg viewBox="0 0 24 24">
-          <path d="M16.6 2c.4 2.4 1.8 3.8 4.4 4v3.1c-1.5.1-2.9-.3-4.3-1.1v6.3c0 5.4-5.9 7.8-9.6 4.8-4.1-3.3-2.1-10.5 3.6-10.9.5 0 1 0 1.5.1v3.2c-.5-.2-.9-.2-1.4-.1-2.7.3-3.3 4-1 5.2 2.2 1.2 4-.4 4-2.5V2h2.8z"/>
-        </svg>
-      </div>
-
-      <h3>TikTok</h3>
-      <p>@rbx_imperio</p>
-
-      <a href="https://www.tiktok.com/@rbx_imperio" target="_blank">
-        ABRIR TIKTOK →
-      </a>
-    </article>
-
-    <article class="social">
-      <div class="social-logo">
-        <svg viewBox="0 0 24 24">
-          <path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.5 4.1 1.6 5.9L.2 24l6.5-1.7a11.7 11.7 0 0 0 5.4 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.5-8.4z"/>
-        </svg>
-      </div>
-
-      <h3>WhatsApp</h3>
-      <p>Grupo da comunidade RBX</p>
-
-      <a href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t" target="_blank">
-        ENTRAR NO GRUPO →
-      </a>
-    </article>
-
-  </div>
+<div class="video-card">
+  <div class="video-top"><span>03</span><strong>TUTORIAL 3</strong></div>
+  <div class="video-wrap"><iframe src="https://www.youtube.com/embed/t5ZaPRkMBWc" title="Tutorial 3" loading="lazy" allowfullscreen></iframe></div>
 </div>
-</section>
 
-
-<!-- TUTORIAIS NOVOS -->
-
-<section id="tutoriais" style="background:#0b0d12;border-block:1px solid #1d2028">
-<div class="wrap">
-
-  <div class="section-head">
-    <div>
-      <div class="kicker">PASSO A PASSO</div>
-      <h2>Tutoriais em vídeo</h2>
-    </div>
-
-    <p>
-      Assista às quatro partes na ordem indicada
-      para acompanhar todo o passo a passo.
-    </p>
-  </div>
-
-  <div class="tutorial-grid">
-
-    <!-- PARTE 1 -->
-    <div class="video-card">
-      <div class="video-top">
-        <span>01</span>
-        <strong>PARTE 1</strong>
-      </div>
-
-      <div class="video-wrap">
-        <iframe
-          src="https://www.youtube.com/embed/54yul52jb0Y"
-          title="Tutorial RBX - Parte 1"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-
-
-    <!-- PARTE 2 -->
-    <div class="video-card">
-      <div class="video-top">
-        <span>02</span>
-        <strong>PARTE 2</strong>
-      </div>
-
-      <div class="video-wrap">
-        <iframe
-          src="https://www.youtube.com/embed/DgL_H_qHjFg"
-          title="Tutorial RBX - Parte 2"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-
-
-    <!-- PARTE 3 -->
-    <div class="video-card">
-      <div class="video-top">
-        <span>03</span>
-        <strong>PARTE 3</strong>
-      </div>
-
-      <div class="video-wrap">
-        <iframe
-          src="https://www.youtube.com/embed/t5ZaPRkMBWc"
-          title="Tutorial RBX - Parte 3"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-
-
-    <!-- PARTE 4 -->
-    <div class="video-card">
-      <div class="video-top">
-        <span>04</span>
-        <strong>PARTE 4</strong>
-      </div>
-
-      <div class="video-wrap">
-        <iframe
-          src="https://www.youtube.com/embed/vODwscGxExY"
-          title="Tutorial RBX - Parte 4"
-          loading="lazy"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
-
-  </div>
+<div class="video-card">
+  <div class="video-top"><span>04</span><strong>TUTORIAL 4</strong></div>
+  <div class="video-wrap"><iframe src="https://www.youtube.com/embed/vODwscGxExY" title="Tutorial 4" loading="lazy" allowfullscreen></iframe></div>
 </div>
-</section>
+
+</div></div></section>
 
 
-<!-- SUPORTE -->
-
-<section id="suporte">
-<div class="wrap">
-
-  <div class="support">
-
-    <div>
-      <div class="kicker">PRECISA DE AJUDA?</div>
-      <h3>Entre na comunidade RBX Império</h3>
-      <p>
-        Acesse o grupo para acompanhar avisos
-        e suporte da comunidade.
-      </p>
-    </div>
-
-    <a class="btn primary"
-    href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t"
-    target="_blank">
-      WHATSAPP / COMUNIDADE
-    </a>
-
-  </div>
-</div>
-</section>
+<section id="suporte"><div class="wrap"><div class="support"><div><div class="kicker">PRECISA DE AJUDA?</div><h3>Entre na comunidade RBX Império</h3><p>Acesse o grupo para acompanhar avisos e suporte da comunidade.</p></div><a class="btn primary" href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t" target="_blank">WHATSAPP / COMUNIDADE</a></div></div></section>
 
 </main>
 
-
-<footer>
-  <div class="wrap foot">
-    <strong>RBX IMPÉRIO</strong>
-    <span>© 2026 • Área exclusiva do cliente</span>
-  </div>
-</footer>
+<footer><div class="wrap foot"><strong>RBX IMPÉRIO</strong><span>© 2026 • Área exclusiva do cliente</span></div></footer>
 
 </body>
 </html>
