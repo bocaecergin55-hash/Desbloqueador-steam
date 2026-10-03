@@ -1,1375 +1,960 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#08090d">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080510">
 
-<title>RBX Império • Área do Cliente</title>
+<title>RBX Império | Área do Cliente</title>
 
 <style>
-
-*{box-sizing:border-box}
-
-html{scroll-behavior:smooth}
-
-body{
-margin:0;
-background:#08090d;
-color:#f7f7fb;
-font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-:root{
---panel:#111319;
---panel2:#161922;
---line:#262a35;
---muted:#9ca3b3;
---purple:#a855f7;
---blue:#5aa7ff
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(126,45,255,.17),transparent 30%),
+    radial-gradient(circle at 80% 30%,rgba(88,20,180,.12),transparent 30%),
+    #080510;
+  color:#fff;
+  min-height:100vh;
 }
 
 a{
-color:inherit;
-text-decoration:none
+  text-decoration:none;
+  color:inherit;
 }
 
-.wrap{
-width:min(1180px,calc(100% - 34px));
-margin:auto
+img{
+  display:block;
+  width:100%;
 }
 
-/* TOPO */
-
-.topbar{
-position:sticky;
-top:0;
-z-index:50;
-background:rgba(8,9,13,.90);
-backdrop-filter:blur(16px);
-border-bottom:1px solid #1e212a
+.container{
+  width:min(1180px,92%);
+  margin:auto;
 }
 
-.nav{
-height:70px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:16px
+/* NAV */
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(8,5,16,.88);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-.brand{
-display:flex;
-align-items:center;
-gap:12px;
-font-weight:950;
-letter-spacing:.6px
+.nav-content{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
 }
 
 .logo{
-width:39px;
-height:39px;
-border:1px solid #3a414f;
-border-radius:10px;
-display:grid;
-place-items:center;
-background:linear-gradient(145deg,#1b202a,#0d0f14);
-box-shadow:inset 0 0 22px rgba(168,85,247,.10)
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:-1px;
 }
 
-.logo b{
-color:var(--purple)
+.logo span{
+  color:#a855f7;
 }
 
-.navlinks{
-display:flex;
-gap:8px
+.nav-links{
+  display:flex;
+  gap:24px;
+  font-size:14px;
+  color:#c9c1d8;
 }
 
-.navlinks a{
-padding:10px 13px;
-border:1px solid #262b36;
-border-radius:8px;
-color:#c6cad4;
-font-size:13px;
-font-weight:800
+.nav-links a:hover{
+  color:#fff;
 }
 
+/* BANNER */
 
-/* HERO */
-
-.hero{
-position:relative;
-overflow:hidden;
-border-bottom:1px solid #20232b;
-background:
-radial-gradient(circle at 78% 20%,rgba(168,85,247,.16),transparent 30%),
-radial-gradient(circle at 20% 20%,rgba(90,167,255,.10),transparent 25%),
-#0b0d12
+.game-banner{
+  position:relative;
+  height:410px;
+  overflow:hidden;
+  border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-.hero:before{
-content:"";
-position:absolute;
-inset:0;
-background:
-linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
-linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
-background-size:42px 42px;
-mask-image:linear-gradient(to bottom,#000,transparent)
+.banner-images{
+  position:absolute;
+  inset:0;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
 }
 
-.hero-inner{
-position:relative;
-min-height:500px;
-display:grid;
-grid-template-columns:1.18fr .82fr;
-align-items:center;
-gap:45px;
-padding:76px 0
+.banner-img{
+  background-size:cover;
+  background-position:center;
+  filter:saturate(.9);
+}
+
+.banner-img:nth-child(1){
+  background-image:url("images/IMG_1862.jpeg");
+}
+
+.banner-img:nth-child(2){
+  background-image:url("images/IMG_1863.jpeg");
+}
+
+.banner-img:nth-child(3){
+  background-image:url("images/IMG_1865.jpeg");
+}
+
+.banner-img:nth-child(4){
+  background-image:url("images/IMG_1869.jpeg");
+}
+
+.game-banner::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(90deg,rgba(8,5,16,.40),rgba(8,5,16,.08),rgba(8,5,16,.40)),
+    linear-gradient(0deg,#080510 0%,rgba(8,5,16,.35) 65%,rgba(8,5,16,.18) 100%);
+}
+
+.banner-content{
+  position:relative;
+  z-index:2;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding-bottom:50px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  padding:8px 13px;
+  border-radius:999px;
+  background:rgba(168,85,247,.15);
+  border:1px solid rgba(168,85,247,.45);
+  color:#d8b4fe;
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+.banner-content h1{
+  font-size:clamp(34px,6vw,64px);
+  max-width:760px;
+  line-height:.98;
+  letter-spacing:-3px;
+}
+
+.banner-content h1 span{
+  color:#a855f7;
+}
+
+/* INTRO */
+
+.intro{
+  padding:75px 0 40px;
+  text-align:center;
 }
 
 .eyebrow{
-display:inline-flex;
-align-items:center;
-gap:8px;
-padding:8px 11px;
-border:1px solid #2d3540;
-border-radius:7px;
-background:#11151c;
-color:#bfc6d1;
-font-size:12px;
-font-weight:900;
-letter-spacing:.9px
+  color:#a855f7;
+  text-transform:uppercase;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:2px;
+  margin-bottom:14px;
 }
 
-.dot{
-width:7px;
-height:7px;
-border-radius:50%;
-background:var(--purple);
-box-shadow:0 0 15px var(--purple)
+.intro h2{
+  font-size:clamp(34px,6vw,58px);
+  line-height:1;
+  letter-spacing:-2px;
 }
 
-h1{
-font-size:clamp(45px,6vw,78px);
-line-height:.95;
-letter-spacing:-3px;
-margin:20px 0 18px;
-max-width:780px
+.intro h2 em{
+  color:#a855f7;
+  font-style:normal;
 }
 
-h1 em{
-font-style:normal;
-color:var(--purple)
+.intro p{
+  max-width:680px;
+  margin:20px auto 0;
+  color:#aaa1b8;
+  line-height:1.7;
+  font-size:16px;
 }
 
-.hero p{
-color:#adb3bf;
-line-height:1.7;
-font-size:17px;
-max-width:660px
-}
-
-.status-panel{
-border:1px solid #2a2f39;
-background:linear-gradient(160deg,#151821,#0e1015);
-padding:20px;
-border-radius:12px;
-box-shadow:0 25px 80px rgba(0,0,0,.35)
-}
-
-.status-head{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding-bottom:15px;
-border-bottom:1px solid #292e38
-}
-
-.status-head strong{
-font-size:14px
-}
-
-.online{
-font-size:11px;
-color:var(--purple);
-font-weight:900
-}
-
-.mini-step{
-display:grid;
-grid-template-columns:38px 1fr;
-gap:12px;
-align-items:center;
-padding:15px 0;
-border-bottom:1px solid #242832
-}
-
-.mini-step:last-child{
-border:0
-}
-
-.mini-step b{
-width:38px;
-height:38px;
-border:1px solid #303641;
-border-radius:8px;
-display:grid;
-place-items:center;
-color:var(--purple)
-}
-
-.mini-step strong{
-display:block;
-font-size:13px
-}
-
-.mini-step small{
-color:#848b99
-}
-
-
-/* SEÇÕES */
+/* SECTIONS */
 
 section{
-padding:72px 0
+  padding:65px 0;
 }
 
 .section-head{
-display:flex;
-justify-content:space-between;
-align-items:end;
-gap:25px;
-margin-bottom:25px
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:30px;
+  margin-bottom:28px;
 }
 
-.kicker{
-color:var(--purple);
-font-size:11px;
-font-weight:950;
-letter-spacing:1.4px
-}
-
-h2{
-font-size:clamp(29px,4vw,44px);
-letter-spacing:-1.5px;
-margin:7px 0
+.section-head h2{
+  font-size:32px;
+  letter-spacing:-1px;
 }
 
 .section-head p{
-max-width:510px;
-color:var(--muted);
-line-height:1.6;
-margin:0
+  max-width:530px;
+  color:#9990a8;
+  line-height:1.6;
 }
 
-
-/* JOGOS */
+/* GAME GRID */
 
 .games{
-display:grid;
-grid-template-columns:repeat(12,1fr);
-gap:13px
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
 }
 
 .game-card{
-grid-column:span 4;
-border:1px solid var(--line);
-background:var(--panel);
-border-radius:10px;
-overflow:hidden;
-transition:.2s
-}
-
-.game-card:nth-child(1),
-.game-card:nth-child(2){
-grid-column:span 6
+  position:relative;
+  min-height:390px;
+  border-radius:20px;
+  overflow:hidden;
+  background:#130d1d;
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:0 20px 50px rgba(0,0,0,.22);
+  transition:.25s;
 }
 
 .game-card:hover{
-transform:translateY(-4px);
-border-color:#7040a0
+  transform:translateY(-5px);
+  border-color:rgba(168,85,247,.55);
 }
 
-.game-art{
-height:200px;
-position:relative;
-background:linear-gradient(135deg,#171b24,#0d0f14);
-overflow:hidden
+.game-card img{
+  width:100%;
+  height:100%;
+  min-height:390px;
+  object-fit:cover;
+  position:absolute;
+  inset:0;
 }
 
-.game-card:nth-child(-n+2) .game-art{
-height:270px
-}
-
-.game-art img{
-width:100%;
-height:100%;
-object-fit:cover;
-display:block
-}
-
-.game-art:after{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(to top,rgba(8,9,13,.72),transparent 55%);
-pointer-events:none
-}
-
-.game-badge{
-position:absolute;
-z-index:2;
-top:12px;
-left:12px;
-background:linear-gradient(135deg,#9333ea,#c084fc);
-color:white;
-font-size:10px;
-font-weight:1000;
-padding:6px 8px;
-border-radius:5px;
-letter-spacing:.6px
-}
-
-.fallback-title{
-display:none;
-position:absolute;
-inset:0;
-padding:25px;
-align-items:flex-end;
-font-size:25px;
-font-weight:950
-}
-
-.fallback .fallback-title{
-display:flex
+.game-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    0deg,
+    rgba(7,4,12,.98) 0%,
+    rgba(7,4,12,.72) 25%,
+    rgba(7,4,12,.04) 62%
+  );
 }
 
 .game-info{
-padding:15px 16px 17px
+  position:absolute;
+  z-index:2;
+  left:18px;
+  right:18px;
+  bottom:18px;
+}
+
+.game-tag{
+  display:inline-block;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+  color:#d8b4fe;
+  background:rgba(126,34,206,.28);
+  border:1px solid rgba(168,85,247,.38);
+  padding:6px 8px;
+  border-radius:7px;
+  margin-bottom:8px;
 }
 
 .game-info h3{
-font-size:15px;
-margin:0 0 5px
+  font-size:19px;
+  line-height:1.15;
 }
 
-.game-info p{
-font-size:12px;
-color:#858c99;
-margin:0
-}
-
-
-/* RECURSOS */
+/* RESOURCE CARDS */
 
 .resource-grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:13px
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
 }
 
-.resource{
-min-height:235px;
-padding:22px;
-border:1px solid var(--line);
-border-radius:10px;
-background:var(--panel);
-display:flex;
-flex-direction:column
+.resource-card{
+  padding:27px;
+  border-radius:20px;
+  background:linear-gradient(145deg,#151020,#0d0914);
+  border:1px solid rgba(255,255,255,.09);
 }
 
 .resource-icon{
-width:45px;
-height:45px;
-border:1px solid #343b48;
-border-radius:9px;
-display:grid;
-place-items:center;
-font-size:21px;
-background:#191d26
+  width:48px;
+  height:48px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  background:rgba(168,85,247,.15);
+  border:1px solid rgba(168,85,247,.3);
+  margin-bottom:20px;
 }
 
-.resource h3{
-font-size:20px;
-margin:19px 0 8px
+.resource-card h3{
+  font-size:20px;
+  margin-bottom:9px;
 }
 
-.resource p{
-color:var(--muted);
-line-height:1.55;
-font-size:13px;
-margin:0 0 20px
-}
-
-.resource .btn{
-margin-top:auto
+.resource-card p{
+  color:#9990a8;
+  line-height:1.6;
+  min-height:76px;
 }
 
 .btn{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-gap:9px;
-min-height:48px;
-padding:0 17px;
-border:1px solid #343a46;
-border-radius:8px;
-background:#151922;
-font-weight:900;
-font-size:13px;
-transition:.18s
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:49px;
+  margin-top:20px;
+  padding:12px 18px;
+  border-radius:12px;
+  font-weight:800;
+  font-size:14px;
+  background:linear-gradient(135deg,#9333ea,#6d28d9);
+  box-shadow:0 10px 30px rgba(126,34,206,.25);
+  transition:.2s;
 }
 
 .btn:hover{
-transform:translateY(-2px);
-border-color:#7040a0
+  transform:translateY(-2px);
+  filter:brightness(1.1);
 }
 
-.btn.primary{
-background:linear-gradient(135deg,#9333ea,#c084fc);
-color:#fff;
-border-color:#b66cff;
-box-shadow:0 8px 28px rgba(168,85,247,.20)
+.btn.secondary{
+  background:#21172f;
+  border:1px solid rgba(168,85,247,.35);
 }
 
-.btn.blue{
-background:#14243a;
-border-color:#294f7d;
-color:#d9ebff
-}
+/* SOCIAL */
 
-
-/* REDES */
-
-.socials{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:13px
+.social-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
 }
 
 .social{
-border:1px solid var(--line);
-border-radius:10px;
-background:#111319;
-padding:24px;
-min-height:200px
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:22px;
+  border-radius:18px;
+  background:#110b19;
+  border:1px solid rgba(255,255,255,.08);
+  transition:.2s;
 }
 
-.social-logo{
-width:52px;
-height:52px;
-border:1px solid #363c48;
-border-radius:12px;
-display:grid;
-place-items:center;
-background:#191c24;
-margin-bottom:24px;
-font-size:25px
+.social:hover{
+  transform:translateY(-3px);
+  border-color:rgba(168,85,247,.5);
 }
 
-.social h3{
-font-size:20px;
-margin:0 0 5px
+.social-icon{
+  width:52px;
+  height:52px;
+  flex:none;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:20px;
+  background:linear-gradient(135deg,#9333ea,#5b21b6);
 }
 
-.social p{
-color:#8e95a2;
-margin:0 0 18px;
-font-size:13px
+.social strong{
+  display:block;
+  margin-bottom:4px;
 }
 
-.social a{
-font-weight:900;
-font-size:12px;
-color:var(--purple)
+.social span{
+  color:#958a9f;
+  font-size:13px;
 }
 
-
-/* TUTORIAIS */
+/* TUTORIALS */
 
 .tutorial-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:14px
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
 }
 
 .video-card{
-border:1px solid var(--line);
-border-radius:10px;
-background:var(--panel);
-overflow:hidden
+  overflow:hidden;
+  border-radius:20px;
+  background:#110b19;
+  border:1px solid rgba(255,255,255,.08);
 }
 
-.video-top{
-height:47px;
-display:flex;
-align-items:center;
-gap:10px;
-padding:0 14px;
-border-bottom:1px solid var(--line);
-font-size:12px
+.video-card iframe{
+  width:100%;
+  aspect-ratio:16/9;
+  border:0;
+  display:block;
 }
 
-.video-top span{
-color:var(--purple);
-font-weight:950
+.video-title{
+  padding:16px 18px;
+  font-weight:800;
 }
 
-.video-wrap{
-aspect-ratio:16/9;
-background:#050607
-}
-
-iframe{
-width:100%;
-height:100%;
-border:0
-}
-
-
-/* SUPORTE */
+/* SUPPORT */
 
 .support{
-display:grid;
-grid-template-columns:1fr auto;
-align-items:center;
-gap:30px;
-padding:28px;
-border:1px solid #2e3540;
-background:linear-gradient(120deg,#141821,#0e1116);
-border-radius:11px
+  margin:60px auto;
+  padding:50px;
+  border-radius:28px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(168,85,247,.24),transparent 55%),
+    #100a18;
+  border:1px solid rgba(168,85,247,.24);
 }
 
-.support h3{
-font-size:25px;
-margin:0 0 8px
+.support h2{
+  font-size:36px;
+  margin-bottom:12px;
 }
 
 .support p{
-margin:0;
-color:var(--muted)
+  max-width:620px;
+  margin:auto;
+  color:#a79cad;
+  line-height:1.7;
 }
 
+.support .btn{
+  max-width:320px;
+  margin:25px auto 0;
+}
 
-/* RODAPÉ */
+/* FOOTER */
 
 footer{
-border-top:1px solid #20232b;
-padding:34px 0 45px;
-color:#717784;
-font-size:12px
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:35px 0;
+  text-align:center;
+  color:#766d80;
+  font-size:13px;
 }
 
-.foot{
-display:flex;
-justify-content:space-between;
-gap:20px
+/* MOBILE */
+
+@media(max-width:900px){
+
+  .games{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .resource-grid,
+  .social-grid{
+    grid-template-columns:1fr;
+  }
+
+  .nav-links{
+    display:none;
+  }
+
+  .banner-images{
+    grid-template-columns:repeat(4,55%);
+    width:220%;
+    transform:translateX(-22%);
+  }
+
+  .game-banner{
+    height:390px;
+  }
+
+  .section-head{
+    display:block;
+  }
+
+  .section-head p{
+    margin-top:10px;
+  }
 }
 
+@media(max-width:580px){
 
-/* CELULAR */
+  .games{
+    grid-template-columns:repeat(2,1fr);
+    gap:11px;
+  }
 
-@media(max-width:850px){
+  .game-card{
+    min-height:270px;
+    border-radius:15px;
+  }
 
-.navlinks{
-display:none
+  .game-card img{
+    min-height:270px;
+  }
+
+  .game-info{
+    left:12px;
+    right:12px;
+    bottom:13px;
+  }
+
+  .game-info h3{
+    font-size:14px;
+  }
+
+  .game-tag{
+    font-size:8px;
+  }
+
+  .tutorial-grid{
+    grid-template-columns:1fr;
+  }
+
+  .support{
+    padding:35px 20px;
+  }
+
+  .banner-content h1{
+    letter-spacing:-2px;
+  }
 }
-
-.hero-inner{
-grid-template-columns:1fr;
-padding:54px 0;
-min-height:auto
-}
-
-.status-panel{
-display:none
-}
-
-h1{
-letter-spacing:-2px
-}
-
-.games{
-grid-template-columns:repeat(2,1fr)
-}
-
-.game-card,
-.game-card:nth-child(1),
-.game-card:nth-child(2){
-grid-column:auto
-}
-
-.game-art,
-.game-card:nth-child(-n+2) .game-art{
-height:180px
-}
-
-.resource-grid,
-.socials{
-grid-template-columns:1fr
-}
-
-.tutorial-grid{
-grid-template-columns:1fr
-}
-
-.section-head{
-align-items:start;
-flex-direction:column
-}
-
-.support{
-grid-template-columns:1fr
-}
-
-}
-
-@media(max-width:520px){
-
-.wrap{
-width:min(100% - 22px,1180px)
-}
-
-.hero-inner{
-padding:42px 0
-}
-
-h1{
-font-size:43px
-}
-
-.hero p{
-font-size:15px
-}
-
-section{
-padding:54px 0
-}
-
-.games{
-grid-template-columns:1fr 1fr;
-gap:8px
-}
-
-.game-art,
-.game-card:nth-child(-n+2) .game-art{
-height:128px
-}
-
-.game-info{
-padding:11px
-}
-
-.game-info h3{
-font-size:12px
-}
-
-.game-info p{
-font-size:10px
-}
-
-.game-badge{
-font-size:8px;
-top:7px;
-left:7px;
-padding:5px 6px
-}
-
-.foot{
-flex-direction:column
-}
-
-}
-
 </style>
 </head>
 
-
 <body>
 
+<nav>
+  <div class="container nav-content">
+    <div class="logo">RBX <span>IMPÉRIO</span></div>
 
-<header class="topbar">
-
-<div class="wrap nav">
-
-<a class="brand" href="#">
-<span class="logo"><b>R</b></span>
-<span>RBX IMPÉRIO</span>
-</a>
-
-<nav class="navlinks">
-<a href="#jogos">JOGOS</a>
-<a href="#recursos">RECURSOS</a>
-<a href="#tutoriais">TUTORIAIS</a>
-<a href="#suporte">SUPORTE</a>
+    <div class="nav-links">
+      <a href="#jogos">Jogos</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#tutoriais">Tutoriais</a>
+      <a href="#suporte">Suporte</a>
+    </div>
+  </div>
 </nav>
 
-</div>
+<header class="game-banner">
+
+  <div class="banner-images">
+    <div class="banner-img"></div>
+    <div class="banner-img"></div>
+    <div class="banner-img"></div>
+    <div class="banner-img"></div>
+  </div>
+
+  <div class="container banner-content">
+    <div class="badge">⚡ RBX IMPÉRIO</div>
+
+    <h1>
+      Seu universo de jogos
+      <span>começa aqui.</span>
+    </h1>
+  </div>
 
 </header>
 
-
-<section class="hero">
-
-<div class="wrap hero-inner">
-
-<div>
-
-<span class="eyebrow">
-<i class="dot"></i>
-ÁREA EXCLUSIVA DO CLIENTE
-</span>
-
-<h1>
-Tudo do RBX.<br>
-<em>Em um só lugar.</em>
-</h1>
-
-<p>
-Bem-vindo à sua central RBX Império.
-Aqui você encontra os recursos, novidades,
-tutoriais e suporte organizados em um só lugar.
-</p>
-
-</div>
-
-
-<aside class="status-panel">
-
-<div class="status-head">
-<strong>COMECE POR AQUI</strong>
-<span class="online">● CENTRAL ONLINE</span>
-</div>
-
-<div class="mini-step">
-<b>01</b>
-<div>
-<strong>Baixe o launcher</strong>
-<small>Arquivo principal atualizado</small>
-</div>
-</div>
-
-<div class="mini-step">
-<b>02</b>
-<div>
-<strong>Gere sua licença</strong>
-<small>Use o gerador oficial RBX</small>
-</div>
-</div>
-
-<div class="mini-step">
-<b>03</b>
-<div>
-<strong>Veja os tutoriais</strong>
-<small>Siga o passo a passo abaixo</small>
-</div>
-</div>
-
-</aside>
-
-</div>
-
-</section>
-
-
 <main>
 
+<section class="intro">
+  <div class="container">
 
-<!-- JOGOS -->
+    <div class="eyebrow">Área do Cliente</div>
+
+    <h2>
+      Tudo do RBX.<br>
+      <em>Em um só lugar.</em>
+    </h2>
+
+    <p>
+      Bem-vindo à sua central RBX Império. Aqui você encontra os recursos,
+      novidades, tutoriais e suporte organizados em um só lugar.
+    </p>
+
+  </div>
+</section>
+
 
 <section id="jogos">
-
-<div class="wrap">
-
-<div class="section-head">
-
-<div>
-<div class="kicker">DESTAQUES DO CATÁLOGO</div>
-<h2>Jogos no RBX Launcher</h2>
-</div>
-
-<p>
-Conheça alguns dos títulos em destaque no catálogo do RBX Launcher.
-Novidades e atualizações aparecem por aqui.
-</p>
-
-</div>
-
-
-<div class="games">
-
-
-<article class="game-card">
-
-<div class="game-art">
-
-<img
-src="https://cdn.akamai.steamstatic.com/steam/apps/2483190/header.jpg"
-alt="Forza Horizon 6"
-onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
-
-<span class="game-badge">NO LAUNCHER</span>
-
-<div class="fallback-title">
-FORZA HORIZON 6
-</div>
-
-</div>
-
-<div class="game-info">
-<h3>FORZA HORIZON 6</h3>
-<p>Corrida • Mundo aberto</p>
-</div>
-
-</article>
-
-
-<article class="game-card">
-
-<div class="game-art">
-
-<img
-src="https://cdn.akamai.steamstatic.com/steam/apps/3764200/header.jpg"
-alt="Resident Evil Requiem"
-onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
-
-<span class="game-badge">NO LAUNCHER</span>
-
-<div class="fallback-title">
-RESIDENT EVIL REQUIEM
-</div>
-
-</div>
-
-<div class="game-info">
-<h3>RESIDENT EVIL REQUIEM</h3>
-<p>Survival horror • Ação</p>
-</div>
-
-</article>
-
-
-<article class="game-card">
-
-<div class="game-art">
-
-<img
-src="https://cdn.akamai.steamstatic.com/steam/apps/3357650/header.jpg"
-alt="PRAGMATA"
-onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
-
-<span class="game-badge">NO LAUNCHER</span>
-
-<div class="fallback-title">
-PRAGMATA
-</div>
-
-</div>
-
-<div class="game-info">
-<h3>PRAGMATA</h3>
-<p>Ação • Ficção científica</p>
-</div>
-
-</article>
-
-
-<article class="game-card">
-
-<div class="game-art">
-
-<img
-src="https://cdn.akamai.steamstatic.com/steam/apps/3010850/header.jpg"
-alt="Gears of War E-Day"
-onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
-
-<span class="game-badge">NO LAUNCHER</span>
-
-<div class="fallback-title">
-GEARS OF WAR: E-DAY
-</div>
-
-</div>
-
-<div class="game-info">
-<h3>GEARS OF WAR: E-DAY</h3>
-<p>Ação • Campanha</p>
-</div>
-
-</article>
-
-
-<article class="game-card">
-
-<div class="game-art">
-
-<img
-src="https://cdn.akamai.steamstatic.com/steam/apps/4080220/header.jpg"
-alt="EA Sports FC 27"
-onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
-
-<span class="game-badge">NO LAUNCHER</span>
-
-<div class="fallback-title">
-EA SPORTS FC 27
-</div>
-
-</div>
-
-<div class="game-info">
-<h3>EA SPORTS FC 27</h3>
-<p>Futebol • Esportes</p>
-</div>
-
-</article>
-
-
-<article class="game-card">
-
-<div class="game-art">
-
-<img
-src="https://cdn.akamai.steamstatic.com/steam/apps/3669870/header.jpg"
-alt="CONTROL Resonant"
-onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
-
-<span class="game-badge">NO LAUNCHER</span>
-
-<div class="fallback-title">
-CONTROL RESONANT
-</div>
-
-</div>
-
-<div class="game-info">
-<h3>CONTROL RESONANT</h3>
-<p>Ação • Aventura</p>
-</div>
-
-</article>
-
-
-<article class="game-card">
-
-<div class="game-art">
-
-<img
-src="https://cdn.akamai.steamstatic.com/steam/apps/1867240/header.jpg"
-alt="WARDOGS"
-onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
-
-<span class="game-badge">NO LAUNCHER</span>
-
-<div class="fallback-title">
-WARDOGS
-</div>
-
-</div>
-
-<div class="game-info">
-<h3>WARDOGS</h3>
-<p>Ação</p>
-</div>
-
-</article>
-
-
-</div>
-
-</div>
-
+  <div class="container">
+
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Destaques</div>
+        <h2>Jogos no RBX Launcher</h2>
+      </div>
+
+      <p>
+        Conheça alguns dos títulos em destaque no catálogo do RBX Launcher.
+        Novidades e atualizações aparecem por aqui.
+      </p>
+    </div>
+
+
+    <div class="games">
+
+      <article class="game-card">
+        <img src="images/IMG_1862.jpeg" alt="Forza Horizon 6">
+        <div class="game-info">
+          <span class="game-tag">NO LAUNCHER</span>
+          <h3>Forza Horizon 6</h3>
+        </div>
+      </article>
+
+
+      <article class="game-card">
+        <img src="images/IMG_1863.jpeg" alt="Resident Evil Requiem">
+        <div class="game-info">
+          <span class="game-tag">NO LAUNCHER</span>
+          <h3>Resident Evil Requiem</h3>
+        </div>
+      </article>
+
+
+      <article class="game-card">
+        <img src="images/IMG_1864.jpeg" alt="PRAGMATA">
+        <div class="game-info">
+          <span class="game-tag">NO LAUNCHER</span>
+          <h3>PRAGMATA</h3>
+        </div>
+      </article>
+
+
+      <article class="game-card">
+        <img src="images/IMG_1865.jpeg" alt="Gears of War E-Day">
+        <div class="game-info">
+          <span class="game-tag">NO LAUNCHER</span>
+          <h3>Gears of War: E-Day</h3>
+        </div>
+      </article>
+
+
+      <article class="game-card">
+        <img src="images/IMG_1866.jpeg" alt="EA SPORTS FC 27">
+        <div class="game-info">
+          <span class="game-tag">NO LAUNCHER</span>
+          <h3>EA SPORTS FC 27</h3>
+        </div>
+      </article>
+
+
+      <article class="game-card">
+        <img src="images/IMG_1867.jpeg" alt="CONTROL Resonant">
+        <div class="game-info">
+          <span class="game-tag">NO LAUNCHER</span>
+          <h3>CONTROL Resonant</h3>
+        </div>
+      </article>
+
+
+      <article class="game-card">
+        <img src="images/IMG_1868.jpeg" alt="WARDOGS">
+        <div class="game-info">
+          <span class="game-tag">NO LAUNCHER</span>
+          <h3>WARDOGS</h3>
+        </div>
+      </article>
+
+
+      <article class="game-card">
+        <img src="images/IMG_1869.jpeg" alt="Halo Campaign Evolved">
+        <div class="game-info">
+          <span class="game-tag">NO LAUNCHER</span>
+          <h3>Halo: Campaign Evolved</h3>
+        </div>
+      </article>
+
+    </div>
+  </div>
 </section>
 
 
+<section id="recursos">
+  <div class="container">
 
-<!-- RECURSOS -->
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Central RBX</div>
+        <h2>Seus recursos</h2>
+      </div>
 
-<section id="recursos"
-style="background:#0b0d12;border-block:1px solid #1d2028">
-
-<div class="wrap">
-
-<div class="section-head">
-
-<div>
-<div class="kicker">CENTRAL DO CLIENTE</div>
-<h2>Tudo que você precisa</h2>
-</div>
-
-<p>
-Os acessos importantes separados em blocos simples
-para você encontrar tudo rápido.
-</p>
-
-</div>
+      <p>
+        Acesse rapidamente os principais recursos da sua área do cliente.
+      </p>
+    </div>
 
 
-<div class="resource-grid">
+    <div class="resource-grid">
+
+      <div class="resource-card">
+        <div class="resource-icon">⬇</div>
+
+        <h3>Baixar Launcher</h3>
+
+        <p>
+          Baixe a versão atualizada do RBX Império para o seu computador.
+        </p>
+
+        <a
+          class="btn"
+          href="https://www.mediafire.com/file/6yprimkan6odhsk/RBX_Imperio_ATUALIZADOS.zip/file"
+          target="_blank"
+          rel="noopener"
+        >
+          Baixar Launcher
+        </a>
+      </div>
 
 
-<article class="resource">
+      <div class="resource-card">
+        <div class="resource-icon">🔑</div>
 
-<div class="resource-icon">⬇</div>
+        <h3>Gerar Licença</h3>
 
-<h3>Launcher RBX</h3>
+        <p>
+          Acesse sua página de geração de licença para utilizar o RBX.
+        </p>
 
-<p>
-Baixe a versão atual do launcher.
-Depois do download, extraia o arquivo antes de abrir.
-</p>
-
-<a
-class="btn primary"
-href="https://www.mediafire.com/file/6yprimkan6odhsk/RBX_Imperio_ATUALIZADOS.zip/file"
-target="_blank">
-
-BAIXAR LAUNCHER
-
-</a>
-
-</article>
+        <a
+          class="btn"
+          href="https://rbx-imperio-key-server.onrender.com/gerar-key.html"
+          target="_blank"
+          rel="noopener"
+        >
+          Gerar Licença
+        </a>
+      </div>
 
 
-<article class="resource">
+      <div class="resource-card">
+        <div class="resource-icon">🛠</div>
 
-<div class="resource-icon">🔑</div>
+        <h3>Correções</h3>
 
-<h3>Gerar licença</h3>
+        <p>
+          Encontre arquivos de correção e recursos adicionais.
+        </p>
 
-<p>
-Acesse o gerador oficial para obter sua licença
-e continuar a configuração.
-</p>
+        <a
+          class="btn secondary"
+          href="https://generator.ryuu.lol/fixes"
+          target="_blank"
+          rel="noopener"
+        >
+          Ver Correções
+        </a>
+      </div>
 
-<a
-class="btn"
-href="https://rbx-imperio-key-server.onrender.com/gerar-key.html"
-target="_blank">
-
-GERAR LICENÇA
-
-</a>
-
-</article>
-
-
-<article class="resource">
-
-<div class="resource-icon">🛠</div>
-
-<h3>Central de Fixes</h3>
-
-<p>
-Encontrou algum problema?
-Acesse a central com correções e soluções disponíveis.
-</p>
-
-<a
-class="btn blue"
-href="https://generator.ryuu.lol/fixes"
-target="_blank">
-
-ACESSAR FIXES
-
-</a>
-
-</article>
-
-
-</div>
-
-</div>
-
+    </div>
+  </div>
 </section>
 
-
-
-<!-- REDES -->
 
 <section>
+  <div class="container">
 
-<div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Comunidade</div>
+        <h2>Fique conectado</h2>
+      </div>
 
-<div class="section-head">
-
-<div>
-<div class="kicker">COMUNIDADE RBX</div>
-<h2>Fique conectado</h2>
-</div>
-
-<p>
-Novidades, avisos, vídeos e suporte
-nos canais da comunidade.
-</p>
-
-</div>
+      <p>
+        Acompanhe novidades, atualizações e avisos pelos canais do RBX Império.
+      </p>
+    </div>
 
 
-<div class="socials">
+    <div class="social-grid">
+
+      <a
+        class="social"
+        href="https://www.instagram.com/rbx_imperio/"
+        target="_blank"
+        rel="noopener"
+      >
+        <div class="social-icon">◎</div>
+
+        <div>
+          <strong>Instagram</strong>
+          <span>@rbx_imperio</span>
+        </div>
+      </a>
 
 
-<article class="social">
+      <a
+        class="social"
+        href="https://www.tiktok.com/@rbx_imperio"
+        target="_blank"
+        rel="noopener"
+      >
+        <div class="social-icon">♪</div>
 
-<div class="social-logo">◎</div>
-
-<h3>Instagram</h3>
-
-<p>@rbx_imperio</p>
-
-<a
-href="https://www.instagram.com/rbx_imperio/"
-target="_blank">
-
-ABRIR INSTAGRAM →
-
-</a>
-
-</article>
+        <div>
+          <strong>TikTok</strong>
+          <span>@rbx_imperio</span>
+        </div>
+      </a>
 
 
-<article class="social">
+      <a
+        class="social"
+        href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t"
+        target="_blank"
+        rel="noopener"
+      >
+        <div class="social-icon">✆</div>
 
-<div class="social-logo">♪</div>
+        <div>
+          <strong>WhatsApp</strong>
+          <span>Comunidade RBX</span>
+        </div>
+      </a>
 
-<h3>TikTok</h3>
-
-<p>@rbx_imperio</p>
-
-<a
-href="https://www.tiktok.com/@rbx_imperio"
-target="_blank">
-
-ABRIR TIKTOK →
-
-</a>
-
-</article>
-
-
-<article class="social">
-
-<div class="social-logo">☏</div>
-
-<h3>WhatsApp</h3>
-
-<p>Grupo da comunidade RBX</p>
-
-<a
-href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t"
-target="_blank">
-
-ENTRAR NO GRUPO →
-
-</a>
-
-</article>
-
-
-</div>
-
-</div>
-
+    </div>
+  </div>
 </section>
 
 
+<section id="tutoriais">
+  <div class="container">
 
-<!-- TUTORIAIS -->
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Aprenda</div>
+        <h2>Tutoriais</h2>
+      </div>
 
-<section
-id="tutoriais"
-style="background:#0b0d12;border-block:1px solid #1d2028">
-
-<div class="wrap">
-
-<div class="section-head">
-
-<div>
-<div class="kicker">PASSO A PASSO</div>
-<h2>Tutoriais em vídeo</h2>
-</div>
-
-<p>
-Assista aos tutoriais abaixo para configurar
-e utilizar o RBX.
-</p>
-
-</div>
+      <p>
+        Assista aos vídeos para configurar e utilizar os recursos do RBX.
+      </p>
+    </div>
 
 
-<div class="tutorial-grid">
+    <div class="tutorial-grid">
+
+      <div class="video-card">
+        <iframe
+          src="https://www.youtube.com/embed/3HFa1-V0N1Y"
+          allowfullscreen>
+        </iframe>
+        <div class="video-title">Tutorial RBX #1</div>
+      </div>
 
 
-<div class="video-card">
-
-<div class="video-top">
-<span>01</span>
-<strong>TUTORIAL 1</strong>
-</div>
-
-<div class="video-wrap">
-
-<iframe
-src="https://www.youtube.com/embed/3HFa1-V0N1Y"
-title="Tutorial 1"
-allowfullscreen>
-</iframe>
-
-</div>
-
-</div>
+      <div class="video-card">
+        <iframe
+          src="https://www.youtube.com/embed/gU1uX0aLz8k"
+          allowfullscreen>
+        </iframe>
+        <div class="video-title">Tutorial RBX #2</div>
+      </div>
 
 
-<div class="video-card">
-
-<div class="video-top">
-<span>02</span>
-<strong>TUTORIAL 2</strong>
-</div>
-
-<div class="video-wrap">
-
-<iframe
-src="https://www.youtube.com/embed/gU1uX0aLz8k"
-title="Tutorial 2"
-allowfullscreen>
-</iframe>
-
-</div>
-
-</div>
+      <div class="video-card">
+        <iframe
+          src="https://www.youtube.com/embed/jHgjXplBUps"
+          allowfullscreen>
+        </iframe>
+        <div class="video-title">Tutorial RBX #3</div>
+      </div>
 
 
-<div class="video-card">
-
-<div class="video-top">
-<span>03</span>
-<strong>TUTORIAL 3</strong>
-</div>
-
-<div class="video-wrap">
-
-<iframe
-src="https://www.youtube.com/embed/jHgjXplBUps"
-title="Tutorial 3"
-allowfullscreen>
-</iframe>
-
-</div>
-
-</div>
+      <div class="video-card">
+        <iframe
+          src="https://www.youtube.com/embed/jZz9s1oEXKQ"
+          allowfullscreen>
+        </iframe>
+        <div class="video-title">Tutorial RBX #4</div>
+      </div>
 
 
-<div class="video-card">
+      <div class="video-card">
+        <iframe
+          src="https://www.youtube.com/embed/9gk9032x_ko"
+          allowfullscreen>
+        </iframe>
+        <div class="video-title">Tutorial RBX #5</div>
+      </div>
 
-<div class="video-top">
-<span>04</span>
-<strong>TUTORIAL 4</strong>
-</div>
-
-<div class="video-wrap">
-
-<iframe
-src="https://www.youtube.com/embed/jZz9s1oEXKQ"
-title="Tutorial 4"
-allowfullscreen>
-</iframe>
-
-</div>
-
-</div>
-
-
-<div class="video-card">
-
-<div class="video-top">
-<span>05</span>
-<strong>TUTORIAL 5</strong>
-</div>
-
-<div class="video-wrap">
-
-<iframe
-src="https://www.youtube.com/embed/9gk9032x_ko"
-title="Tutorial 5"
-allowfullscreen>
-</iframe>
-
-</div>
-
-</div>
-
-
-</div>
-
-</div>
-
+    </div>
+  </div>
 </section>
 
-
-
-<!-- SUPORTE -->
 
 <section id="suporte">
+  <div class="container">
 
-<div class="wrap">
+    <div class="support">
 
-<div class="support">
+      <div class="eyebrow">Precisa de ajuda?</div>
 
-<div>
+      <h2>Suporte RBX Império</h2>
 
-<div class="kicker">
-PRECISA DE AJUDA?
-</div>
+      <p>
+        Entre na nossa comunidade para receber avisos, acompanhar novidades
+        e encontrar ajuda quando precisar.
+      </p>
 
-<h3>
-Entre na comunidade RBX Império
-</h3>
+      <a
+        class="btn"
+        href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t"
+        target="_blank"
+        rel="noopener"
+      >
+        Entrar na comunidade
+      </a>
 
-<p>
-Acesse o grupo para acompanhar avisos
-e suporte da comunidade.
-</p>
-
-</div>
-
-<a
-class="btn primary"
-href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t"
-target="_blank">
-
-WHATSAPP / COMUNIDADE
-
-</a>
-
-</div>
-
-</div>
-
+    </div>
+  </div>
 </section>
-
 
 </main>
 
 
-
 <footer>
-
-<div class="wrap foot">
-
-<strong>
-RBX IMPÉRIO
-</strong>
-
-<span>
-© 2026 • Área exclusiva do cliente
-</span>
-
-</div>
-
+  <div class="container">
+    © 2026 RBX Império • Área do Cliente
+  </div>
 </footer>
-
 
 </body>
 </html>
