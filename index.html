@@ -4,12 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#08090d">
+
 <title>RBX Império • Área do Cliente</title>
 
 <style>
+
 *{box-sizing:border-box}
+
 html{scroll-behavior:smooth}
-body{margin:0;background:#08090d;color:#f7f7fb;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+
+body{
+margin:0;
+background:#08090d;
+color:#f7f7fb;
+font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif
+}
 
 :root{
 --panel:#111319;
@@ -20,38 +29,62 @@ body{margin:0;background:#08090d;color:#f7f7fb;font-family:Inter,ui-sans-serif,s
 --blue:#5aa7ff
 }
 
-a{color:inherit;text-decoration:none}
-.wrap{width:min(1180px,calc(100% - 34px));margin:auto}
+a{
+color:inherit;
+text-decoration:none
+}
+
+.wrap{
+width:min(1180px,calc(100% - 34px));
+margin:auto
+}
+
+/* TOPO */
 
 .topbar{
-position:sticky;top:0;z-index:50;
-background:rgba(8,9,13,.88);
+position:sticky;
+top:0;
+z-index:50;
+background:rgba(8,9,13,.90);
 backdrop-filter:blur(16px);
 border-bottom:1px solid #1e212a
 }
 
 .nav{
-height:70px;display:flex;align-items:center;
-justify-content:space-between;gap:16px
+height:70px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:16px
 }
 
 .brand{
-display:flex;align-items:center;gap:12px;
-font-weight:950;letter-spacing:.6px
+display:flex;
+align-items:center;
+gap:12px;
+font-weight:950;
+letter-spacing:.6px
 }
 
 .logo{
-width:39px;height:39px;
+width:39px;
+height:39px;
 border:1px solid #3a414f;
 border-radius:10px;
-display:grid;place-items:center;
+display:grid;
+place-items:center;
 background:linear-gradient(145deg,#1b202a,#0d0f14);
 box-shadow:inset 0 0 22px rgba(168,85,247,.10)
 }
 
-.logo b{color:var(--purple)}
+.logo b{
+color:var(--purple)
+}
 
-.navlinks{display:flex;gap:8px}
+.navlinks{
+display:flex;
+gap:8px
+}
 
 .navlinks a{
 padding:10px 13px;
@@ -61,6 +94,9 @@ color:#c6cad4;
 font-size:13px;
 font-weight:800
 }
+
+
+/* HERO */
 
 .hero{
 position:relative;
@@ -108,7 +144,8 @@ letter-spacing:.9px
 }
 
 .dot{
-width:7px;height:7px;
+width:7px;
+height:7px;
 border-radius:50%;
 background:var(--purple);
 box-shadow:0 0 15px var(--purple)
@@ -150,7 +187,9 @@ padding-bottom:15px;
 border-bottom:1px solid #292e38
 }
 
-.status-head strong{font-size:14px}
+.status-head strong{
+font-size:14px
+}
 
 .online{
 font-size:11px;
@@ -167,10 +206,13 @@ padding:15px 0;
 border-bottom:1px solid #242832
 }
 
-.mini-step:last-child{border:0}
+.mini-step:last-child{
+border:0
+}
 
 .mini-step b{
-width:38px;height:38px;
+width:38px;
+height:38px;
 border:1px solid #303641;
 border-radius:8px;
 display:grid;
@@ -183,9 +225,16 @@ display:block;
 font-size:13px
 }
 
-.mini-step small{color:#848b99}
+.mini-step small{
+color:#848b99
+}
 
-section{padding:72px 0}
+
+/* SEÇÕES */
+
+section{
+padding:72px 0
+}
 
 .section-head{
 display:flex;
@@ -214,6 +263,7 @@ color:var(--muted);
 line-height:1.6;
 margin:0
 }
+
 
 /* JOGOS */
 
@@ -264,7 +314,7 @@ display:block
 content:"";
 position:absolute;
 inset:0;
-background:linear-gradient(to top,rgba(8,9,13,.76),transparent 52%);
+background:linear-gradient(to top,rgba(8,9,13,.72),transparent 55%);
 pointer-events:none
 }
 
@@ -274,7 +324,7 @@ z-index:2;
 top:12px;
 left:12px;
 background:linear-gradient(135deg,#9333ea,#c084fc);
-color:#fff;
+color:white;
 font-size:10px;
 font-weight:1000;
 padding:6px 8px;
@@ -292,9 +342,13 @@ font-size:25px;
 font-weight:950
 }
 
-.fallback .fallback-title{display:flex}
+.fallback .fallback-title{
+display:flex
+}
 
-.game-info{padding:15px 16px 17px}
+.game-info{
+padding:15px 16px 17px
+}
 
 .game-info h3{
 font-size:15px;
@@ -306,6 +360,7 @@ font-size:12px;
 color:#858c99;
 margin:0
 }
+
 
 /* RECURSOS */
 
@@ -326,7 +381,8 @@ flex-direction:column
 }
 
 .resource-icon{
-width:45px;height:45px;
+width:45px;
+height:45px;
 border:1px solid #343b48;
 border-radius:9px;
 display:grid;
@@ -347,7 +403,9 @@ font-size:13px;
 margin:0 0 20px
 }
 
-.resource .btn{margin-top:auto}
+.resource .btn{
+margin-top:auto
+}
 
 .btn{
 display:inline-flex;
@@ -382,6 +440,7 @@ border-color:#294f7d;
 color:#d9ebff
 }
 
+
 /* REDES */
 
 .socials{
@@ -391,8 +450,6 @@ gap:13px
 }
 
 .social{
-position:relative;
-overflow:hidden;
 border:1px solid var(--line);
 border-radius:10px;
 background:#111319;
@@ -408,13 +465,8 @@ border-radius:12px;
 display:grid;
 place-items:center;
 background:#191c24;
-margin-bottom:24px
-}
-
-.social-logo svg{
-width:29px;
-height:29px;
-fill:#fff
+margin-bottom:24px;
+font-size:25px
 }
 
 .social h3{
@@ -433,6 +485,7 @@ font-weight:900;
 font-size:12px;
 color:var(--purple)
 }
+
 
 /* TUTORIAIS */
 
@@ -475,6 +528,7 @@ height:100%;
 border:0
 }
 
+
 /* SUPORTE */
 
 .support{
@@ -498,6 +552,9 @@ margin:0;
 color:var(--muted)
 }
 
+
+/* RODAPÉ */
+
 footer{
 border-top:1px solid #20232b;
 padding:34px 0 45px;
@@ -511,11 +568,14 @@ justify-content:space-between;
 gap:20px
 }
 
+
 /* CELULAR */
 
 @media(max-width:850px){
 
-.navlinks{display:none}
+.navlinks{
+display:none
+}
 
 .hero-inner{
 grid-template-columns:1fr;
@@ -523,9 +583,13 @@ padding:54px 0;
 min-height:auto
 }
 
-.status-panel{display:none}
+.status-panel{
+display:none
+}
 
-h1{letter-spacing:-2px}
+h1{
+letter-spacing:-2px
+}
 
 .games{
 grid-template-columns:repeat(2,1fr)
@@ -559,6 +623,7 @@ flex-direction:column
 .support{
 grid-template-columns:1fr
 }
+
 }
 
 @media(max-width:520px){
@@ -567,13 +632,21 @@ grid-template-columns:1fr
 width:min(100% - 22px,1180px)
 }
 
-.hero-inner{padding:42px 0}
+.hero-inner{
+padding:42px 0
+}
 
-h1{font-size:43px}
+h1{
+font-size:43px
+}
 
-.hero p{font-size:15px}
+.hero p{
+font-size:15px
+}
 
-section{padding:54px 0}
+section{
+padding:54px 0
+}
 
 .games{
 grid-template-columns:1fr 1fr;
@@ -585,11 +658,17 @@ gap:8px
 height:128px
 }
 
-.game-info{padding:11px}
+.game-info{
+padding:11px
+}
 
-.game-info h3{font-size:12px}
+.game-info h3{
+font-size:12px
+}
 
-.game-info p{font-size:10px}
+.game-info p{
+font-size:10px
+}
 
 .game-badge{
 font-size:8px;
@@ -598,14 +677,21 @@ left:7px;
 padding:5px 6px
 }
 
-.foot{flex-direction:column}
+.foot{
+flex-direction:column
 }
+
+}
+
 </style>
 </head>
 
+
 <body>
 
+
 <header class="topbar">
+
 <div class="wrap nav">
 
 <a class="brand" href="#">
@@ -621,10 +707,12 @@ padding:5px 6px
 </nav>
 
 </div>
+
 </header>
 
 
 <section class="hero">
+
 <div class="wrap hero-inner">
 
 <div>
@@ -646,6 +734,7 @@ tutoriais e suporte organizados em um só lugar.
 </p>
 
 </div>
+
 
 <aside class="status-panel">
 
@@ -679,11 +768,14 @@ tutoriais e suporte organizados em um só lugar.
 </div>
 
 </aside>
+
 </div>
+
 </section>
 
 
 <main>
+
 
 <!-- JOGOS -->
 
@@ -708,113 +800,188 @@ Novidades e atualizações aparecem por aqui.
 
 <div class="games">
 
+
 <article class="game-card">
+
 <div class="game-art">
-<img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2483190/header.jpg"
+
+<img
+src="https://cdn.akamai.steamstatic.com/steam/apps/2483190/header.jpg"
 alt="Forza Horizon 6"
 onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+
 <span class="game-badge">NO LAUNCHER</span>
-<div class="fallback-title">FORZA HORIZON 6</div>
+
+<div class="fallback-title">
+FORZA HORIZON 6
 </div>
+
+</div>
+
 <div class="game-info">
 <h3>FORZA HORIZON 6</h3>
 <p>Corrida • Mundo aberto</p>
 </div>
+
 </article>
 
 
 <article class="game-card">
+
 <div class="game-art">
-<img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3764200/header.jpg"
+
+<img
+src="https://cdn.akamai.steamstatic.com/steam/apps/3764200/header.jpg"
 alt="Resident Evil Requiem"
 onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+
 <span class="game-badge">NO LAUNCHER</span>
-<div class="fallback-title">RESIDENT EVIL REQUIEM</div>
+
+<div class="fallback-title">
+RESIDENT EVIL REQUIEM
 </div>
+
+</div>
+
 <div class="game-info">
 <h3>RESIDENT EVIL REQUIEM</h3>
 <p>Survival horror • Ação</p>
 </div>
+
 </article>
 
 
 <article class="game-card">
+
 <div class="game-art">
-<img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3357650/header.jpg"
+
+<img
+src="https://cdn.akamai.steamstatic.com/steam/apps/3357650/header.jpg"
 alt="PRAGMATA"
 onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+
 <span class="game-badge">NO LAUNCHER</span>
-<div class="fallback-title">PRAGMATA</div>
+
+<div class="fallback-title">
+PRAGMATA
 </div>
+
+</div>
+
 <div class="game-info">
 <h3>PRAGMATA</h3>
 <p>Ação • Ficção científica</p>
 </div>
+
 </article>
 
 
 <article class="game-card">
+
 <div class="game-art">
-<img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3010850/header.jpg"
+
+<img
+src="https://cdn.akamai.steamstatic.com/steam/apps/3010850/header.jpg"
 alt="Gears of War E-Day"
 onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+
 <span class="game-badge">NO LAUNCHER</span>
-<div class="fallback-title">GEARS OF WAR: E-DAY</div>
+
+<div class="fallback-title">
+GEARS OF WAR: E-DAY
 </div>
+
+</div>
+
 <div class="game-info">
 <h3>GEARS OF WAR: E-DAY</h3>
 <p>Ação • Campanha</p>
 </div>
+
 </article>
 
 
 <article class="game-card">
+
 <div class="game-art">
-<img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/4080220/header.jpg"
+
+<img
+src="https://cdn.akamai.steamstatic.com/steam/apps/4080220/header.jpg"
 alt="EA Sports FC 27"
 onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+
 <span class="game-badge">NO LAUNCHER</span>
-<div class="fallback-title">EA SPORTS FC 27</div>
+
+<div class="fallback-title">
+EA SPORTS FC 27
 </div>
+
+</div>
+
 <div class="game-info">
 <h3>EA SPORTS FC 27</h3>
 <p>Futebol • Esportes</p>
 </div>
+
 </article>
 
 
 <article class="game-card">
+
 <div class="game-art">
-<img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3669870/header.jpg"
-alt="Control Resonant"
+
+<img
+src="https://cdn.akamai.steamstatic.com/steam/apps/3669870/header.jpg"
+alt="CONTROL Resonant"
 onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+
 <span class="game-badge">NO LAUNCHER</span>
-<div class="fallback-title">CONTROL RESONANT</div>
+
+<div class="fallback-title">
+CONTROL RESONANT
 </div>
+
+</div>
+
 <div class="game-info">
 <h3>CONTROL RESONANT</h3>
 <p>Ação • Aventura</p>
 </div>
+
 </article>
 
 
 <article class="game-card">
+
 <div class="game-art">
-<img src="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1867240/header.jpg"
-alt="Wardogs"
+
+<img
+src="https://cdn.akamai.steamstatic.com/steam/apps/1867240/header.jpg"
+alt="WARDOGS"
 onerror="this.style.display='none';this.parentElement.classList.add('fallback')">
+
 <span class="game-badge">NO LAUNCHER</span>
-<div class="fallback-title">WARDOGS</div>
+
+<div class="fallback-title">
+WARDOGS
 </div>
+
+</div>
+
 <div class="game-info">
 <h3>WARDOGS</h3>
 <p>Ação</p>
 </div>
+
 </article>
 
+
 </div>
+
 </div>
+
 </section>
+
 
 
 <!-- RECURSOS -->
@@ -841,6 +1008,7 @@ para você encontrar tudo rápido.
 
 <div class="resource-grid">
 
+
 <article class="resource">
 
 <div class="resource-icon">⬇</div>
@@ -852,10 +1020,13 @@ Baixe a versão atual do launcher.
 Depois do download, extraia o arquivo antes de abrir.
 </p>
 
-<a class="btn primary"
+<a
+class="btn primary"
 href="https://www.mediafire.com/file/6yprimkan6odhsk/RBX_Imperio_ATUALIZADOS.zip/file"
 target="_blank">
+
 BAIXAR LAUNCHER
+
 </a>
 
 </article>
@@ -872,10 +1043,13 @@ Acesse o gerador oficial para obter sua licença
 e continuar a configuração.
 </p>
 
-<a class="btn"
+<a
+class="btn"
 href="https://rbx-imperio-key-server.onrender.com/gerar-key.html"
 target="_blank">
+
 GERAR LICENÇA
+
 </a>
 
 </article>
@@ -892,20 +1066,27 @@ Encontrou algum problema?
 Acesse a central com correções e soluções disponíveis.
 </p>
 
-<a class="btn blue"
+<a
+class="btn blue"
 href="https://generator.ryuu.lol/fixes"
 target="_blank">
+
 ACESSAR FIXES
+
 </a>
 
 </article>
 
+
 </div>
+
 </div>
+
 </section>
 
 
-<!-- REDES SOCIAIS -->
+
+<!-- REDES -->
 
 <section>
 
@@ -929,76 +1110,75 @@ nos canais da comunidade.
 <div class="socials">
 
 
-<!-- INSTAGRAM -->
-
 <article class="social">
 
-<div class="social-logo">
-<svg viewBox="0 0 24 24">
-<path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.5-3.1a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4z"/>
-</svg>
-</div>
+<div class="social-logo">◎</div>
 
 <h3>Instagram</h3>
+
 <p>@rbx_imperio</p>
 
-<a href="https://www.instagram.com/rbx_imperio/"
+<a
+href="https://www.instagram.com/rbx_imperio/"
 target="_blank">
+
 ABRIR INSTAGRAM →
+
 </a>
 
 </article>
 
 
-<!-- TIKTOK -->
-
 <article class="social">
 
-<div class="social-logo">
-<svg viewBox="0 0 24 24">
-<path d="M16.6 2c.4 2.4 1.8 3.8 4.4 4v3.1c-1.5.1-2.9-.3-4.3-1.1v6.3c0 5.4-5.9 7.8-9.6 4.8-4.1-3.3-2.1-10.5 3.6-10.9.5 0 1 0 1.5.1v3.2c-.5-.2-.9-.2-1.4-.1-2.7.3-3.3 4-1 5.2 2.2 1.2 4-.4 4-2.5V2h2.8z"/>
-</svg>
-</div>
+<div class="social-logo">♪</div>
 
 <h3>TikTok</h3>
+
 <p>@rbx_imperio</p>
 
-<a href="https://www.tiktok.com/@rbx_imperio"
+<a
+href="https://www.tiktok.com/@rbx_imperio"
 target="_blank">
+
 ABRIR TIKTOK →
+
 </a>
 
 </article>
 
-
-<!-- WHATSAPP -->
 
 <article class="social">
 
-<div class="social-logo">
-<svg viewBox="0 0 24 24">
-<path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.6 0 .3 5.3.3 11.8c0 2.1.5 4.1 1.6 5.9L.2 24l6.5-1.7a11.7 11.7 0 0 0 5.4 1.4h.1c6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.5-8.4zm-8.4 18.2c-1.7 0-3.4-.5-4.9-1.3l-.4-.2-3.8 1 1-3.7-.2-.4a9.8 9.8 0 1 1 8.3 4.6zm5.4-7.3c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.2-.2.3-.8.9-1 1.1-.2.2-.4.2-.7.1-1.8-.9-3-1.6-4.2-3.6-.3-.5.3-.5.9-1.6.1-.2.1-.4 0-.6-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.9s1.2 3.3 1.4 3.5c.2.2 2.4 3.7 5.9 5.2 2.2.9 3.1 1 4.2.8.7-.1 1.7-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3z"/>
-</svg>
-</div>
+<div class="social-logo">☏</div>
 
 <h3>WhatsApp</h3>
+
 <p>Grupo da comunidade RBX</p>
 
-<a href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t"
+<a
+href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t"
 target="_blank">
+
 ENTRAR NO GRUPO →
+
 </a>
 
 </article>
 
+
 </div>
+
 </div>
+
 </section>
+
 
 
 <!-- TUTORIAIS -->
 
-<section id="tutoriais"
+<section
+id="tutoriais"
 style="background:#0b0d12;border-block:1px solid #1d2028">
 
 <div class="wrap">
@@ -1011,9 +1191,8 @@ style="background:#0b0d12;border-block:1px solid #1d2028">
 </div>
 
 <p>
-Assista na ordem indicada.
-Estes vídeos serão substituídos pelos novos tutoriais
-quando estiverem prontos.
+Assista aos tutoriais abaixo para configurar
+e utilizar o RBX.
 </p>
 
 </div>
@@ -1021,78 +1200,113 @@ quando estiverem prontos.
 
 <div class="tutorial-grid">
 
+
 <div class="video-card">
+
 <div class="video-top">
 <span>01</span>
 <strong>TUTORIAL 1</strong>
 </div>
+
 <div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/3HFa1-V0N1Y"
+
+<iframe
+src="https://www.youtube.com/embed/3HFa1-V0N1Y"
 title="Tutorial 1"
 allowfullscreen>
 </iframe>
+
 </div>
+
 </div>
 
 
 <div class="video-card">
+
 <div class="video-top">
 <span>02</span>
 <strong>TUTORIAL 2</strong>
 </div>
+
 <div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/gU1uX0aLz8k"
+
+<iframe
+src="https://www.youtube.com/embed/gU1uX0aLz8k"
 title="Tutorial 2"
 allowfullscreen>
 </iframe>
+
 </div>
+
 </div>
 
 
 <div class="video-card">
+
 <div class="video-top">
 <span>03</span>
 <strong>TUTORIAL 3</strong>
 </div>
+
 <div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/jHgjXplBUps"
+
+<iframe
+src="https://www.youtube.com/embed/jHgjXplBUps"
 title="Tutorial 3"
 allowfullscreen>
 </iframe>
+
 </div>
+
 </div>
 
 
 <div class="video-card">
+
 <div class="video-top">
 <span>04</span>
 <strong>TUTORIAL 4</strong>
 </div>
+
 <div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/jZz9s1oEXKQ"
+
+<iframe
+src="https://www.youtube.com/embed/jZz9s1oEXKQ"
 title="Tutorial 4"
 allowfullscreen>
 </iframe>
+
 </div>
+
 </div>
 
 
 <div class="video-card">
+
 <div class="video-top">
 <span>05</span>
 <strong>TUTORIAL 5</strong>
 </div>
+
 <div class="video-wrap">
-<iframe src="https://www.youtube.com/embed/9gk9032x_ko"
+
+<iframe
+src="https://www.youtube.com/embed/9gk9032x_ko"
 title="Tutorial 5"
 allowfullscreen>
 </iframe>
-</div>
+
 </div>
 
 </div>
+
+
 </div>
+
+</div>
+
 </section>
+
 
 
 <!-- SUPORTE -->
@@ -1120,17 +1334,24 @@ e suporte da comunidade.
 
 </div>
 
-<a class="btn primary"
+<a
+class="btn primary"
 href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t"
 target="_blank">
+
 WHATSAPP / COMUNIDADE
+
 </a>
 
 </div>
+
 </div>
+
 </section>
 
+
 </main>
+
 
 
 <footer>
@@ -1148,6 +1369,7 @@ RBX IMPÉRIO
 </div>
 
 </footer>
+
 
 </body>
 </html>
