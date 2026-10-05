@@ -1,1849 +1,1624 @@
-import express from "express";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import helmet from "helmet";
-import rateLimit from "express-rate-limit";
-import crypto from "crypto";
-import path from "path";
-import pg from "pg";
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080510">
 
-const { Pool } = pg;
-const app = express();
+<title>RBX Império | Área do Cliente</title>
 
-const PORT = Number(process.env.PORT || 3000);
-const ADMIN_USER = process.env.ADMIN_USER || "admin";
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "CHANGE_ME";
-const JWT_SECRET = process.env.JWT_SECRET || "CHANGE_ME";
-const DATABASE_URL = process.env.DATABASE_URL;
-const PUBLIC_KEY_DURATION_DAYS = Number(
-  process.env.PUBLIC_KEY_DURATION_DAYS ?? 0
-);
-
-// Mercado Pago
-const MP_ACCESS_TOKEN = process.env.MP_ACCESS_TOKEN;
-
-// Área do cliente aberta somente depois da confirmação do pagamento.
-// Pode ser sobrescrita no Render com CLIENT_AREA_URL.
-const CLIENT_AREA_URL =
-  process.env.CLIENT_AREA_URL ||
-  "https://bocaecergin55-hash.github.io/Desbloqueador-steam/";
-
-if (!DATABASE_URL) {
-  console.error("ERRO: DATABASE_URL não configurado.");
-  process.exit(1);
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
 }
 
-if (![0, 1, 7, 30, 90, 365].includes(PUBLIC_KEY_DURATION_DAYS)) {
-  console.error("ERRO: PUBLIC_KEY_DURATION_DAYS inválido.");
-  process.exit(1);
+html{
+  scroll-behavior:smooth;
 }
 
-const db = new Pool({
-  connectionString: DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
-});
-
-// =====================================================
-// BANCO
-// =====================================================
-
-async function iniciarBanco() {
-  await db.query(`
-    CREATE TABLE IF NOT EXISTS keys (
-      id BIGSERIAL PRIMARY KEY,
-      key TEXT NOT NULL UNIQUE,
-      duration_days INTEGER NOT NULL,
-      created_at TIMESTAMPTZ NOT NULL,
-      expires_at TIMESTAMPTZ,
-      status TEXT NOT NULL DEFAULT 'active',
-      hwid TEXT,
-      last_used_at TIMESTAMPTZ
-    );
-  `);
-
-  await db.query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id BIGSERIAL PRIMARY KEY,
-      username TEXT NOT NULL UNIQUE,
-      email TEXT NOT NULL UNIQUE,
-      password_hash TEXT NOT NULL,
-      signup_ip TEXT NOT NULL UNIQUE,
-      key_id BIGINT NOT NULL UNIQUE REFERENCES keys(id),
-      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
-  `);
-
-  await db.query(`
-    CREATE TABLE IF NOT EXISTS pix_orders (
-      id BIGSERIAL PRIMARY KEY,
-      external_reference TEXT NOT NULL UNIQUE,
-      mp_order_id TEXT,
-      plano TEXT NOT NULL,
-      valor NUMERIC(10,2) NOT NULL,
-      nome TEXT,
-      sobrenome TEXT,
-      email TEXT NOT NULL,
-      telefone TEXT,
-      status TEXT NOT NULL DEFAULT 'pending',
-      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
-    );
-  `);
-
-  console.log("Banco PostgreSQL conectado.");
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(126,45,255,.17),transparent 30%),
+    radial-gradient(circle at 80% 30%,rgba(88,20,180,.12),transparent 30%),
+    #080510;
+  color:#fff;
+  min-height:100vh;
 }
 
-// =====================================================
-// MIDDLEWARES
-// =====================================================
+a{
+  text-decoration:none;
+  color:inherit;
+}
 
-app.set("trust proxy", 1);
+img{
+  display:block;
+  width:100%;
+}
 
-app.use(
-  helmet({
-    contentSecurityPolicy: false
-  })
-);
+.container{
+  width:min(1180px,92%);
+  margin:auto;
+}
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Content-Type, Authorization"
+/* LOGIN CLIENTE */
+
+#loginGate{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(126,45,255,.24),transparent 34%),
+    radial-gradient(circle at 20% 80%,rgba(88,20,180,.13),transparent 35%),
+    #080510;
+}
+
+.login-box{
+  width:min(460px,100%);
+  padding:42px 34px;
+  border-radius:26px;
+  background:
+    linear-gradient(145deg,rgba(24,16,36,.97),rgba(12,8,19,.98));
+  border:1px solid rgba(168,85,247,.28);
+  box-shadow:
+    0 35px 90px rgba(0,0,0,.55),
+    0 0 70px rgba(126,34,206,.10);
+  text-align:center;
+}
+
+.login-logo{
+  font-size:27px;
+  font-weight:900;
+  letter-spacing:-1px;
+  margin-bottom:26px;
+}
+
+.login-logo span{
+  color:#a855f7;
+}
+
+.login-lock{
+  width:64px;
+  height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 20px;
+  border-radius:18px;
+  font-size:29px;
+  background:rgba(168,85,247,.13);
+  border:1px solid rgba(168,85,247,.30);
+}
+
+.login-box h1{
+  font-size:30px;
+  letter-spacing:-1px;
+  margin-bottom:11px;
+}
+
+.login-box > p{
+  color:#aaa1b8;
+  line-height:1.6;
+  font-size:14px;
+  margin-bottom:25px;
+}
+
+.login-box input{
+  width:100%;
+  height:54px;
+  padding:0 17px;
+  border-radius:13px;
+  outline:none;
+  border:1px solid rgba(255,255,255,.11);
+  background:#0c0812;
+  color:#fff;
+  font-size:15px;
+  transition:.2s;
+}
+
+.login-box input:focus{
+  border-color:#a855f7;
+  box-shadow:0 0 0 3px rgba(168,85,247,.11);
+}
+
+.login-box input::placeholder{
+  color:#71687c;
+}
+
+.login-button{
+  width:100%;
+  min-height:54px;
+  margin-top:13px;
+  border:0;
+  border-radius:13px;
+  cursor:pointer;
+  color:#fff;
+  font-size:14px;
+  font-weight:900;
+  background:linear-gradient(135deg,#9333ea,#6d28d9);
+  box-shadow:0 12px 35px rgba(126,34,206,.28);
+  transition:.2s;
+}
+
+.login-button:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.08);
+}
+
+.login-button:disabled{
+  opacity:.65;
+  cursor:wait;
+  transform:none;
+}
+
+.login-message{
+  min-height:20px;
+  margin-top:15px;
+  font-size:13px;
+  line-height:1.45;
+  color:#ff8c9b;
+}
+
+.login-message.success{
+  color:#76f5a7;
+}
+
+.login-help{
+  margin-top:19px;
+  padding-top:18px;
+  border-top:1px solid rgba(255,255,255,.07);
+  color:#746b7e;
+  font-size:12px;
+  line-height:1.5;
+}
+
+/* CONTEÚDO BLOQUEADO ATÉ VALIDAR */
+
+#memberContent{
+  display:none;
+}
+
+/* NAV */
+
+nav{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(8,5,16,.88);
+  backdrop-filter:blur(15px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.nav-content{
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:-1px;
+}
+
+.logo span{
+  color:#a855f7;
+}
+
+.nav-links{
+  display:flex;
+  gap:24px;
+  font-size:14px;
+  color:#c9c1d8;
+}
+
+.nav-links a:hover{
+  color:#fff;
+}
+
+/* BANNER */
+
+.game-banner{
+  position:relative;
+  height:410px;
+  overflow:hidden;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.banner-images{
+  position:absolute;
+  inset:0;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+
+.banner-img{
+  background-size:cover;
+  background-position:center;
+  filter:saturate(.9);
+}
+
+.banner-img:nth-child(1){
+  background-image:url("images/IMG_1862.jpeg");
+}
+
+.banner-img:nth-child(2){
+  background-image:url("images/IMG_1863.jpeg");
+}
+
+.banner-img:nth-child(3){
+  background-image:url("images/IMG_1865.jpeg");
+}
+
+.banner-img:nth-child(4){
+  background-image:url("images/IMG_1869.jpeg");
+}
+
+.game-banner::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:
+    linear-gradient(90deg,rgba(8,5,16,.40),rgba(8,5,16,.08),rgba(8,5,16,.40)),
+    linear-gradient(0deg,#080510 0%,rgba(8,5,16,.35) 65%,rgba(8,5,16,.18) 100%);
+}
+
+.banner-content{
+  position:relative;
+  z-index:2;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding-bottom:50px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  padding:8px 13px;
+  border-radius:999px;
+  background:rgba(168,85,247,.15);
+  border:1px solid rgba(168,85,247,.45);
+  color:#d8b4fe;
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+.banner-content h1{
+  font-size:clamp(34px,6vw,64px);
+  max-width:760px;
+  line-height:.98;
+  letter-spacing:-3px;
+}
+
+.banner-content h1 span{
+  color:#a855f7;
+}
+
+/* INTRO */
+
+.intro{
+  padding:75px 0 40px;
+  text-align:center;
+}
+
+.eyebrow{
+  color:#a855f7;
+  text-transform:uppercase;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:2px;
+  margin-bottom:14px;
+}
+
+.intro h2{
+  font-size:clamp(34px,6vw,58px);
+  line-height:1;
+  letter-spacing:-2px;
+}
+
+.intro h2 em{
+  color:#a855f7;
+  font-style:normal;
+}
+
+.intro p{
+  max-width:680px;
+  margin:20px auto 0;
+  color:#aaa1b8;
+  line-height:1.7;
+  font-size:16px;
+}
+
+/* SECTIONS */
+
+section{
+  padding:65px 0;
+}
+
+.section-head{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:30px;
+  margin-bottom:28px;
+}
+
+.section-head h2{
+  font-size:32px;
+  letter-spacing:-1px;
+}
+
+.section-head p{
+  max-width:530px;
+  color:#9990a8;
+  line-height:1.6;
+}
+
+/* GAME GRID */
+
+.games{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.game-card{
+  position:relative;
+  min-height:390px;
+  border-radius:20px;
+  overflow:hidden;
+  background:#130d1d;
+  border:1px solid rgba(255,255,255,.09);
+  box-shadow:0 20px 50px rgba(0,0,0,.22);
+  transition:.25s;
+}
+
+.game-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(168,85,247,.55);
+}
+
+.game-card img{
+  width:100%;
+  height:100%;
+  min-height:390px;
+  object-fit:cover;
+  position:absolute;
+  inset:0;
+}
+
+.game-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    0deg,
+    rgba(7,4,12,.98) 0%,
+    rgba(7,4,12,.72) 25%,
+    rgba(7,4,12,.04) 62%
   );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS"
-  );
-
-  if (req.method === "OPTIONS") {
-    return res.sendStatus(204);
-  }
-
-  next();
-});
-
-app.use(express.json());
-app.use(express.static("public"));
-
-app.use(
-  "/api/",
-  rateLimit({
-    windowMs: 60_000,
-    limit: 120
-  })
-);
-
-const generateLimiter = rateLimit({
-  windowMs: 60_000,
-  limit: 10
-});
-
-const pixLimiter = rateLimit({
-  windowMs: 60_000,
-  limit: 8
-});
-
-// =====================================================
-// PLANOS DO CHECKOUT
-// =====================================================
-
-const PLANOS = {
-  start: {
-    nome: "RBX Império Start",
-    valor: "12.90"
-  },
-
-  pro: {
-    nome: "RBX Império Pro",
-    valor: "19.99"
-  },
-
-  imperio: {
-    nome: "RBX Império",
-    valor: "39.90"
-  }
-};
-
-// =====================================================
-// FUNÇÕES
-// =====================================================
-
-function makeKey() {
-  const chars = "0123456789ABCDEF";
-
-  const part = n =>
-    Array.from(
-      { length: n },
-      () => chars[crypto.randomInt(0, chars.length)]
-    ).join("");
-
-  return `RBX-${part(4)}-${part(3)}`;
 }
 
-function adminAuth(req, res, next) {
-  const token = (req.headers.authorization || "").replace(
-    /^Bearer\s+/i,
-    ""
-  );
+.game-info{
+  position:absolute;
+  z-index:2;
+  left:18px;
+  right:18px;
+  bottom:18px;
+}
 
-  try {
-    req.admin = jwt.verify(token, JWT_SECRET);
-    next();
-  } catch {
-    res.status(401).json({
-      error: "Não autorizado"
-    });
+.game-tag{
+  display:inline-block;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
+  color:#d8b4fe;
+  background:rgba(126,34,206,.28);
+  border:1px solid rgba(168,85,247,.38);
+  padding:6px 8px;
+  border-radius:7px;
+  margin-bottom:8px;
+}
+
+.game-info h3{
+  font-size:19px;
+  line-height:1.15;
+}
+  /* RESOURCE CARDS */
+
+.resource-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.resource-card{
+  padding:27px;
+  border-radius:20px;
+  background:linear-gradient(145deg,#151020,#0d0914);
+  border:1px solid rgba(255,255,255,.09);
+}
+
+.resource-icon{
+  width:48px;
+  height:48px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  background:rgba(168,85,247,.15);
+  border:1px solid rgba(168,85,247,.3);
+  margin-bottom:20px;
+}
+
+.resource-card h3{
+  font-size:20px;
+  margin-bottom:9px;
+}
+
+.resource-card p{
+  color:#9990a8;
+  line-height:1.6;
+  min-height:76px;
+}
+
+.btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:49px;
+  margin-top:20px;
+  padding:12px 18px;
+  border-radius:12px;
+  font-weight:800;
+  font-size:14px;
+  background:linear-gradient(135deg,#9333ea,#6d28d9);
+  box-shadow:0 10px 30px rgba(126,34,206,.25);
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.1);
+}
+
+.btn.secondary{
+  background:#21172f;
+  border:1px solid rgba(168,85,247,.35);
+}
+
+/* SOCIAL */
+
+.social-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.social{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:22px;
+  border-radius:18px;
+  background:#110b19;
+  border:1px solid rgba(255,255,255,.08);
+  transition:.2s;
+}
+
+.social:hover{
+  transform:translateY(-3px);
+  border-color:rgba(168,85,247,.5);
+}
+
+.social-icon{
+  width:52px;
+  height:52px;
+  flex:none;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:20px;
+  background:linear-gradient(135deg,#9333ea,#5b21b6);
+}
+
+.social strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.social span{
+  color:#958a9f;
+  font-size:13px;
+}
+
+/* TUTORIALS */
+
+.tutorial-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+}
+
+.video-card{
+  overflow:hidden;
+  border-radius:20px;
+  background:#110b19;
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.video-card iframe{
+  width:100%;
+  aspect-ratio:16/9;
+  border:0;
+  display:block;
+}
+
+.video-title{
+  padding:16px 18px;
+  font-weight:800;
+}
+
+/* SUPPORT */
+
+.support{
+  margin:60px auto;
+  padding:50px;
+  border-radius:28px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(168,85,247,.24),transparent 55%),
+    #100a18;
+  border:1px solid rgba(168,85,247,.24);
+}
+
+.support h2{
+  font-size:36px;
+  margin-bottom:12px;
+}
+
+.support p{
+  max-width:620px;
+  margin:auto;
+  color:#a79cad;
+  line-height:1.7;
+}
+
+.support .btn{
+  max-width:320px;
+  margin:25px auto 0;
+}
+
+/* FOOTER */
+
+footer{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:35px 0;
+  text-align:center;
+  color:#766d80;
+  font-size:13px;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+  .games{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .resource-grid,
+  .social-grid{
+    grid-template-columns:1fr;
+  }
+
+  .nav-links{
+    display:none;
+  }
+
+  .banner-images{
+    grid-template-columns:repeat(4,55%);
+    width:220%;
+    transform:translateX(-22%);
+  }
+
+  .game-banner{
+    height:390px;
+  }
+
+  .section-head{
+    display:block;
+  }
+
+  .section-head p{
+    margin-top:10px;
   }
 }
 
-function clientIp(req) {
-  return String(
-    req.ip || req.socket?.remoteAddress || ""
-  ).replace(/^::ffff:/, "");
-}
+@media(max-width:580px){
 
-// =====================================================
-// ADMIN LOGIN
-// =====================================================
-
-app.post("/api/admin/login", async (req, res) => {
-  const { username, password } = req.body || {};
-
-  if (
-    username !== ADMIN_USER ||
-    password !== ADMIN_PASSWORD
-  ) {
-    return res.status(401).json({
-      error: "Usuário ou senha inválidos"
-    });
+  .login-box{
+    padding:34px 22px;
   }
 
-  res.json({
-    token: jwt.sign(
-      { sub: ADMIN_USER },
-      JWT_SECRET,
-      { expiresIn: "8h" }
-    )
+  .login-box h1{
+    font-size:26px;
+  }
+
+  .games{
+    grid-template-columns:repeat(2,1fr);
+    gap:11px;
+  }
+
+  .game-card{
+    min-height:270px;
+    border-radius:15px;
+  }
+
+  .game-card img{
+    min-height:270px;
+  }
+
+  .game-info{
+    left:12px;
+    right:12px;
+    bottom:13px;
+  }
+
+  .game-info h3{
+    font-size:14px;
+  }
+
+  .game-tag{
+    font-size:8px;
+  }
+
+  .tutorial-grid{
+    grid-template-columns:1fr;
+  }
+
+  .support{
+    padding:35px 20px;
+  }
+
+  .banner-content h1{
+    letter-spacing:-2px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- TELA DE ACESSO -->
+
+<div id="loginGate">
+
+  <div class="login-box">
+
+    <div class="login-logo">
+      RBX <span>IMPÉRIO</span>
+    </div>
+
+    <div class="login-lock">🔐</div>
+
+    <h1>Área do Cliente</h1>
+
+    <p>
+      Digite o mesmo e-mail utilizado na compra
+      para acessar sua área exclusiva.
+    </p>
+
+    <form id="loginForm">
+
+      <input
+        type="email"
+        id="customerEmail"
+        placeholder="seuemail@exemplo.com"
+        autocomplete="email"
+        required
+      >
+
+      <button
+        type="submit"
+        class="login-button"
+        id="loginButton"
+      >
+        ACESSAR MINHA ÁREA
+      </button>
+
+      <div
+        class="login-message"
+        id="loginMessage"
+      ></div>
+
+    </form>
+
+    <div class="login-help">
+      Use exatamente o e-mail informado no checkout.
+      O acesso é liberado somente para pagamentos aprovados.
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ÁREA DO CLIENTE -->
+
+<div id="memberContent">
+
+<nav>
+  <div class="container nav-content">
+
+    <div class="logo">
+      RBX <span>IMPÉRIO</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="#jogos">Jogos</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#tutoriais">Tutoriais</a>
+      <a href="#suporte">Suporte</a>
+    </div>
+
+  </div>
+</nav>
+
+
+<header class="game-banner">
+
+  <div class="banner-images">
+    <div class="banner-img"></div>
+    <div class="banner-img"></div>
+    <div class="banner-img"></div>
+    <div class="banner-img"></div>
+  </div>
+
+  <div class="container banner-content">
+
+    <div class="badge">
+      ⚡ RBX IMPÉRIO
+    </div>
+
+    <h1>
+      Seu universo de jogos
+      <span>começa aqui.</span>
+    </h1>
+
+  </div>
+
+</header>
+
+
+<main>
+
+<section class="intro">
+
+  <div class="container">
+
+    <div class="eyebrow">
+      Área do Cliente
+    </div>
+
+    <h2>
+      Tudo do RBX.<br>
+      <em>Em um só lugar.</em>
+    </h2>
+
+    <p>
+      Bem-vindo à sua central RBX Império. Aqui você encontra os recursos,
+      novidades, tutoriais e suporte organizados em um só lugar.
+    </p>
+
+  </div>
+
+</section>
+
+
+<section id="jogos">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+        <div class="eyebrow">
+          Destaques
+        </div>
+
+        <h2>
+          Jogos no RBX Launcher
+        </h2>
+      </div>
+
+      <p>
+        Conheça alguns dos títulos em destaque no catálogo do RBX Launcher.
+        Novidades e atualizações aparecem por aqui.
+      </p>
+
+    </div>
+
+
+    <div class="games">
+
+      <article class="game-card">
+
+        <img
+          src="images/IMG_1862.jpeg"
+          alt="Forza Horizon 6"
+        >
+
+        <div class="game-info">
+
+          <span class="game-tag">
+            NO LAUNCHER
+          </span>
+
+          <h3>
+            Forza Horizon 6
+          </h3>
+
+        </div>
+
+      </article>
+
+
+      <article class="game-card">
+
+        <img
+          src="images/IMG_1863.jpeg"
+          alt="Resident Evil Requiem"
+        >
+
+        <div class="game-info">
+
+          <span class="game-tag">
+            NO LAUNCHER
+          </span>
+
+          <h3>
+            Resident Evil Requiem
+          </h3>
+
+        </div>
+
+      </article>
+
+
+      <article class="game-card">
+
+        <img
+          src="images/IMG_1864.jpeg"
+          alt="PRAGMATA"
+        >
+
+        <div class="game-info">
+
+          <span class="game-tag">
+            NO LAUNCHER
+          </span>
+
+          <h3>
+            PRAGMATA
+          </h3>
+
+        </div>
+
+      </article>
+
+
+      <article class="game-card">
+
+        <img
+          src="images/IMG_1865.jpeg"
+          alt="Gears of War E-Day"
+        >
+
+        <div class="game-info">
+
+          <span class="game-tag">
+            NO LAUNCHER
+          </span>
+
+          <h3>
+            Gears of War: E-Day
+          </h3>
+
+        </div>
+
+      </article>
+
+
+      <article class="game-card">
+
+        <img
+          src="images/IMG_1866.jpeg"
+          alt="EA SPORTS FC 27"
+        >
+
+        <div class="game-info">
+
+          <span class="game-tag">
+            NO LAUNCHER
+          </span>
+
+          <h3>
+            EA SPORTS FC 27
+          </h3>
+
+        </div>
+
+      </article>
+
+
+      <article class="game-card">
+
+        <img
+          src="images/IMG_1867.jpeg"
+          alt="CONTROL Resonant"
+        >
+
+        <div class="game-info">
+
+          <span class="game-tag">
+            NO LAUNCHER
+          </span>
+
+          <h3>
+            CONTROL Resonant
+          </h3>
+
+        </div>
+
+      </article>
+
+
+      <article class="game-card">
+
+        <img
+          src="images/IMG_1868.jpeg"
+          alt="WARDOGS"
+        >
+
+        <div class="game-info">
+
+          <span class="game-tag">
+            NO LAUNCHER
+          </span>
+
+          <h3>
+            WARDOGS
+          </h3>
+
+        </div>
+
+      </article>
+
+
+      <article class="game-card">
+
+        <img
+          src="images/IMG_1869.jpeg"
+          alt="Halo Campaign Evolved"
+        >
+
+        <div class="game-info">
+
+          <span class="game-tag">
+            NO LAUNCHER
+          </span>
+
+          <h3>
+            Halo: Campaign Evolved
+          </h3>
+
+        </div>
+
+      </article>
+
+    </div>
+
+  </div>
+
+</section>
+<section id="recursos">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+        <div class="eyebrow">
+          Central RBX
+        </div>
+
+        <h2>
+          Seus recursos
+        </h2>
+      </div>
+
+      <p>
+        Acesse rapidamente os principais recursos da sua área do cliente.
+      </p>
+
+    </div>
+
+
+    <div class="resource-grid">
+
+      <div class="resource-card">
+
+        <div class="resource-icon">
+          ⬇
+        </div>
+
+        <h3>
+          Baixar Launcher
+        </h3>
+
+        <p>
+          Baixe a versão atualizada do RBX Império para o seu computador.
+        </p>
+
+        <a
+          class="btn"
+          href="https://www.mediafire.com/file/6yprimkan6odhsk/RBX_Imperio_ATUALIZADOS.zip/file"
+          target="_blank"
+          rel="noopener"
+        >
+          Baixar Launcher
+        </a>
+
+      </div>
+
+
+      <div class="resource-card">
+
+        <div class="resource-icon">
+          🔑
+        </div>
+
+        <h3>
+          Gerar Licença
+        </h3>
+
+        <p>
+          Acesse sua página de geração de licença para utilizar o RBX.
+        </p>
+
+        <a
+          class="btn"
+          href="https://rbx-imperio-key-server.onrender.com/gerar-key.html"
+          target="_blank"
+          rel="noopener"
+        >
+          Gerar Licença
+        </a>
+
+      </div>
+
+
+      <div class="resource-card">
+
+        <div class="resource-icon">
+          🛠
+        </div>
+
+        <h3>
+          Correções
+        </h3>
+
+        <p>
+          Encontre arquivos de correção e recursos adicionais.
+        </p>
+
+        <a
+          class="btn secondary"
+          href="https://generator.ryuu.lol/fixes"
+          target="_blank"
+          rel="noopener"
+        >
+          Ver Correções
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section>
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+        <div class="eyebrow">
+          Comunidade
+        </div>
+
+        <h2>
+          Fique conectado
+        </h2>
+      </div>
+
+      <p>
+        Acompanhe novidades, atualizações e avisos pelos canais do RBX Império.
+      </p>
+
+    </div>
+
+
+    <div class="social-grid">
+
+      <a
+        class="social"
+        href="https://www.instagram.com/rbx_imperio/"
+        target="_blank"
+        rel="noopener"
+      >
+
+        <div class="social-icon">
+          ◎
+        </div>
+
+        <div>
+          <strong>
+            Instagram
+          </strong>
+
+          <span>
+            @rbx_imperio
+          </span>
+        </div>
+
+      </a>
+
+
+      <a
+        class="social"
+        href="https://www.tiktok.com/@rbx_imperio"
+        target="_blank"
+        rel="noopener"
+      >
+
+        <div class="social-icon">
+          ♪
+        </div>
+
+        <div>
+          <strong>
+            TikTok
+          </strong>
+
+          <span>
+            @rbx_imperio
+          </span>
+        </div>
+
+      </a>
+
+
+      <a
+        class="social"
+        href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t"
+        target="_blank"
+        rel="noopener"
+      >
+
+        <div class="social-icon">
+          ✆
+        </div>
+
+        <div>
+          <strong>
+            WhatsApp
+          </strong>
+
+          <span>
+            Comunidade RBX
+          </span>
+        </div>
+
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="tutoriais">
+
+  <div class="container">
+
+    <div class="section-head">
+
+      <div>
+        <div class="eyebrow">
+          Aprenda
+        </div>
+
+        <h2>
+          Tutoriais
+        </h2>
+      </div>
+
+      <p>
+        Assista aos vídeos para configurar e utilizar os recursos do RBX.
+      </p>
+
+    </div>
+
+
+    <div class="tutorial-grid">
+
+      <div class="video-card">
+
+        <iframe
+          src="https://www.youtube.com/embed/54yul52jb0Y"
+          allowfullscreen>
+        </iframe>
+
+        <div class="video-title">
+          Tutorial RBX #1
+        </div>
+
+      </div>
+
+
+      <div class="video-card">
+
+        <iframe
+          src="https://www.youtube.com/embed/DgL_H_qHjFg"
+          allowfullscreen>
+        </iframe>
+
+        <div class="video-title">
+          Tutorial RBX #2
+        </div>
+
+      </div>
+
+
+      <div class="video-card">
+
+        <iframe
+          src="https://www.youtube.com/embed/t5ZaPRkMBWc"
+          allowfullscreen>
+        </iframe>
+
+        <div class="video-title">
+          Tutorial RBX #3
+        </div>
+
+      </div>
+
+
+      <div class="video-card">
+
+        <iframe
+          src="https://www.youtube.com/embed/vODwscGxExY"
+          allowfullscreen>
+        </iframe>
+
+        <div class="video-title">
+          Tutorial RBX #4
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="suporte">
+
+  <div class="container">
+
+    <div class="support">
+
+      <div class="eyebrow">
+        Precisa de ajuda?
+      </div>
+
+      <h2>
+        Suporte RBX Império
+      </h2>
+
+      <p>
+        Entre na nossa comunidade para receber avisos, acompanhar novidades
+        e encontrar ajuda quando precisar.
+      </p>
+
+      <a
+        class="btn"
+        href="https://chat.whatsapp.com/BOvhJaMawNtAAXQM8xZVrk?mode=gi_t"
+        target="_blank"
+        rel="noopener"
+      >
+        Entrar na comunidade
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<footer>
+
+  <div class="container">
+    © 2026 RBX Império • Área do Cliente
+  </div>
+
+</footer>
+
+</div>
+<!-- FIM memberContent -->
+  <script>
+const API_URL = "https://rbx-imperio-key-server.onrender.com";
+
+const loginGate = document.getElementById("loginGate");
+const memberContent = document.getElementById("memberContent");
+const loginForm = document.getElementById("loginForm");
+const emailInput = document.getElementById("customerEmail");
+const loginButton = document.getElementById("loginButton");
+const loginMessage = document.getElementById("loginMessage");
+
+function mostrarMensagem(texto, sucesso = false) {
+  loginMessage.textContent = texto;
+  loginMessage.classList.toggle("success", sucesso);
+}
+
+function bloquearBotao(bloqueado) {
+  loginButton.disabled = bloqueado;
+
+  loginButton.textContent = bloqueado
+    ? "VERIFICANDO..."
+    : "ACESSAR MINHA ÁREA";
+}
+
+function liberarArea() {
+  loginGate.style.display = "none";
+  memberContent.style.display = "block";
+
+  window.scrollTo({
+    top: 0,
+    behavior: "instant"
   });
-});
+}
 
-// =====================================================
-// ADMIN KEYS
-// =====================================================
+async function validarToken(token) {
+  try {
+    const response = await fetch(
+      API_URL + "/api/cliente/validar-acesso",
+      {
+        method: "POST",
 
-app.post(
-  "/api/admin/keys",
-  adminAuth,
-  async (req, res) => {
-    try {
-      const days = Number(req.body?.duration_days);
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-      if (![1, 7, 30, 90, 365, 0].includes(days)) {
-        return res.status(400).json({
-          error:
-            "duration_days deve ser 1, 7, 30, 90, 365 ou 0 (vitalícia)"
-        });
+        body: JSON.stringify({
+          token: token
+        })
       }
+    );
 
-      let key;
+    const data = await response.json();
 
-      while (true) {
-        key = makeKey();
+    return (
+      response.ok &&
+      data.ok === true &&
+      data.autorizado === true
+    );
 
-        const x = await db.query(
-          "SELECT 1 FROM keys WHERE key=$1",
-          [key]
-        );
+  } catch (erro) {
+    console.error(
+      "Erro ao validar acesso:",
+      erro
+    );
 
-        if (!x.rowCount) break;
-      }
-
-      const now = new Date();
-
-      const expires =
-        days === 0
-          ? null
-          : new Date(
-              now.getTime() +
-                days * 86400000
-            );
-
-      await db.query(
-        `
-        INSERT INTO keys
-        (
-          key,
-          duration_days,
-          created_at,
-          expires_at,
-          status
-        )
-        VALUES ($1,$2,$3,$4,'active')
-        `,
-        [key, days, now, expires]
-      );
-
-      res.json({
-        key,
-        duration_days: days,
-        expires_at: expires
-          ? expires.toISOString()
-          : null,
-        status: "active"
-      });
-    } catch (e) {
-      console.error("Erro criando key:", e);
-
-      res.status(500).json({
-        error: "Erro ao criar key"
-      });
-    }
+    return false;
   }
-);
+}
 
-app.get(
-  "/api/admin/keys",
-  adminAuth,
-  async (req, res) => {
-    try {
-      const r = await db.query(`
-        SELECT
-          id,
-          key,
-          duration_days,
-          created_at,
-          expires_at,
-          status,
-          hwid,
-          last_used_at
-        FROM keys
-        ORDER BY id DESC
-      `);
+loginForm.addEventListener(
+  "submit",
+  async function(event) {
 
-      res.json(r.rows);
-    } catch (e) {
-      console.error("Erro listando keys:", e);
+    event.preventDefault();
 
-      res.status(500).json({
-        error: "Erro ao listar keys"
-      });
-    }
-  }
-);
-
-app.post(
-  "/api/admin/keys/:id/revoke",
-  adminAuth,
-  async (req, res) => {
-    try {
-      const r = await db.query(
-        `
-        UPDATE keys
-        SET status='revoked'
-        WHERE id=$1
-        RETURNING id
-        `,
-        [req.params.id]
-      );
-
-      if (!r.rowCount) {
-        return res.status(404).json({
-          error: "Key não encontrada"
-        });
-      }
-
-      res.json({ ok: true });
-    } catch (e) {
-      console.error("Erro revogando key:", e);
-
-      res.status(500).json({
-        error: "Erro ao revogar key"
-      });
-    }
-  }
-);
-
-// =====================================================
-// CADASTRO CLIENTE
-// =====================================================
-
-app.post(
-  "/api/register",
-  generateLimiter,
-  async (req, res) => {
-    const username = String(
-      req.body?.username || ""
-    ).trim();
-
-    const email = String(
-      req.body?.email || ""
-    )
+    const email = emailInput.value
       .trim()
       .toLowerCase();
 
-    const password = String(
-      req.body?.password || ""
-    );
-
-    const ip = clientIp(req);
-
-    if (
-      !/^[A-Za-z0-9_.-]{3,24}$/.test(
-        username
-      )
-    ) {
-      return res.status(400).json({
-        ok: false,
-        error:
-          "Usuário deve ter de 3 a 24 caracteres."
-      });
-    }
-
-    if (
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-        email
-      )
-    ) {
-      return res.status(400).json({
-        ok: false,
-        error: "E-mail inválido."
-      });
-    }
-
-    if (password.length < 6) {
-      return res.status(400).json({
-        ok: false,
-        error:
-          "A senha deve ter pelo menos 6 caracteres."
-      });
-    }
-
-    const client = await db.connect();
-
-    try {
-      const blocked =
-        await client.query(
-          `
-          SELECT 1
-          FROM users
-          WHERE signup_ip=$1
-          `,
-          [ip]
-        );
-
-      if (blocked.rowCount) {
-        return res.status(409).json({
-          ok: false,
-          error:
-            "Este acesso já possui uma conta. Entre na conta existente."
-        });
-      }
-
-      const dup =
-        await client.query(
-          `
-          SELECT 1
-          FROM users
-          WHERE
-            lower(username)=lower($1)
-            OR email=$2
-          `,
-          [username, email]
-        );
-
-      if (dup.rowCount) {
-        return res.status(409).json({
-          ok: false,
-          error:
-            "Usuário ou e-mail já cadastrado."
-        });
-      }
-            let key;
-
-      while (true) {
-        key = makeKey();
-
-        const x =
-          await client.query(
-            `
-            SELECT 1
-            FROM keys
-            WHERE key=$1
-            `,
-            [key]
-          );
-
-        if (!x.rowCount) break;
-      }
-
-      const now = new Date();
-      const days =
-        PUBLIC_KEY_DURATION_DAYS;
-
-      const expires =
-        days === 0
-          ? null
-          : new Date(
-              now.getTime() +
-                days * 86400000
-            );
-
-      const hash =
-        await bcrypt.hash(
-          password,
-          12
-        );
-
-      await client.query("BEGIN");
-
-      const kr =
-        await client.query(
-          `
-          INSERT INTO keys
-          (
-            key,
-            duration_days,
-            created_at,
-            expires_at,
-            status
-          )
-          VALUES
-          ($1,$2,$3,$4,'active')
-          RETURNING id
-          `,
-          [
-            key,
-            days,
-            now,
-            expires
-          ]
-        );
-
-      await client.query(
-        `
-        INSERT INTO users
-        (
-          username,
-          email,
-          password_hash,
-          signup_ip,
-          key_id,
-          created_at
-        )
-        VALUES
-        ($1,$2,$3,$4,$5,$6)
-        `,
-        [
-          username,
-          email,
-          hash,
-          ip,
-          kr.rows[0].id,
-          now
-        ]
+    if (!email) {
+      mostrarMensagem(
+        "Digite o e-mail utilizado na compra."
       );
 
-      await client.query(
-        "COMMIT"
-      );
-
-      res.json({
-        ok: true,
-        key,
-        username
-      });
-    } catch (e) {
-      try {
-        await client.query(
-          "ROLLBACK"
-        );
-      } catch {}
-
-      if (e.code === "23505") {
-        return res.status(409).json({
-          ok: false,
-          error:
-            "Já existe uma conta para estes dados ou acesso."
-        });
-      }
-
-      console.error(
-        "Erro cadastro:",
-        e
-      );
-
-      res.status(500).json({
-        ok: false,
-        error:
-          "Não foi possível criar a conta."
-      });
-    } finally {
-      client.release();
+      return;
     }
-  }
-);
 
-// =====================================================
-// LOGIN CLIENTE
-// =====================================================
+    bloquearBotao(true);
 
-app.post(
-  "/api/client/login",
-  generateLimiter,
-  async (req, res) => {
-    const login = String(
-      req.body?.login || ""
-    ).trim();
-
-    const password = String(
-      req.body?.password || ""
+    mostrarMensagem(
+      "Verificando sua compra..."
     );
 
     try {
-      const r = await db.query(
-        `
-        SELECT
-          u.username,
-          u.password_hash,
-          k.key,
-          k.status,
-          k.expires_at
-        FROM users u
-        JOIN keys k
-          ON k.id=u.key_id
-        WHERE
-          lower(u.username)=lower($1)
-          OR lower(u.email)=lower($1)
-        LIMIT 1
-        `,
-        [login]
-      );
-
-      if (
-        !r.rowCount ||
-        !(await bcrypt.compare(
-          password,
-          r.rows[0].password_hash
-        ))
-      ) {
-        return res.status(401).json({
-          ok: false,
-          error:
-            "Usuário/e-mail ou senha inválidos."
-        });
-      }
-
-      const row = r.rows[0];
-
-      if (
-        row.status === "revoked"
-      ) {
-        return res.status(403).json({
-          ok: false,
-          error:
-            "Sua key foi revogada."
-        });
-      }
-
-      res.json({
-        ok: true,
-        username: row.username,
-        key: row.key,
-        expires_at:
-          row.expires_at
-      });
-    } catch (e) {
-      console.error(
-        "Erro login cliente:",
-        e
-      );
-
-      res.status(500).json({
-        ok: false,
-        error:
-          "Não foi possível entrar."
-      });
-    }
-  }
-);
-
-// =====================================================
-// VALIDAR KEY
-// =====================================================
-
-app.post(
-  "/api/validate",
-  async (req, res) => {
-    try {
-      const rawKey = String(
-        req.body?.key || ""
-      )
-        .trim()
-        .toUpperCase();
-
-      const hwid = String(
-        req.body?.hwid || ""
-      )
-        .trim()
-        .toUpperCase();
-
-      if (!rawKey || !hwid) {
-        return res.status(400).json({
-          valid: false,
-          error:
-            "key e hwid são obrigatórios"
-        });
-      }
-
-      const result =
-        await db.query(
-          `
-          SELECT *
-          FROM keys
-          WHERE key=$1
-          `,
-          [rawKey]
-        );
-
-      if (!result.rowCount) {
-        return res.status(401).json({
-          valid: false,
-          error: "Key inválida"
-        });
-      }
-
-      const row =
-        result.rows[0];
-
-      if (
-        row.status === "revoked"
-      ) {
-        return res.status(403).json({
-          valid: false,
-          error: "Key revogada"
-        });
-      }
-
-      if (
-        row.expires_at &&
-        new Date(row.expires_at) <=
-          new Date()
-      ) {
-        await db.query(
-          `
-          UPDATE keys
-          SET status='expired'
-          WHERE id=$1
-          `,
-          [row.id]
-        );
-
-        return res.status(403).json({
-          valid: false,
-          error: "Key expirada"
-        });
-      }
-
-      if (
-        row.hwid &&
-        row.hwid !== hwid
-      ) {
-        return res.status(403).json({
-          valid: false,
-          error:
-            "Key vinculada a outro dispositivo"
-        });
-      }
-
-      const now = new Date();
-
-      if (!row.hwid) {
-        try {
-          await db.query(
-            `
-            UPDATE keys
-            SET
-              hwid=$1,
-              last_used_at=$2
-            WHERE id=$3
-            `,
-            [
-              hwid,
-              now,
-              row.id
-            ]
-          );
-        } catch (e) {
-          if (e.code === "23505") {
-            return res.status(403).json({
-              valid: false,
-              error:
-                "Este computador já possui outra key"
-            });
-          }
-
-          throw e;
-        }
-      } else {
-        await db.query(
-          `
-          UPDATE keys
-          SET last_used_at=$1
-          WHERE id=$2
-          `,
-          [now, row.id]
-        );
-      }
-
-      res.json({
-        valid: true,
-        key: row.key,
-        expires_at:
-          row.expires_at,
-        hwid_bound: true
-      });
-    } catch (e) {
-      console.error(
-        "Erro validando key:",
-        e
-      );
-
-      res.status(500).json({
-        valid: false,
-        error:
-          "Erro interno do servidor"
-      });
-    }
-  }
-);
-
-// =====================================================
-// CHECKOUT PIX - MERCADO PAGO
-// =====================================================
-
-app.post(
-  "/api/pix/criar",
-  pixLimiter,
-  async (req, res) => {
-    try {
-      if (!MP_ACCESS_TOKEN) {
-        console.error(
-          "MP_ACCESS_TOKEN não configurado."
-        );
-
-        return res.status(500).json({
-          ok: false,
-          error:
-            "Pagamento temporariamente indisponível."
-        });
-      }
-
-      const planoCodigo = String(
-        req.body?.plano || ""
-      )
-        .trim()
-        .toLowerCase();
-
-      const nome = String(
-        req.body?.nome || ""
-      ).trim();
-
-      const sobrenome = String(
-        req.body?.sobrenome || ""
-      ).trim();
-
-      const email = String(
-        req.body?.email || ""
-      )
-        .trim()
-        .toLowerCase();
-
-      const telefone = String(
-        req.body?.telefone || ""
-      ).trim();
-
-      const plano =
-        PLANOS[planoCodigo];
-
-      if (!plano) {
-        return res.status(400).json({
-          ok: false,
-          error:
-            "Plano inválido."
-        });
-      }
-
-      if (
-        nome.length < 2 ||
-        nome.length > 80
-      ) {
-        return res.status(400).json({
-          ok: false,
-          error:
-            "Informe seu nome."
-        });
-      }
-
-      if (
-        sobrenome.length < 2 ||
-        sobrenome.length > 100
-      ) {
-        return res.status(400).json({
-          ok: false,
-          error:
-            "Informe seu sobrenome."
-        });
-      }
-
-      if (
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
-          email
-        )
-      ) {
-        return res.status(400).json({
-          ok: false,
-          error:
-            "Informe um e-mail válido."
-        });
-      }
-
-      const externalReference =
-        `RBX_${planoCodigo}_${Date.now()}_${crypto
-          .randomBytes(4)
-          .toString("hex")}`;
-
-      const idempotencyKey =
-        crypto.randomUUID();
-
-      const body = {
-        type: "online",
-
-        total_amount:
-          plano.valor,
-
-        external_reference:
-          externalReference,
-
-        processing_mode:
-          "automatic",
-
-        transactions: {
-          payments: [
-            {
-              amount:
-                plano.valor,
-
-              payment_method: {
-                id: "pix",
-                type: "bank_transfer"
-              },
-
-              expiration_time: "PT30M"
-            }
-          ]
-        },
-
-        payer: {
-          email
-        }
-      };
-
-      const response =
-        await fetch(
-          "https://api.mercadopago.com/v1/orders",
-          {
-            method: "POST",
-
-            headers: {
-              Accept:
-                "application/json",
-
-              "Content-Type":
-                "application/json",
-
-              Authorization:
-                `Bearer ${MP_ACCESS_TOKEN}`,
-
-              "X-Idempotency-Key":
-                idempotencyKey
-            },
-
-            body:
-              JSON.stringify(body)
-          }
-        );
-
-      const data =
-        await response.json();
-
-      if (!response.ok) {
-        console.error(
-          "Erro Mercado Pago:",
-          response.status,
-          JSON.stringify(data)
-        );
-
-        return res
-          .status(502)
-          .json({
-            ok: false,
-            error:
-              "Não foi possível gerar o Pix agora.",
-            details:
-              data?.message ||
-              data?.error ||
-              null
-          });
-      }
-
-      const mpOrderId =
-        data?.id || null;
-
-      const payment =
-        data?.transactions
-          ?.payments?.[0] ||
-        null;
-
-      const qrCode =
-        payment?.payment_method
-          ?.qr_code ||
-        payment?.qr_code ||
-        payment?.point_of_interaction
-          ?.transaction_data
-          ?.qr_code ||
-        data?.payment_method
-          ?.qr_code ||
-        data?.qr_code ||
-        null;
-
-      const qrCodeBase64 =
-        payment?.payment_method
-          ?.qr_code_base64 ||
-        payment?.qr_code_base64 ||
-        payment?.point_of_interaction
-          ?.transaction_data
-          ?.qr_code_base64 ||
-        data?.payment_method
-          ?.qr_code_base64 ||
-        data?.qr_code_base64 ||
-        null;
-
-      const ticketUrl =
-        payment?.payment_method
-          ?.ticket_url ||
-        payment?.ticket_url ||
-        payment?.point_of_interaction
-          ?.transaction_data
-          ?.ticket_url ||
-        data?.ticket_url ||
-        null;
-
-      await db.query(
-        `
-        INSERT INTO pix_orders
-        (
-          external_reference,
-          mp_order_id,
-          plano,
-          valor,
-          nome,
-          sobrenome,
-          email,
-          telefone,
-          status
-        )
-        VALUES
-        (
-          $1,$2,$3,$4,$5,$6,$7,$8,$9
-        )
-        `,
-        [
-          externalReference,
-          mpOrderId,
-          planoCodigo,
-          plano.valor,
-          nome,
-          sobrenome,
-          email,
-          telefone,
-          String(
-            data?.status ||
-              payment?.status ||
-              "pending"
-          )
-        ]
-      );
-
-      res.json({
-        ok: true,
-
-        plano: {
-          codigo:
-            planoCodigo,
-          nome:
-            plano.nome,
-          valor:
-            plano.valor
-        },
-
-        order_id:
-          mpOrderId,
-
-        external_reference:
-          externalReference,
-
-        status:
-          data?.status ||
-          payment?.status ||
-          "pending",
-
-        qr_code:
-          qrCode,
-
-        qr_code_base64:
-          qrCodeBase64,
-
-        ticket_url:
-          ticketUrl
-      });
-    } catch (e) {
-      console.error(
-        "Erro criando Pix:",
-        e
-      );
-
-      res.status(500).json({
-        ok: false,
-        error:
-          "Erro interno ao gerar o Pix."
-      });
-    }
-  }
-);
-          // =====================================================
-// CONSULTAR STATUS DO PIX
-// =====================================================
-
-app.get(
-  "/api/pix/status/:reference",
-  async (req, res) => {
-    try {
-      const reference =
-        String(
-          req.params.reference ||
-            ""
-        ).trim();
-
-      if (
-        !/^[A-Za-z0-9_-]{1,100}$/.test(
-          reference
-        )
-      ) {
-        return res.status(400).json({
-          ok: false,
-          error:
-            "Referência inválida."
-        });
-      }
-
-      const local =
-        await db.query(
-          `
-          SELECT
-            external_reference,
-            mp_order_id,
-            plano,
-            valor,
-            status,
-            created_at,
-            updated_at
-          FROM pix_orders
-          WHERE external_reference=$1
-          LIMIT 1
-          `,
-          [reference]
-        );
-
-      if (!local.rowCount) {
-        return res.status(404).json({
-          ok: false,
-          error:
-            "Pagamento não encontrado."
-        });
-      }
-
-      const pedido =
-        local.rows[0];
-
-      if (
-        !pedido.mp_order_id ||
-        !MP_ACCESS_TOKEN
-      ) {
-        return res.json({
-          ok: true,
-          status:
-            pedido.status,
-          plano:
-            pedido.plano,
-          valor:
-            pedido.valor
-        });
-      }
-
-      const response =
-        await fetch(
-          `https://api.mercadopago.com/v1/orders/${encodeURIComponent(
-            pedido.mp_order_id
-          )}`,
-          {
-            headers: {
-              Accept:
-                "application/json",
-
-              Authorization:
-                `Bearer ${MP_ACCESS_TOKEN}`
-            }
-          }
-        );
-
-      const data =
-        await response.json();
-
-      if (!response.ok) {
-        console.error(
-          "Erro consultando order:",
-          response.status,
-          JSON.stringify(data)
-        );
-
-        return res.json({
-          ok: true,
-          status:
-            pedido.status,
-          plano:
-            pedido.plano,
-          valor:
-            pedido.valor
-        });
-      }
-
-      const novoStatus =
-        String(
-          data?.transactions
-            ?.payments?.[0]
-            ?.status ||
-          data?.status ||
-          pedido.status
-        );
-
-      await db.query(
-        `
-        UPDATE pix_orders
-        SET
-          status=$1,
-          updated_at=NOW()
-        WHERE external_reference=$2
-        `,
-        [
-          novoStatus,
-          reference
-        ]
-      );
-
-      res.json({
-        ok: true,
-        status:
-          novoStatus,
-        plano:
-          pedido.plano,
-        valor:
-          pedido.valor
-      });
-    } catch (e) {
-      console.error(
-        "Erro consultando Pix:",
-        e
-      );
-
-      res.status(500).json({
-        ok: false,
-        error:
-          "Erro ao consultar pagamento."
-      });
-    }
-  }
-);
-
-// =====================================================
-// LIBERAÇÃO PÓS-PAGAMENTO
-// =====================================================
-
-app.post(
-  "/api/pix/liberar/:reference",
-  pixLimiter,
-  async (req, res) => {
-    try {
-      const reference = String(
-        req.params.reference || ""
-      ).trim();
-
-      if (!/^[A-Za-z0-9_-]{1,100}$/.test(reference)) {
-        return res.status(400).json({
-          ok: false,
-          error: "Referência inválida."
-        });
-      }
-
-      if (!MP_ACCESS_TOKEN) {
-        return res.status(503).json({
-          ok: false,
-          error: "Confirmação de pagamento indisponível."
-        });
-      }
-
-      const local = await db.query(
-        `
-          SELECT
-            external_reference,
-            mp_order_id,
-            plano,
-            valor,
-            email,
-            status
-          FROM pix_orders
-          WHERE external_reference=$1
-          LIMIT 1
-        `,
-        [reference]
-      );
-
-      if (!local.rowCount) {
-        return res.status(404).json({
-          ok: false,
-          error: "Pagamento não encontrado."
-        });
-      }
-
-      const pedido = local.rows[0];
-
-      if (!pedido.mp_order_id) {
-        return res.status(409).json({
-          ok: false,
-          error: "Pedido ainda não está pronto para liberação."
-        });
-      }
 
       const response = await fetch(
-        `https://api.mercadopago.com/v1/orders/${encodeURIComponent(
-          pedido.mp_order_id
-        )}`,
+        API_URL + "/api/cliente/acesso",
         {
+          method: "POST",
+
           headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${MP_ACCESS_TOKEN}`
-          }
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            email: email
+          })
         }
       );
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        console.error(
-          "Liberação: erro consultando Order:",
-          response.status,
-          JSON.stringify(data)
-        );
-
-        return res.status(502).json({
-          ok: false,
-          error: "Não foi possível confirmar o pagamento agora."
-        });
-      }
-
-      const mpReference = String(
-        data?.external_reference || ""
-      ).trim();
-
-      if (
-        mpReference &&
-        mpReference !== pedido.external_reference
-      ) {
-        return res.status(409).json({
-          ok: false,
-          error: "Referência do pagamento não confere."
-        });
-      }
-
-      const status = String(
-        data?.transactions?.payments?.[0]?.status ||
-        data?.status ||
-        pedido.status ||
-        ""
-      ).toLowerCase();
-
-      const aprovado = [
-        "approved",
-        "processed",
-        "paid"
-      ].includes(status);
-
-      await db.query(
-        `
-          UPDATE pix_orders
-          SET status=$1, updated_at=NOW()
-          WHERE external_reference=$2
-        `,
-        [status || pedido.status, reference]
-      );
-
-      if (!aprovado) {
-        return res.status(409).json({
-          ok: false,
-          status,
-          error: "Pagamento ainda não aprovado."
-        });
-      }
-
-      const accessToken = jwt.sign(
-        {
-          type: "paid_access",
-          ref: pedido.external_reference,
-          plano: pedido.plano,
-          email: pedido.email
-        },
-        JWT_SECRET,
-        { expiresIn: "15m" }
-      );
-
-      const separator =
-        CLIENT_AREA_URL.includes("?") ? "&" : "?";
-
-      const redirectUrl =
-        CLIENT_AREA_URL +
-        separator +
-        "access=" +
-        encodeURIComponent(accessToken);
-
-      return res.json({
-        ok: true,
-        status,
-        plano: pedido.plano,
-        redirect_url: redirectUrl
-      });
-
-    } catch (e) {
-      console.error(
-        "Erro liberando acesso:",
-        e
-      );
-
-      return res.status(500).json({
-        ok: false,
-        error: "Erro interno ao liberar acesso."
-      });
-    }
-  }
-);
-
-// =====================================================
-// ACESSO À ÁREA DO CLIENTE PELO E-MAIL DA COMPRA
-// =====================================================
-
-app.post(
-  "/api/cliente/acesso",
-  generateLimiter,
-  async (req, res) => {
-    try {
-      const email = String(
-        req.body?.email || ""
-      )
-        .trim()
-        .toLowerCase();
-
-      if (
-        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-      ) {
-        return res.status(400).json({
-          ok: false,
-          error: "Informe um e-mail válido."
-        });
-      }
-
-      const result = await db.query(
-        `
-        SELECT
-          external_reference,
-          plano,
-          valor,
-          email,
-          status,
-          created_at
-        FROM pix_orders
-        WHERE
-          lower(email)=lower($1)
-          AND lower(status) IN (
-            'approved',
-            'processed',
-            'paid'
-          )
-        ORDER BY created_at DESC
-        LIMIT 1
-        `,
-        [email]
-      );
-
-      if (!result.rowCount) {
-        return res.status(403).json({
-          ok: false,
-          error:
-            "Nenhuma compra aprovada encontrada para este e-mail."
-        });
-      }
-
-      const compra = result.rows[0];
-
-      const accessToken = jwt.sign(
-        {
-          type: "member_access",
-          ref: compra.external_reference,
-          plano: compra.plano,
-          email: compra.email
-        },
-        JWT_SECRET,
-        {
-          expiresIn: "24h"
-        }
-      );
-
-      return res.json({
-        ok: true,
-        plano: compra.plano,
-        access_token: accessToken
-      });
-
-    } catch (e) {
-      console.error(
-        "Erro no acesso por e-mail:",
-        e
-      );
-
-      return res.status(500).json({
-        ok: false,
-        error:
-          "Não foi possível verificar sua compra agora."
-      });
-    }
-  }
-);
-
-// =====================================================
-// VALIDAR ACESSO À ÁREA DO CLIENTE
-// =====================================================
-
-app.post(
-  "/api/cliente/validar-acesso",
-  generateLimiter,
-  async (req, res) => {
-    try {
-      const token = String(
-        req.body?.token || ""
-      ).trim();
-
-      if (!token) {
-        return res.status(401).json({
-          ok: false,
-          error: "Acesso não autorizado."
-        });
-      }
-
-      let payload;
+      let data;
 
       try {
-        payload = jwt.verify(
-          token,
-          JWT_SECRET
-        );
+        data = await response.json();
       } catch {
-        return res.status(401).json({
-          ok: false,
-          error:
-            "Seu acesso expirou. Informe seu e-mail novamente."
-        });
+        throw new Error(
+          "Resposta inválida do servidor."
+        );
       }
 
       if (
-        !["member_access", "paid_access"].includes(
-          payload?.type
-        )
+        !response.ok ||
+        !data.ok ||
+        !data.access_token
       ) {
-        return res.status(401).json({
-          ok: false,
-          error: "Acesso inválido."
-        });
+
+        mostrarMensagem(
+          data.error ||
+          "Não encontramos uma compra aprovada para este e-mail."
+        );
+
+        bloquearBotao(false);
+
+        return;
       }
 
-      const result = await db.query(
-        `
-        SELECT
-          external_reference,
-          plano,
-          email,
-          status
-        FROM pix_orders
-        WHERE
-          external_reference=$1
-          AND lower(email)=lower($2)
-          AND lower(status) IN (
-            'approved',
-            'processed',
-            'paid'
-          )
-        LIMIT 1
-        `,
-        [
-          payload.ref,
-          payload.email
-        ]
+      mostrarMensagem(
+        "✓ Compra encontrada. Liberando acesso...",
+        true
       );
 
-      if (!result.rowCount) {
-        return res.status(403).json({
-          ok: false,
-          error:
-            "Não foi encontrada uma compra aprovada para este acesso."
-        });
+      const tokenValido =
+        await validarToken(
+          data.access_token
+        );
+
+      if (!tokenValido) {
+
+        mostrarMensagem(
+          "Não foi possível validar seu acesso. Tente novamente."
+        );
+
+        bloquearBotao(false);
+
+        return;
       }
 
-      const compra = result.rows[0];
+      mostrarMensagem(
+        "✓ Acesso autorizado!",
+        true
+      );
 
-      return res.json({
-        ok: true,
-        autorizado: true,
-        email: compra.email,
-        plano: compra.plano
-      });
+      setTimeout(() => {
+        liberarArea();
+      }, 500);
 
-    } catch (e) {
+    } catch (erro) {
+
       console.error(
-        "Erro validando acesso do cliente:",
-        e
+        "Erro no acesso:",
+        erro
       );
 
-      return res.status(500).json({
-        ok: false,
-        error:
-          "Não foi possível validar o acesso."
-      });
-    }
-  }
-);
-          // =====================================================
-// WEBHOOK MERCADO PAGO
-// =====================================================
-
-app.post(
-  "/api/mercadopago/webhook",
-  async (req, res) => {
-    res.sendStatus(200);
-
-    try {
-      if (!MP_ACCESS_TOKEN) {
-        console.error(
-          "Webhook: MP_ACCESS_TOKEN não configurado."
-        );
-        return;
-      }
-
-      const body = req.body || {};
-
-      const notifiedId = String(
-        body?.data?.id ||
-        body?.id ||
-        req.query?.["data.id"] ||
-        ""
-      ).trim();
-
-      let mpOrderId =
-        notifiedId || null;
-
-      const externalReference = String(
-        body?.external_reference ||
-        body?.data?.external_reference ||
-        ""
-      ).trim();
-
-      let local = null;
-
-      if (mpOrderId) {
-        const byOrder =
-          await db.query(
-            `
-            SELECT *
-            FROM pix_orders
-            WHERE mp_order_id=$1
-            LIMIT 1
-            `,
-            [mpOrderId]
-          );
-
-        if (byOrder.rowCount) {
-          local =
-            byOrder.rows[0];
-        }
-      }
-
-      if (!local && externalReference) {
-        const byReference =
-          await db.query(
-            `
-            SELECT *
-            FROM pix_orders
-            WHERE external_reference=$1
-            LIMIT 1
-            `,
-            [externalReference]
-          );
-
-        if (byReference.rowCount) {
-          local =
-            byReference.rows[0];
-
-          mpOrderId =
-            local.mp_order_id;
-        }
-      }
-
-      if (!local || !mpOrderId) {
-        console.log(
-          "Webhook recebido sem Order local identificável:",
-          body?.type ||
-          body?.action ||
-          "evento"
-        );
-        return;
-      }
-
-      const response = await fetch(
-        `https://api.mercadopago.com/v1/orders/${encodeURIComponent(
-          mpOrderId
-        )}`,
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization:
-              `Bearer ${MP_ACCESS_TOKEN}`
-          }
-        }
+      mostrarMensagem(
+        "Não foi possível conectar ao servidor. Tente novamente em alguns instantes."
       );
 
-      const data =
-        await response.json();
-
-      if (!response.ok) {
-        console.error(
-          "Webhook: erro consultando Order:",
-          response.status,
-          JSON.stringify(data)
-        );
-        return;
-      }
-
-      const paymentStatus =
-        data?.transactions
-          ?.payments?.[0]?.status;
-
-      const orderStatus =
-        data?.status;
-
-      const novoStatus = String(
-        paymentStatus ||
-        orderStatus ||
-        local.status ||
-        "pending"
-      );
-
-      const mpReference = String(
-        data?.external_reference || ""
-      ).trim();
-
-      if (
-        mpReference &&
-        mpReference !==
-          local.external_reference
-      ) {
-        console.error(
-          "Webhook: external_reference divergente."
-        );
-        return;
-      }
-
-      await db.query(
-        `
-        UPDATE pix_orders
-        SET
-          status=$1,
-          updated_at=NOW()
-        WHERE external_reference=$2
-        `,
-        [
-          novoStatus,
-          local.external_reference
-        ]
-      );
-
-      console.log(
-        "Webhook MP atualizado:",
-        local.external_reference,
-        novoStatus
-      );
-
-    } catch (e) {
-      console.error(
-        "Erro processando webhook Mercado Pago:",
-        e
-      );
+      bloquearBotao(false);
     }
   }
 );
 
-// =====================================================
-// SITE
-// =====================================================
+/*
+  O checkout antigo pode redirecionar para esta página
+  com ?access=... na URL.
 
-app.get(
-  /.*/,
-  (req, res) =>
-    res.sendFile(
-      path.resolve(
-        "public/index.html"
-      )
-    )
-);
+  Como agora queremos que o cliente SEMPRE informe
+  o e-mail utilizado na compra, esse token não libera
+  a página automaticamente.
 
-// =====================================================
-// INICIAR SERVIDOR
-// =====================================================
+  Removemos apenas o parâmetro da barra de endereço.
+*/
 
-async function iniciarServidor() {
-  try {
-    await iniciarBanco();
+const parametros =
+  new URLSearchParams(
+    window.location.search
+  );
 
-    app.listen(
-      PORT,
-      () =>
-        console.log(
-          `RBX Imperio Key Server em http://localhost:${PORT}`
-        )
-    );
-  } catch (e) {
-    console.error(
-      "ERRO AO CONECTAR NO BANCO:",
-      e
-    );
+if (parametros.has("access")) {
 
-    process.exit(1);
-  }
+  parametros.delete("access");
+
+  const novaQuery =
+    parametros.toString();
+
+  const novaUrl =
+    window.location.pathname +
+    (novaQuery
+      ? "?" + novaQuery
+      : "") +
+    window.location.hash;
+
+  window.history.replaceState(
+    {},
+    document.title,
+    novaUrl
+  );
 }
 
-iniciarServidor();
+/*
+  Segurança visual:
+  a página sempre inicia bloqueada.
+  O conteúdo só aparece após a resposta positiva
+  das APIs do servidor.
+*/
+
+memberContent.style.display = "none";
+loginGate.style.display = "flex";
+
+</script>
+
+</body>
+</html>
+</script>
+
+</body>
+</html>
