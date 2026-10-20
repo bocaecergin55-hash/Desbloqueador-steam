@@ -767,6 +767,23 @@ body.guide-active #memberContent{padding-bottom:290px}
 body.guide-active #memberContent{padding-bottom:320px}
 }
 
+
+/* Layout definitivo: texto em largura total e ação abaixo. */
+#guideBar{display:block;box-sizing:border-box;width:min(680px,calc(100% - 32px));padding:20px 24px;max-height:40dvh}
+#guideBar>div{display:block;width:100%;min-width:0;max-width:none}
+#guideBar strong,#guideBar p{display:block;width:100%;max-width:none;white-space:normal;word-break:normal;overflow-wrap:normal;writing-mode:horizontal-tb;text-align:left}
+#guideBar .btn{display:inline-flex;width:auto;max-width:100%;min-height:42px;margin:16px 0 0;padding:10px 18px;font-size:15px;line-height:1.4}
+.setup-steps{display:grid;grid-template-columns:minmax(0,1fr);max-width:900px;margin-inline:auto}
+.setup-steps .resource-card{display:block;grid-column:auto;min-width:0;padding:24px 28px}
+.setup-steps .resource-card:after{display:none}
+.setup-steps .resource-icon{display:none}
+.setup-steps .step-number{margin-bottom:8px}
+.setup-steps h3{margin:0 0 10px;font-size:22px}
+.setup-steps p{width:100%;max-width:none;min-height:0;margin:0;line-height:1.65;font-size:16px;word-break:normal;writing-mode:horizontal-tb}
+.setup-steps .btn{display:inline-flex;width:auto;max-width:100%;min-height:42px;margin:18px 0 0;padding:10px 18px;font-size:15px}
+.setup-extra,.tutorial-next{display:block}
+.setup-extra .btn,.tutorial-next .btn{display:inline-flex;width:auto;max-width:100%;min-height:42px;padding:10px 18px;margin:16px 0 0}
+@media(max-width:650px){#guideBar{padding:18px;width:calc(100% - 24px)}#guideBar strong{font-size:18px}#guideBar p{font-size:16px}.setup-steps .resource-card{padding:22px}.setup-steps h3{font-size:21px}}
 </style>
 </head>
 
