@@ -731,6 +731,17 @@ a:focus-visible,button:focus-visible{outline:3px solid #c5aaff;outline-offset:4p
 .tutorial-next{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:24px;padding:22px;border:1px solid #ffffff12;border-radius:16px}
 .tutorial-next p{line-height:1.6;color:#bbb}
 @media(max-width:650px){.setup-extra,.tutorial-next{align-items:stretch;flex-direction:column}.setup-extra .btn,.tutorial-next .btn{text-align:center}}
+
+.guide-overlay[hidden],.guide-bar[hidden]{display:none!important}
+.guide-overlay{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(4,2,10,.86);backdrop-filter:blur(8px)}
+.guide-dialog{width:100%;max-width:520px;border:1px solid #9a60ff66;border-radius:24px;padding:34px;background:#140d22;box-shadow:0 25px 90px #0009;color:#fff}
+.guide-dialog h2{font-size:28px;line-height:1.2;margin:14px 0}.guide-dialog p{font-size:16px;line-height:1.7;color:#c9c0d7}.guide-dialog .btn{width:100%;margin-top:25px;cursor:pointer}
+.guide-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:9990;width:calc(100% - 32px);max-width:650px;background:#1a102a;border:1px solid #9a60ff88;border-radius:18px;padding:18px 22px;box-shadow:0 12px 50px #000a;color:white;display:flex;align-items:center;gap:20px;justify-content:space-between}
+.guide-bar p{font-size:14px;line-height:1.5;margin-top:5px;color:#c9c0d7}.guide-bar .btn{flex-shrink:0;cursor:pointer}.guide-target{outline:2px solid #b083ff;outline-offset:5px}
+#passo-download,#passo-key{scroll-margin-top:110px}
+body.guide-active #memberContent{padding-bottom:150px}
+.guide-restart{background:none;border:0;color:inherit;font:inherit;cursor:pointer}
+@media(max-width:650px){.guide-bar{bottom:12px;padding:16px;flex-direction:column;gap:12px;align-items:stretch}.guide-dialog{padding:25px}.guide-dialog h2{font-size:24px}.guide-bar .btn{text-align:center}body.guide-active #memberContent{padding-bottom:230px}}
 </style>
 </head>
 
@@ -805,7 +816,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #c5aaff;outline-offset:4p
       <a href="#jogos">Jogos</a>
       <a href="#recursos">Recursos</a>
       <a href="#tutoriais">Tutoriais</a>
-      <a href="#suporte">Suporte</a>
+      <a href="#suporte">Suporte</a><button type="button" class="guide-restart">Ver guia</button>
     </div>
 
   </div>
@@ -885,21 +896,21 @@ a:focus-visible,button:focus-visible{outline:3px solid #c5aaff;outline-offset:4p
 
 
     <div class="resource-grid setup-steps">
-      <article class="resource-card">
+      <article class="resource-card" id="passo-tutoriais">
         <div class="step-number">PASSO 01</div>
         <div class="resource-icon" aria-hidden="true">▶</div>
         <h3>Assista aos tutoriais</h3>
         <p>Antes de começar, assista aos vídeos com atenção. Eles mostram como instalar, criar sua key e usar o launcher.</p>
         <a class="btn" href="#tutoriais">Ver tutoriais</a>
       </article>
-      <article class="resource-card">
+      <article class="resource-card" id="passo-download">
         <div class="step-number">PASSO 02</div>
         <div class="resource-icon" aria-hidden="true">⬇</div>
         <h3>Baixe o launcher</h3>
         <p>Depois de assistir aos tutoriais, baixe o arquivo do RBX Império e siga as orientações do vídeo para instalar.</p>
         <a class="btn" href="https://www.mediafire.com/file/7zqurdb0o6cduv6/RBX_Imperio.zip/file" target="_blank" rel="noopener">Baixar launcher</a>
       </article>
-      <article class="resource-card">
+      <article class="resource-card" id="passo-key">
         <div class="step-number">PASSO 03</div>
         <div class="resource-icon" aria-hidden="true">🔑</div>
         <h3>Crie sua key</h3>
@@ -1358,6 +1369,18 @@ a:focus-visible,button:focus-visible{outline:3px solid #c5aaff;outline-offset:4p
 
 </div>
 <!-- FIM memberContent -->
+<div class="guide-overlay" id="welcomeGuide" hidden>
+  <div class="guide-dialog" role="dialog" aria-modal="true" aria-labelledby="guideWelcomeTitle" aria-describedby="guideWelcomeText" tabindex="-1">
+    <div class="step-number">SEU GUIA • PASSO 1 DE 3</div>
+    <h2 id="guideWelcomeTitle">Bem-vindo à sua área de membro! 👋</h2>
+    <p id="guideWelcomeText">Antes de tudo, assista aos tutoriais. Eles vão mostrar como instalar e usar o RBX Império. Vamos começar pelos vídeos?</p>
+    <button type="button" class="btn" id="guideBegin">Ir para os tutoriais →</button>
+  </div>
+</div>
+<div class="guide-bar" id="guideBar" role="region" aria-label="Guia de primeiros passos" hidden>
+  <div aria-live="polite"><strong id="guideStepTitle"></strong><p id="guideStepText"></p></div>
+  <button type="button" class="btn" id="guideNext"></button>
+</div>
   <script>
 const API_URL = "https://rbx-imperio-key-server.onrender.com";
 
@@ -1384,6 +1407,7 @@ function bloquearBotao(bloqueado) {
 function liberarArea() {
   loginGate.style.display = "none";
   memberContent.style.display = "block";
+  abrirGuia();
 
   window.scrollTo({
     top: 0,
@@ -1586,6 +1610,53 @@ if (parametros.has("access")) {
 memberContent.style.display = "none";
 loginGate.style.display = "flex";
 
+
+const guideWelcome = document.getElementById('welcomeGuide');
+const guideBar = document.getElementById('guideBar');
+const guideNext = document.getElementById('guideNext');
+let guideStep = 0;
+function abrirGuia(){
+  guideStep = 0;
+  guideBar.hidden = true;
+  guideWelcome.hidden = false;
+  document.body.style.overflow = 'hidden';
+  document.getElementById('guideBegin').focus();
+}
+function mostrarEtapaGuia(etapa){
+  guideStep = etapa;
+  guideWelcome.hidden = true;
+  document.body.style.overflow = '';
+  document.body.classList.add('guide-active');
+  document.querySelectorAll('.guide-target').forEach(el=>el.classList.remove('guide-target'));
+  const steps = {
+    1: ['tutoriais','1 de 3 • Assista aos tutoriais','Veja os vídeos com calma. Quando terminar, continue para o download.','Continuar para baixar →'],
+    2: ['passo-download','2 de 3 • Baixe o launcher','Clique em “Baixar launcher” no cartão destacado. Depois, continue para criar sua key.','Continuar para a key →'],
+    3: ['passo-key','3 de 3 • Crie sua key','Clique em “Criar minha key”, faça seu cadastro e use a chave no launcher conforme o tutorial.','Concluir guia ✓']
+  };
+  const [id,title,description,label] = steps[etapa];
+  document.getElementById('guideStepTitle').textContent=title;
+  document.getElementById('guideStepText').textContent=description;
+  guideNext.textContent=label;
+  guideBar.hidden=false;
+  const target=document.getElementById(id);
+  target.classList.add('guide-target');
+  target.scrollIntoView({behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
+  guideNext.focus({preventScroll:true});
+}
+document.getElementById('guideBegin').addEventListener('click',()=>mostrarEtapaGuia(1));
+guideNext.addEventListener('click',()=>{
+  if(guideStep<3){mostrarEtapaGuia(guideStep+1);return;}
+  guideBar.hidden=true;
+  document.body.classList.remove('guide-active');
+  document.querySelectorAll('.guide-target').forEach(el=>el.classList.remove('guide-target'));
+  document.querySelector('.guide-restart').focus({preventScroll:true});
+});
+document.addEventListener('keydown',event=>{
+  if(!guideWelcome.hidden && event.key==='Tab'){
+    event.preventDefault();document.getElementById('guideBegin').focus();
+  }
+});
+document.querySelector('.guide-restart').addEventListener('click',abrirGuia);
 </script>
 
 </body>
