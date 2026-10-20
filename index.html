@@ -723,6 +723,14 @@ a:focus-visible,button:focus-visible{outline:3px solid #c5aaff;outline-offset:4p
 @media(max-width:650px){#loginGate{padding:20px 15px;align-items:flex-start}.login-layout{grid-template-columns:1fr;max-width:460px;border-radius:20px}.login-welcome{padding:25px 25px 20px}.portal-label{font-size:8px;margin-bottom:14px}.login-welcome h2{font-size:31px;letter-spacing:-1px}.login-welcome h2 br{display:none}.login-welcome h2 span{display:block}.login-welcome>p{margin:10px 0 0;font-size:11px;max-width:none}.welcome-grid,.welcome-bottom{display:none}.login-box{padding:25px;border-left:0;border-top:1px solid #ffffff0b}.login-logo{font-size:17px;margin-bottom:20px}.login-lock{display:none}.login-box h1{font-size:25px}.login-box>p{font-size:12px;margin-bottom:20px}.login-help{margin-top:13px;padding-top:13px}.login-box input{height:49px}.login-button{min-height:49px}.login-message{margin-top:12px;min-height:18px}.nav-content{min-height:67px;flex-wrap:wrap;gap:12px;padding:15px 0}.logo{font-size:18px}.nav-links{gap:16px;font-size:10px;flex-wrap:wrap}.game-banner{height:320px}.banner-content h1{font-size:39px;letter-spacing:-1.5px}.banner-description{font-size:12px}.banner-actions{gap:9px;flex-wrap:wrap}.banner-actions .btn{font-size:10px;padding:11px 15px}.intro{padding-top:30px}.intro h2{font-size:25px}.intro p{font-size:12px}.section-head{flex-direction:column;gap:9px}.section-head h2{font-size:24px}.section-head p{max-width:none;font-size:12px}.resource-grid{grid-template-columns:1fr}.resource-card:last-child{grid-column:auto}.resource-card{padding:22px}.resource-card p{min-height:0}.resource-card .btn{min-height:47px}.games{gap:10px}.game-card,.game-card img{min-height:260px}.game-info h3{font-size:14px}.game-info{left:12px;right:12px;bottom:13px}.social-grid{grid-template-columns:1fr}.social{padding:18px}.social strong{font-size:14px}.social span{font-size:12px}.social-icon{width:42px;height:42px}.tutorial-grid{grid-template-columns:1fr}.support{padding:30px 20px}.support h2{font-size:25px}section{padding:32px 0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 
+/* Orientação inicial: tutoriais, download e ativação. */
+.step-number{font-size:12px;font-weight:800;letter-spacing:1.5px;color:#bb90ff;margin-bottom:18px}
+.setup-extra{display:flex;align-items:center;justify-content:space-between;gap:22px;margin-top:22px;padding:22px;border:1px solid #ffffff12;border-radius:16px;background:#ffffff03}
+.setup-extra p{font-size:13px;line-height:1.6;color:#aaa;margin-top:7px}
+#recursos,#tutoriais{scroll-margin-top:90px}
+.tutorial-next{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-top:24px;padding:22px;border:1px solid #ffffff12;border-radius:16px}
+.tutorial-next p{line-height:1.6;color:#bbb}
+@media(max-width:650px){.setup-extra,.tutorial-next{align-items:stretch;flex-direction:column}.setup-extra .btn,.tutorial-next .btn{text-align:center}}
 </style>
 </head>
 
@@ -732,7 +740,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #c5aaff;outline-offset:4p
 
 <div id="loginGate">
 
-  <div class="login-layout"><aside class="login-welcome"><div class="portal-label">CENTRAL DO JOGADOR</div><h2>Seu próximo<br>nível começa<br><span>aqui.</span></h2><p>Seu acesso ao RBX Império, organizado em uma central feita para você.</p><div class="welcome-grid"><div><span>01</span><strong>Baixe o launcher</strong><small>Encontre o programa em um só lugar.</small></div><div><span>02</span><strong>Gere sua licença</strong><small>Acesse a página de ativação.</small></div><div><span>03</span><strong>Conte com orientação</strong><small>Tutoriais e comunidade para ajudar.</small></div></div><div class="welcome-bottom">RBX IMPÉRIO <span>ÁREA EXCLUSIVA</span></div></aside><div class="login-box">
+  <div class="login-layout"><aside class="login-welcome"><div class="portal-label">CENTRAL DO JOGADOR</div><h2>Seu próximo<br>nível começa<br><span>aqui.</span></h2><p>Seu acesso ao RBX Império, organizado em uma central feita para você.</p><div class="welcome-grid"><div><span>01</span><strong>Veja os tutoriais</strong><small>Assista aos vídeos antes de começar.</small></div><div><span>02</span><strong>Baixe o launcher</strong><small>Baixe o arquivo e siga o tutorial.</small></div><div><span>03</span><strong>Crie sua key</strong><small>Cadastre-se e gere sua chave de ativação.</small></div></div><div class="welcome-bottom">RBX IMPÉRIO <span>ÁREA EXCLUSIVA</span></div></aside><div class="login-box">
 
     <div class="login-logo">
       RBX <span>IMPÉRIO</span>
@@ -822,7 +830,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #c5aaff;outline-offset:4p
     <h1>
       Seu próximo jogo.
       <span>Seu Império.</span>
-    </h1><p class="banner-description">Tudo pronto para começar: launcher, licença e tutoriais na sua central.</p><div class="banner-actions"><a href="#recursos" class="btn">ACESSAR RECURSOS ↗</a><a href="#tutoriais" class="btn secondary">VER TUTORIAIS</a></div>
+    </h1><p class="banner-description">Tudo pronto para começar: launcher, licença e tutoriais na sua central.</p><div class="banner-actions"><a href="#recursos" class="btn">COMEÇAR PASSO A PASSO ↗</a><a href="#tutoriais" class="btn secondary">VER TUTORIAIS</a></div>
 
   </div>
 
@@ -865,96 +873,43 @@ a:focus-visible,button:focus-visible{outline:3px solid #c5aaff;outline-offset:4p
         </div>
 
         <h2>
-          Seus recursos
+          Comece por aqui
         </h2>
       </div>
 
       <p>
-        Comece pelo launcher, gere sua licença e acompanhe os tutoriais para configurar seu acesso.
+        Siga esta ordem: primeiro assista aos tutoriais, depois baixe o launcher e, por último, crie sua key.
       </p>
 
     </div>
 
 
-    <div class="resource-grid">
-
-      <div class="resource-card">
-
-        <div class="resource-icon">
-          ⬇
-        </div>
-
-        <h3>
-          Baixar Launcher
-        </h3>
-
-        <p>
-          Baixe a versão atualizada do RBX Império para o seu computador.
-        </p>
-
-        <a
-          class="btn"
-          href="https://www.mediafire.com/file/7zqurdb0o6cduv6/RBX_Imperio.zip/file"
-          target="_blank"
-          rel="noopener"
-        >
-          Baixar Launcher
-        </a>
-
-      </div>
-
-
-      <div class="resource-card">
-
-        <div class="resource-icon">
-          🔑
-        </div>
-
-        <h3>
-          Gerar Licença
-        </h3>
-
-        <p>
-          Acesse sua página de geração de licença para utilizar o RBX.
-        </p>
-
-        <a
-          class="btn"
-          href="https://rbx-imperio-key-server.onrender.com/gerar-key.html"
-          target="_blank"
-          rel="noopener"
-        >
-          Gerar Licença
-        </a>
-
-      </div>
-
-
-      <div class="resource-card">
-
-        <div class="resource-icon">
-          🛠
-        </div>
-
-        <h3>
-          Correções
-        </h3>
-
-        <p>
-          Encontre arquivos de correção e recursos adicionais.
-        </p>
-
-        <a
-          class="btn secondary"
-          href="https://generator.ryuu.lol/fixes"
-          target="_blank"
-          rel="noopener"
-        >
-          Ver Correções
-        </a>
-
-      </div>
-
+    <div class="resource-grid setup-steps">
+      <article class="resource-card">
+        <div class="step-number">PASSO 01</div>
+        <div class="resource-icon" aria-hidden="true">▶</div>
+        <h3>Assista aos tutoriais</h3>
+        <p>Antes de começar, assista aos vídeos com atenção. Eles mostram como instalar, criar sua key e usar o launcher.</p>
+        <a class="btn" href="#tutoriais">Ver tutoriais</a>
+      </article>
+      <article class="resource-card">
+        <div class="step-number">PASSO 02</div>
+        <div class="resource-icon" aria-hidden="true">⬇</div>
+        <h3>Baixe o launcher</h3>
+        <p>Depois de assistir aos tutoriais, baixe o arquivo do RBX Império e siga as orientações do vídeo para instalar.</p>
+        <a class="btn" href="https://www.mediafire.com/file/7zqurdb0o6cduv6/RBX_Imperio.zip/file" target="_blank" rel="noopener">Baixar launcher</a>
+      </article>
+      <article class="resource-card">
+        <div class="step-number">PASSO 03</div>
+        <div class="resource-icon" aria-hidden="true">🔑</div>
+        <h3>Crie sua key</h3>
+        <p>Acesse o gerador, faça seu cadastro e crie sua key. Depois, copie a chave e use no launcher para ativar seu acesso.</p>
+        <a class="btn" href="https://rbx-imperio-key-server.onrender.com/gerar-key.html" target="_blank" rel="noopener">Criar minha key</a>
+      </article>
+    </div>
+    <div class="setup-extra">
+      <div><strong>Precisa de arquivos de correção?</strong><p>Use este recurso quando houver orientação nos tutoriais ou no suporte.</p></div>
+      <a class="btn secondary" href="https://generator.ryuu.lol/fixes" target="_blank" rel="noopener">Ver correções</a>
     </div>
 
   </div>
@@ -1289,7 +1244,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #c5aaff;outline-offset:4p
       </div>
 
       <p>
-        Assista aos vídeos para configurar e utilizar os recursos do RBX.
+        Primeiro, assista aos tutoriais com atenção. Depois, volte ao passo 02 para baixar o launcher e siga para a criação da sua key.
       </p>
 
     </div>
@@ -1352,6 +1307,7 @@ a:focus-visible,button:focus-visible{outline:3px solid #c5aaff;outline-offset:4p
 
   </div>
 
+<div class="container"><div class="tutorial-next"><p>Terminou os vídeos? Continue pelo passo 02: baixar o launcher.</p><a class="btn" href="#recursos">Voltar ao passo a passo ↑</a></div></div>
 </section>
 
 
